@@ -1,0 +1,53 @@
+c:\users\user\documents\visual studio 2010\Projects\OOP_drow\OOP_drow\bin\Debug\OOP_drow.exe
+c:\users\user\documents\visual studio 2010\Projects\OOP_drow\OOP_drow\bin\Debug\OOP_drow.pdb
+c:\users\user\documents\visual studio 2010\Projects\OOP_drow\OOP_drow\obj\x86\Debug\OOP_drow.Form1.resources
+c:\users\user\documents\visual studio 2010\Projects\OOP_drow\OOP_drow\obj\x86\Debug\OOP_drow.Properties.Resources.resources
+c:\users\user\documents\visual studio 2010\Projects\OOP_drow\OOP_drow\obj\x86\Debug\OOP_drow.csproj.GenerateResource.Cache
+c:\users\user\documents\visual studio 2010\Projects\OOP_drow\OOP_drow\obj\x86\Debug\OOP_drow.exe
+c:\users\user\documents\visual studio 2010\Projects\OOP_drow\OOP_drow\obj\x86\Debug\OOP_drow.pdb
+C:\Users\user\documents\visual studio 2010\Projects\OOP_drow\OOP_drow\obj\x86\Debug\OOP_drow.csprojResolveAssemblyReference.cache
+C:\Users\student\Desktop\OOP_drow\OOP_drow\obj\x86\Debug\OOP_drow.exe
+C:\Users\student\Desktop\OOP_drow\OOP_drow\obj\x86\Debug\OOP_drow.pdb
+C:\Users\student\Desktop\OOP_drow\OOP_drow\obj\x86\Debug\OOP_drow.Form1.resources
+C:\Users\student\Desktop\OOP_drow\OOP_drow\obj\x86\Debug\OOP_drow.Properties.Resources.resources
+C:\Users\student\Desktop\OOP_drow\OOP_drow\bin\Debug\OOP_drow.exe
+C:\Users\student\Desktop\OOP_drow\OOP_drow\bin\Debug\OOP_drow.pdb
+C:\Users\user\Desktop\OOP_drow\OOP_drow\obj\x86\Debug\OOP_drow.exe
+C:\Users\user\Desktop\OOP_drow\OOP_drow\obj\x86\Debug\OOP_drow.pdb
+C:\Users\user\Desktop\OOP_drow\OOP_drow\bin\Debug\OOP_drow.exe
+C:\Users\user\Desktop\OOP_drow\OOP_drow\bin\Debug\OOP_drow.pdb
+C:\Users\user\Desktop\OOP_drow\OOP_drow\obj\x86\Debug\OOP_drow.csprojResolveAssemblyReference.cache
+C:\Users\user\Desktop\OOP_drow\OOP_drow\obj\x86\Debug\OOP_drow.Form1.resources
+C:\Users\user\Desktop\OOP_drow\OOP_drow\obj\x86\Debug\OOP_drow.Properties.Resources.resources
+C:\Users\user\Desktop\OOP_drow\OOP_drow\obj\x86\Debug\OOP_drow.csproj.GenerateResource.Cache
+G:\ООП\OOP_drow\OOP_drow\obj\x86\Debug\OOP_drow.exe
+G:\ООП\OOP_drow\OOP_drow\obj\x86\Debug\OOP_drow.pdb
+C:\Users\student\Desktop\OOP_drow\OOP_drow\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\student\Desktop\OOP_drow\OOP_drow\obj\x86\Debug\GenerateResource.read.1.tlog
+C:\Users\student\Desktop\OOP_drow\OOP_drow\obj\x86\Debug\GenerateResource.write.1.tlog
+O:\oop\obj\x86\Debug\OOP_drow.exe
+O:\oop\obj\x86\Debug\OOP_drow.pdb
+O:\oop\bin\Debug\OOP_drow.exe
+O:\oop\bin\Debug\OOP_drow.pdb
+O:\oop\obj\x86\Debug\OOP_drow.csprojResolveAssemblyReference.cache
+O:\oop\obj\x86\Debug\OOP_drow.Form1.resources
+O:\oop\obj\x86\Debug\OOP_drow.Properties.Resources.resources
+O:\oop\obj\x86\Debug\OOP_drow.csproj.GenerateResource.Cache
+E:\КП\bin\Debug\OOP_drow.exe
+E:\КП\bin\Debug\OOP_drow.pdb
+E:\КП\obj\x86\Debug\OOP_drow.csprojAssemblyReference.cache
+E:\КП\obj\x86\Debug\OOP_drow.Form1.resources
+E:\КП\obj\x86\Debug\OOP_drow.Properties.Resources.resources
+E:\КП\obj\x86\Debug\OOP_drow.csproj.GenerateResource.cache
+E:\КП\obj\x86\Debug\OOP_drow.csproj.CoreCompileInputs.cache
+E:\КП\obj\x86\Debug\OOP_drow.exe
+E:\КП\obj\x86\Debug\OOP_drow.pdb
+E:\КП(реп)\KSU.Visio\bin\Debug\OOP_drow.exe
+E:\КП(реп)\KSU.Visio\bin\Debug\OOP_drow.pdb
+E:\КП(реп)\KSU.Visio\obj\x86\Debug\OOP_drow.csprojAssemblyReference.cache
+E:\КП(реп)\KSU.Visio\obj\x86\Debug\OOP_drow.Form1.resources
+E:\КП(реп)\KSU.Visio\obj\x86\Debug\OOP_drow.Properties.Resources.resources
+E:\КП(реп)\KSU.Visio\obj\x86\Debug\OOP_drow.csproj.GenerateResource.cache
+E:\КП(реп)\KSU.Visio\obj\x86\Debug\OOP_drow.csproj.CoreCompileInputs.cache
+E:\КП(реп)\KSU.Visio\obj\x86\Debug\OOP_drow.exe
+E:\КП(реп)\KSU.Visio\obj\x86\Debug\OOP_drow.pdb
