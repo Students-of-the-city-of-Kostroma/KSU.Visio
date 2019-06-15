@@ -43,7 +43,7 @@ namespace OOP_drow
         //Triangle t = new Triangle();
         Rectangle Figurerect;
         MyEllipse mel=new MyEllipse();
-        Person person = new Person();
+        People People = new People();
         Figures cs;
         delegate Figures NewFigure();
         NewFigure ns;
@@ -263,7 +263,7 @@ namespace OOP_drow
           //  gr.Clear(Color.White);
             //e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
             //Figurecontrol.DrawSh(e.Graphics);
-            Figures s = new CInstance();
+            Figures s = new sObject();
 
             Graphics gr = pictureBox1.CreateGraphics();
             gr.Clear(Color.White);
@@ -368,7 +368,7 @@ namespace OOP_drow
             //btm1 = new Bitmap(pictureBox1.Width-10, pictureBox1.Height-10);
             //gr = Graphics.FromImage(btm1);
 
-            //Figures s = new CInstance();
+            //Figures s = new sObject();
             //s.DrawSh(gr);
             
             //pictureBox1.Image = Image.FromHbitmap(btm1.GetHbitmap(Color.Blue));
@@ -421,7 +421,7 @@ namespace OOP_drow
         private Figures S2()
         {
             //trackBar2.Enabled = true;
-            Figures t = new CInstance();
+            Figures t = new sObject();
             //t.N = trackBar2.Value;
             t.P = (Pen)p.Clone();
             return t;
@@ -444,7 +444,7 @@ namespace OOP_drow
         private Figures P()
         {
             //trackBar2.Enabled = true;
-            Figures t = new Person();            
+            Figures t = new People();            
             t.P = (Pen)p.Clone();
             return t;
             //trackBar2.Value = cs.N;
@@ -514,7 +514,7 @@ namespace OOP_drow
         private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
         {
             
-         //   Figurecontrol.AddNew(new CInstance());
+         //   Figurecontrol.AddNew(new sObject());
             
         }
 
@@ -592,7 +592,7 @@ namespace OOP_drow
 
         private void pictureBox1_Paint(object sender, PaintEventArgs e)
         {
-            Figures s = new CInstance();
+            Figures s = new sObject();
             
             Graphics gr = pictureBox1.CreateGraphics();
             gr.Clear(Color.White);
@@ -622,12 +622,45 @@ namespace OOP_drow
         private void panel1_MouseDown_1(object sender, MouseEventArgs e)
         {
             //if (
+            textBox1.Enabled = false;
             Figurecontrol.SelectFigure(e.Location);
               //  )
             {
                 panel1.Invalidate();
             }
+            
+            textBox1.Text = "";
+        }
 
+        private void panel1_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            if (Figurecontrol.GetSelected() != null)
+            {
+                textBox1.Enabled = true;
+                textBox1.Text = Figurecontrol.GetSelected().GetText();
+                textBox1.Focus();
+            }
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+            if (textBox1.Enabled )
+            if (Figurecontrol.GetSelected() != null)
+            {
+                Figurecontrol.GetSelected().SetText(textBox1.Text);
+                panel1.Invalidate();
+            }
+        }
+
+        private void textBox1_KeyDown(object sender, KeyEventArgs e)
+        {
+           
+        }
+
+        private void textBox1_Leave(object sender, EventArgs e)
+        {
+            textBox1.Enabled = false;
+            textBox1.Text = "";
         }
     }
 
