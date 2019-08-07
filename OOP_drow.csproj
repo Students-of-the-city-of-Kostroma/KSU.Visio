@@ -55,6 +55,7 @@
     <Compile Include="Instance_specification.cs" />
     <Compile Include="Life_line.cs" />
     <Compile Include="Frame.cs" />
+    <Compile Include="Text.cs" />
     <Compile Include="White_rectangle.cs" />
     <Compile Include="Continuation.cs" />
     <Compile Include="Line.cs" />
