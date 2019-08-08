@@ -2,13 +2,17 @@
 # Build and run tests for .NET Desktop or Windows classic desktop solutions.
 # Add steps that publish symbols, save build artifacts, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/apps/windows/dot-net
+# https://dev.azure.com/silenok-86/Student-timetable/_build?definitionId=1&_a=summary
 
 trigger:
-- master
 - Testing
+- task-*
+- 17-*
+- tmp-*
+- master
 
 pool:
-  vmImage: 'windows-latest'
+  vmImage: 'VS2017-Win2016'
 
 variables:
   solution: '**/*.sln'
@@ -16,7 +20,7 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
-- task: NuGetToolInstaller@1
+- task: NuGetToolInstaller@0
 
 - task: NuGetCommand@2
   inputs:
@@ -32,3 +36,12 @@ steps:
   inputs:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    pathtoPublish: '$(Build.SourcesDirectory)' 
+    artifactName: 'drop' 
+    publishLocation: 'Container' # Options: container, filePath
+    targetPath: # Required when publishLocation == FilePath
+  #parallel: false # Optional
+  #parallelCount: # Optional
