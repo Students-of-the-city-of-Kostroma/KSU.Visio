@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Figure.cs" />
     <Compile Include="Rectangle_object.cs" />
     <Compile Include="Asyn_mess.cs" />
     <Compile Include="Dispatch_mess.cs" />
