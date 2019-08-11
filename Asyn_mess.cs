@@ -7,7 +7,7 @@ using System.Drawing;
 
 namespace OOP_drow
 {
-    class Asyn_mess : Line
+    public class Asyn_mess : Line
     {
         public override void Draw(Graphics gr)
         {

@@ -6,7 +6,7 @@ using System.Drawing;
 
 namespace OOP_drow
 {
-    class Line : Figure
+    public class Line : Figure
     {
         //Выбранный конец. 0 - первый конец, 1- второй конец
         int Selected_end = -1;

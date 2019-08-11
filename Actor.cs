@@ -6,7 +6,7 @@ using System.Drawing;
 
 namespace OOP_drow
 {
-    class Actor : Rectangle_object
+   public class Actor : Rectangle_object
     {
         Point[] Act = new Point[8];//Отрисовка самого актера внутри рентагле
 
