@@ -7,7 +7,7 @@ using System.Drawing;
 
 namespace OOP_drow
 {
-    class Dispatch_mess : Line
+    public class Dispatch_mess : Line
     {
 
         public override void Draw(Graphics gr)

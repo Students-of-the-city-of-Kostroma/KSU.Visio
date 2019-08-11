@@ -6,7 +6,7 @@ using System.Drawing;
 
 namespace OOP_drow
 {
-    class White_rectangle : Rectangle_object
+    public class White_rectangle : Rectangle_object
     {
         SolidBrush Brush = new SolidBrush(Color.White);
 

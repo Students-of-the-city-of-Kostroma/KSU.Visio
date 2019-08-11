@@ -6,7 +6,7 @@ using System.Drawing;
 
 namespace OOP_drow
 {
-    class Instance_specification : Rectangle_object
+    public class Instance_specification : Rectangle_object
     {
         Point[] Internal_line = new Point[2];
 

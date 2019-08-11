@@ -7,7 +7,7 @@ using System.Drawing;
 
 namespace OOP_drow
 {
-    class Life_line : Rectangle_object
+    public class Life_line : Rectangle_object
     {
         int Line_length = 50;
         static Pen Pen = new Pen(Brushes.Black, 3);

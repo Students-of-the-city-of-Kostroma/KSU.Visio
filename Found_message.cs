@@ -7,7 +7,7 @@ using System.Drawing;
 
 namespace OOP_drow
 {
-    class Found_message : Line
+    public class Found_message : Line
     {
         public override void Draw(Graphics gr)
         {

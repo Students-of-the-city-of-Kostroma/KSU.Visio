@@ -6,7 +6,7 @@ using System.Drawing;
 
 namespace OOP_drow
 {
-    class Frame : Rectangle_object
+    public class Frame : Rectangle_object
     {
         Point[] Corner = new Point[4];//хранит точки, отвечающие за угол фрейма
 

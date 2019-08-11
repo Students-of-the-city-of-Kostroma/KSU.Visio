@@ -244,6 +244,7 @@ namespace OOP_drow
             
         }
 
+<<<<<<< HEAD
         private Figures S2()
         {
 <<<<<<< HEAD
@@ -287,6 +288,9 @@ namespace OOP_drow
 
         }
 
+=======
+     
+>>>>>>> v 0.03
         private void trackBar2_ValueChanged(object sender, EventArgs e)
         {
            
