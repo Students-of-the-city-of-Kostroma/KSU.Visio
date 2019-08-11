@@ -7,8 +7,9 @@ using System.Drawing;
 
 namespace OOP_drow
 {
-    class Text : Rectangle_object
+    public class Text : Rectangle_object
     {
+
         string txt = "";
         static TextBox Text1 = new TextBox();//текстбокс для считывания шрифта
         Font FontText = new Font(Text1.Font, FontStyle.Bold);//считываем шрифт с текстбокса
@@ -21,7 +22,8 @@ namespace OOP_drow
         }
         override public void Draw(Graphics gr)
         {
-            Pen Pe = new Pen(Line_color);
+            Pen Pe = new Pen(Color.Transparent);
+
             Pe.Width = 1;
             Point FP = new Point();//левый верхний угол
             Point SP = new Point();//правый нижний угол

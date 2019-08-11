@@ -6,7 +6,7 @@ using System.Drawing;
 
 namespace OOP_drow
 {
-    class Rectangle_object : Figure
+  public class Rectangle_object : Figure
     {
         override public void Draw(Graphics gr)
         {

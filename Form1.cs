@@ -176,32 +176,7 @@ namespace OOP_drow
             
         }
 
-        private Figures S2()
-        {
-            
-
-        }
-
-        private Figures T()
-        {
-            
-
-        }
-
-
-        private Figures P()
-        {
-            
-
-        }
-      
-
-        private Figures S()
-        {
-            
-
-        }
-
+     
         private void trackBar2_ValueChanged(object sender, EventArgs e)
         {
            
