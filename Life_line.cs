@@ -45,17 +45,72 @@ namespace OOP_drow
             }
 
             gr.DrawRectangle(Pe, FP.X, FP.Y, SP.X - FP.X, SP.Y - FP.Y);
-            int mid = (Basic_points[0].X + Basic_points[1].X) / 2;//середина нижней линии прямоугольника (из этой точки выходит линия жизни)
             Pen.DashStyle = DashStyle.Dash;
             Pen.Color = Pe.Color;
-            Line_ends[0] = new Point(mid, SP.Y);
-            Line_ends[1] = new Point(mid, SP.Y + Line_length);
+            SortLine(); 
             gr.DrawLine(Pen, Line_ends[0], Line_ends[1]);
 
+
         }
+        private void SortLine()
+        {
+            Point FP = new Point();//левая верхняя точка 
+            Point SP = new Point();//правая нижняя точка 
+            if (Basic_points[0].X < Basic_points[1].X)
+            {
+                FP.X = Basic_points[0].X;
+                SP.X = Basic_points[1].X;
+            }
+            else
+            {
+                SP.X = Basic_points[0].X;
+                FP.X = Basic_points[1].X;
+            }
+            //Определяет, какая координата У принадлежит верхней, а какая нижней точке 
+            if (Basic_points[0].Y < Basic_points[1].Y)
+            {
+                FP.Y = Basic_points[0].Y;
+                SP.Y = Basic_points[1].Y;
+            }
+            else
+            {
+                SP.Y = Basic_points[0].Y;
+                FP.Y = Basic_points[1].Y;
+            }
+            int mid = (Basic_points[0].X + Basic_points[1].X) / 2;//середина нижней линии прямоугольника (из этой точки выходит линия жизни) 
+            Line_ends[0] = new Point(mid, SP.Y);
+            Line_ends[1] = new Point(mid, SP.Y + Line_length);
+        }
+
 
         public override bool Hit_testing(Figure Figure, Point Point)
         {
+            Point FP = new Point();//левый верхний угол 
+            Point SP = new Point();//правый нижний угол 
+                                   //Определяет, какая координата Х принадлежит левой, а какая парвой точке 
+            if (Basic_points[0].X < Basic_points[1].X)
+            {
+                FP.X = Basic_points[0].X;
+                SP.X = Basic_points[1].X;
+            }
+            else
+            {
+                SP.X = Basic_points[0].X;
+                FP.X = Basic_points[1].X;
+            }
+            //Определяет, какая координата У принадлежит верхней, а какая нижней точке 
+            if (Basic_points[0].Y < Basic_points[1].Y)
+            {
+                FP.Y = Basic_points[0].Y;
+                SP.Y = Basic_points[1].Y;
+            }
+            else
+            {
+                SP.Y = Basic_points[0].Y;
+                FP.Y = Basic_points[1].Y;
+            }
+            Basic_points[0] = FP;
+            Basic_points[1] = SP;
             if (Point.X > Figure.Basic_points[0].X && Point.Y > Figure.Basic_points[0].Y && Point.X < Figure.Basic_points[1].X && Point.Y < Figure.Basic_points[1].Y)
             {
                 Edit_line = false;
@@ -66,6 +121,7 @@ namespace OOP_drow
 
         public bool Hit_testing_line(Figure Figure, Point Point)
         {
+            SortLine();
             //уравнение окружности с центром в точке клика (находим растояние до ближайшей точки данного объекта)
             double d1 = Math.Sqrt(Math.Pow(Point.X - (Figure as Life_line).Line_ends[1].X, 2) + Math.Pow(Point.Y - (Figure as Life_line).Line_ends[1].Y, 2));
             int r = 8;//радиус. Если расстояние d1 меньше радиуса, то цепляем конец для перемещения
