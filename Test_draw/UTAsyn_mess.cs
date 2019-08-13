@@ -6,14 +6,14 @@ using System.Drawing;
 namespace Test_draw
 {
     [TestClass]
-    public class UTWhite_rectangle
+    public class UTAsyn_mess
     {
         [TestMethod]
         public void UTPos_hit()
         {
-            White_rectangle RO = new White_rectangle();
+            Asyn_mess RO = new Asyn_mess();
             UTDraw(RO);
-            Point p = new Point(3, 2);
+            Point p = new Point(5, 3);
             bool actual = RO.Hit_testing(RO, p);
             bool expected = true;
             Assert.AreEqual(expected, actual);
@@ -23,35 +23,41 @@ namespace Test_draw
         [TestMethod]
         public void UTNeg_hit()
         {
-            White_rectangle RO = new White_rectangle();
+            Asyn_mess RO = new Asyn_mess();
             UTDraw(RO);
-            Point p = new Point(7, 9);
+            Point p = new Point(20, 20);
             bool actual = RO.Hit_testing(RO, p);
             bool expected = false;
             Assert.AreEqual(expected, actual);
         }
-        public void UTDraw(White_rectangle RO)
+        public void UTDraw(Asyn_mess RO)
         {
-            RO.Basic_points[0] = new Point(2, 4);
-            RO.Basic_points[1] = new Point(4, 1);
+            RO.Basic_points[0] = new Point(7, 8);
+            RO.Basic_points[1] = new Point(5, 2);
             //Graphics gr = new Graphics();
 
         }
         [TestMethod]
         public void UTShift()
         {
-            White_rectangle RO = new White_rectangle();
+            Asyn_mess RO = new Asyn_mess();
             UTDraw(RO);
             Point p = new Point(10, 10);
-            RO.Shift(p);
-            Assert.AreEqual(p, RO.Basic_points[0]);
+            Point p1 = new Point(5, 8);
+            RO.Hit_testing(RO, p);
+            RO.Shift(p1);
+            if (p1.Equals(RO.Basic_points[0]))
+                Assert.AreEqual(p1, RO.Basic_points[0]);
+            else
+                Assert.AreEqual(p1, RO.Basic_points[1]);
+
 
         }
 
         [TestMethod]
         public void UTShift_Hit_pos()
         {
-            White_rectangle RO = new White_rectangle();
+            Asyn_mess RO = new Asyn_mess();
             UTDraw(RO);
             Point p = new Point(10, 10);
             RO.Shift(p);
@@ -65,15 +71,18 @@ namespace Test_draw
         [TestMethod]
         public void UTShift_Hit_neg()
         {
-            White_rectangle RO = new White_rectangle();
+            Asyn_mess RO = new Asyn_mess();
             UTDraw(RO);
             Point p = new Point(10, 10);
+            RO.Hit_testing(RO, p);
             RO.Shift(p);
-            Point p1 = new Point(7, 9);
+            Point p1 = new Point(30, 357);
             bool actual = RO.Hit_testing(RO, p1);
             bool expected = false;
             Assert.AreEqual(expected, actual);
 
         }
+
+
     }
 }

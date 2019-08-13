@@ -60,7 +60,6 @@ C:\Users\home-pk\Desktop\new\KSU.Visio\obj\x86\Debug\OOP_drow.exe
 C:\Users\home-pk\Desktop\new\KSU.Visio\obj\x86\Debug\OOP_drow.pdb
 C:\Users\home-pk\Desktop\new\KSU.Visio\bin\Debug\OOP_drow.exe
 C:\Users\home-pk\Desktop\new\KSU.Visio\bin\Debug\OOP_drow.pdb
-C:\Users\home-pk\Desktop\Новая папка\KSU.Visio\obj\x86\Debug\OOP_drow.csprojAssemblyReference.cache
 C:\Users\home-pk\Desktop\Новая папка\KSU.Visio\obj\x86\Debug\OOP_drow.Properties.Resources.resources
 C:\Users\home-pk\Desktop\Новая папка\KSU.Visio\obj\x86\Debug\OOP_drow.csproj.GenerateResource.cache
 C:\Users\home-pk\Desktop\Новая папка\KSU.Visio\obj\x86\Debug\OOP_drow.csproj.CoreCompileInputs.cache
@@ -68,3 +67,4 @@ C:\Users\home-pk\Desktop\Новая папка\KSU.Visio\obj\x86\Debug\OOP_drow.
 C:\Users\home-pk\Desktop\Новая папка\KSU.Visio\obj\x86\Debug\OOP_drow.pdb
 C:\Users\home-pk\Desktop\Новая папка\KSU.Visio\bin\Debug\OOP_drow.exe
 C:\Users\home-pk\Desktop\Новая папка\KSU.Visio\bin\Debug\OOP_drow.pdb
+C:\Users\home-pk\Desktop\Новая папка\KSU.Visio\obj\x86\Debug\OOP_drow.csprojAssemblyReference.cache

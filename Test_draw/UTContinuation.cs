@@ -55,7 +55,7 @@ namespace Test_draw
             UTDraw(RO);
             Point p = new Point(10, 10);
             RO.Shift(p);
-            Point p1 = new Point(11, 11);
+            Point p1 = new Point(11, 8);
             bool actual = RO.Hit_testing(RO, p1);
             bool expected = true;
             Assert.AreEqual(expected, actual);
