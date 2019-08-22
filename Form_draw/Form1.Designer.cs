@@ -106,9 +106,9 @@
             this.lab1.AutoSize = true;
             this.lab1.Location = new System.Drawing.Point(7, 62);
             this.lab1.Name = "lab1";
-            this.lab1.Size = new System.Drawing.Size(87, 13);
+            this.lab1.Size = new System.Drawing.Size(114, 13);
             this.lab1.TabIndex = 4;
-            this.lab1.Text = "Прямоугольник";
+            this.lab1.Text = "Временной интервал";
             // 
             // label1
             // 
@@ -142,27 +142,29 @@
             this.label4.AutoSize = true;
             this.label4.Location = new System.Drawing.Point(10, 327);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(47, 13);
+            this.label4.Size = new System.Drawing.Size(46, 13);
             this.label4.TabIndex = 11;
-            this.label4.Text = "С углом";
+            this.label4.Text = "Шаблон";
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(10, 394);
+            this.label5.Location = new System.Drawing.Point(1, 394);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(96, 13);
+            this.label5.Size = new System.Drawing.Size(128, 13);
             this.label5.TabIndex = 13;
-            this.label5.Text = "Линия с кругом 1";
+            this.label5.Text = "Потерянное сообщение";
+            this.label5.Click += new System.EventHandler(this.label5_Click);
             // 
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(10, 461);
+            this.label6.Location = new System.Drawing.Point(1, 461);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(98, 13);
             this.label6.TabIndex = 15;
-            this.label6.Text = "Линия с ТреугСтр";
+            this.label6.Text = "Вызов процедуры";
+            this.label6.Click += new System.EventHandler(this.label6_Click);
             // 
             // label7
             // 
@@ -176,11 +178,11 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(100, 128);
+            this.label8.Location = new System.Drawing.Point(95, 128);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(103, 13);
+            this.label8.Size = new System.Drawing.Size(127, 13);
             this.label8.TabIndex = 19;
-            this.label8.Text = "Стрелка с кругом2";
+            this.label8.Text = "Полученное сообщение";
             // 
             // label9
             // 
@@ -194,25 +196,27 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(106, 260);
+            this.label10.Location = new System.Drawing.Point(121, 260);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(115, 13);
+            this.label10.Size = new System.Drawing.Size(65, 13);
             this.label10.TabIndex = 23;
-            this.label10.Text = "Стрелка с пунктиром";
+            this.label10.Text = "Сообщение";
+            this.label10.Click += new System.EventHandler(this.label10_Click);
             // 
             // label11
             // 
             this.label11.AutoSize = true;
             this.label11.Location = new System.Drawing.Point(121, 326);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(37, 13);
+            this.label11.Size = new System.Drawing.Size(55, 13);
             this.label11.TabIndex = 25;
-            this.label11.Text = "Актер";
+            this.label11.Text = "Участник";
+            this.label11.Click += new System.EventHandler(this.label11_Click);
             // 
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(121, 394);
+            this.label12.Location = new System.Drawing.Point(135, 394);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(33, 13);
             this.label12.TabIndex = 27;
