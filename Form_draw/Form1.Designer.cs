@@ -104,16 +104,16 @@
             // lab1
             // 
             this.lab1.AutoSize = true;
-            this.lab1.Location = new System.Drawing.Point(7, 62);
+            this.lab1.Location = new System.Drawing.Point(24, 62);
             this.lab1.Name = "lab1";
-            this.lab1.Size = new System.Drawing.Size(114, 13);
+            this.lab1.Size = new System.Drawing.Size(40, 13);
             this.lab1.TabIndex = 4;
-            this.lab1.Text = "Временной интервал";
+            this.lab1.Text = "Рамка";
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(10, 128);
+            this.label1.Location = new System.Drawing.Point(24, 128);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(39, 13);
             this.label1.TabIndex = 5;
@@ -131,29 +131,30 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(10, 260);
+            this.label3.Location = new System.Drawing.Point(12, 260);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(90, 13);
+            this.label3.Size = new System.Drawing.Size(64, 13);
             this.label3.TabIndex = 9;
-            this.label3.Text = "С линией внутри";
+            this.label3.Text = "Экземпляр";
+            this.label3.Click += new System.EventHandler(this.label3_Click);
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(10, 327);
+            this.label4.Location = new System.Drawing.Point(24, 327);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(46, 13);
+            this.label4.Size = new System.Drawing.Size(32, 13);
             this.label4.TabIndex = 11;
-            this.label4.Text = "Шаблон";
+            this.label4.Text = "Кадр";
             // 
             // label5
             // 
             this.label5.AutoSize = true;
             this.label5.Location = new System.Drawing.Point(1, 394);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(128, 13);
+            this.label5.Size = new System.Drawing.Size(103, 13);
             this.label5.TabIndex = 13;
-            this.label5.Text = "Потерянное сообщение";
+            this.label5.Text = "Полученное сообщ";
             this.label5.Click += new System.EventHandler(this.label5_Click);
             // 
             // label6
@@ -171,36 +172,37 @@
             this.label7.AutoSize = true;
             this.label7.Location = new System.Drawing.Point(121, 62);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(49, 13);
+            this.label7.Size = new System.Drawing.Size(65, 13);
             this.label7.TabIndex = 17;
-            this.label7.Text = "Стрелка";
+            this.label7.Text = "Сообщение";
+            this.label7.Click += new System.EventHandler(this.label7_Click);
             // 
             // label8
             // 
             this.label8.AutoSize = true;
             this.label8.Location = new System.Drawing.Point(95, 128);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(127, 13);
+            this.label8.Size = new System.Drawing.Size(128, 13);
             this.label8.TabIndex = 19;
-            this.label8.Text = "Полученное сообщение";
+            this.label8.Text = "Потерянное сообщение";
             // 
             // label9
             // 
             this.label9.AutoSize = true;
             this.label9.Location = new System.Drawing.Point(101, 194);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(121, 13);
+            this.label9.Size = new System.Drawing.Size(114, 13);
             this.label9.TabIndex = 21;
-            this.label9.Text = "Белый прямоугольник";
+            this.label9.Text = "Временной интервал";
             // 
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(121, 260);
+            this.label10.Location = new System.Drawing.Point(89, 259);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(65, 13);
+            this.label10.Size = new System.Drawing.Size(133, 13);
             this.label10.TabIndex = 23;
-            this.label10.Text = "Сообщение";
+            this.label10.Text = "Асинхронное сообщение";
             this.label10.Click += new System.EventHandler(this.label10_Click);
             // 
             // label11
@@ -216,11 +218,11 @@
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(135, 394);
+            this.label12.Location = new System.Drawing.Point(111, 394);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(33, 13);
+            this.label12.Size = new System.Drawing.Size(77, 13);
             this.label12.TabIndex = 27;
-            this.label12.Text = "Овал";
+            this.label12.Text = "Продолжение";
             // 
             // label13
             // 
@@ -302,7 +304,7 @@
             // pictureBox10
             // 
             this.pictureBox10.BackColor = System.Drawing.SystemColors.GrayText;
-            this.pictureBox10.Image = global::Form_draw.Properties.Resources.WhiteRect;
+            this.pictureBox10.Image = global::Form_draw.Properties.Resources.Rentagle;
             this.pictureBox10.Location = new System.Drawing.Point(124, 144);
             this.pictureBox10.Name = "pictureBox10";
             this.pictureBox10.Size = new System.Drawing.Size(46, 47);
@@ -339,7 +341,7 @@
             // 
             this.pictureBox7.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.pictureBox7.Image = global::Form_draw.Properties.Resources.operation;
-            this.pictureBox7.Location = new System.Drawing.Point(10, 410);
+            this.pictureBox7.Location = new System.Drawing.Point(20, 410);
             this.pictureBox7.Name = "pictureBox7";
             this.pictureBox7.Size = new System.Drawing.Size(46, 48);
             this.pictureBox7.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -351,7 +353,7 @@
             // 
             this.pictureBox6.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.pictureBox6.Image = global::Form_draw.Properties.Resources.Found;
-            this.pictureBox6.Location = new System.Drawing.Point(10, 343);
+            this.pictureBox6.Location = new System.Drawing.Point(20, 344);
             this.pictureBox6.Name = "pictureBox6";
             this.pictureBox6.Size = new System.Drawing.Size(46, 48);
             this.pictureBox6.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -363,7 +365,7 @@
             // 
             this.pictureBox5.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.pictureBox5.Image = global::Form_draw.Properties.Resources.Frame;
-            this.pictureBox5.Location = new System.Drawing.Point(10, 276);
+            this.pictureBox5.Location = new System.Drawing.Point(20, 276);
             this.pictureBox5.Name = "pictureBox5";
             this.pictureBox5.Size = new System.Drawing.Size(46, 48);
             this.pictureBox5.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -375,7 +377,7 @@
             // 
             this.pictureBox4.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.pictureBox4.Image = global::Form_draw.Properties.Resources.WithLineInside;
-            this.pictureBox4.Location = new System.Drawing.Point(10, 209);
+            this.pictureBox4.Location = new System.Drawing.Point(20, 208);
             this.pictureBox4.Name = "pictureBox4";
             this.pictureBox4.Size = new System.Drawing.Size(46, 48);
             this.pictureBox4.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -387,7 +389,7 @@
             // 
             this.pictureBox3.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.pictureBox3.Image = global::Form_draw.Properties.Resources.LifeLine;
-            this.pictureBox3.Location = new System.Drawing.Point(10, 144);
+            this.pictureBox3.Location = new System.Drawing.Point(20, 144);
             this.pictureBox3.Name = "pictureBox3";
             this.pictureBox3.Size = new System.Drawing.Size(46, 46);
             this.pictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -399,7 +401,7 @@
             // 
             this.pictureBox2.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.pictureBox2.Image = global::Form_draw.Properties.Resources.line;
-            this.pictureBox2.Location = new System.Drawing.Point(10, 78);
+            this.pictureBox2.Location = new System.Drawing.Point(20, 78);
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.Size = new System.Drawing.Size(45, 47);
             this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -410,8 +412,8 @@
             // pictureBox1
             // 
             this.pictureBox1.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.pictureBox1.Image = global::Form_draw.Properties.Resources.Rentagle;
-            this.pictureBox1.Location = new System.Drawing.Point(10, 12);
+            this.pictureBox1.Image = global::Form_draw.Properties.Resources.WhiteRect;
+            this.pictureBox1.Location = new System.Drawing.Point(19, 12);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(46, 47);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
