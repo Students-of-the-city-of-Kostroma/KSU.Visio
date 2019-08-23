@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.421
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OOP_drow", "OOP_drow.csproj", "{674B63EB-0451-4BB8-8DB1-8EE60C3AC816}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OOP_drow", "OOP_draw\OOP_drow.csproj", "{674B63EB-0451-4BB8-8DB1-8EE60C3AC816}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Form_draw", "Form_draw\Form_draw.csproj", "{29E4367C-10CC-4CF1-ADED-78427B11BE41}"
 EndProject
