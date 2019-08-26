@@ -122,5 +122,11 @@
   <ItemGroup>
     <None Include="Resources\text.jpg" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\KSU.Visio.Lib\KSU.Visio.Lib.csproj">
+      <Project>{7b1e8920-0ae5-43f8-889c-edbd886d5ccf}</Project>
+      <Name>KSU.Visio.Lib</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

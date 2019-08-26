@@ -8,9 +8,6 @@ namespace KSU.Visio.Lib
 {
   public class Rectangle_object : Figure
     {
-
-
-        
         override public void Draw(Graphics gr)
         {
             Pen Pe = new Pen(Line_color);
@@ -18,60 +15,60 @@ namespace KSU.Visio.Lib
             Point FP = new Point();//левый верхний угол
             Point SP = new Point();//правый нижний угол
                                    //Определяет, какая координата Х принадлежит левой, а какая парвой точке
-            if (Basic_points[0].X < Basic_points[1].X)
+            if (LeftTop.X < RightBottom.X)
             {
-                FP.X = Basic_points[0].X;
-                SP.X = Basic_points[1].X;
+                FP.X = LeftTop.X;
+                SP.X = RightBottom.X;
             }
             else
             {
-                SP.X = Basic_points[0].X;
-                FP.X = Basic_points[1].X;
+                SP.X = LeftTop.X;
+                FP.X = RightBottom.X;
             }
             //Определяет, какая координата У принадлежит верхней, а какая нижней точке
-            if (Basic_points[0].Y < Basic_points[1].Y)
+            if (LeftTop.Y < RightBottom.Y)
             {
-                FP.Y = Basic_points[0].Y;
-                SP.Y = Basic_points[1].Y;
+                FP.Y = LeftTop.Y;
+                SP.Y = RightBottom.Y;
             }
             else
             {
-                SP.Y = Basic_points[0].Y;
-                FP.Y = Basic_points[1].Y;
+                SP.Y = LeftTop.Y;
+                FP.Y = RightBottom.Y;
             }
             gr.DrawRectangle(Pe, FP.X, FP.Y, SP.X - FP.X, SP.Y - FP.Y);
         }
 
-        public override bool Hit_testing(Figure Figure, Point Point)
+        public override bool Hit_testing(Point Point)
         {
             Point FP = new Point();//левый верхний угол 
             Point SP = new Point();//правый нижний угол 
                                    //Определяет, какая координата Х принадлежит левой, а какая парвой точке 
-            if (Basic_points[0].X < Basic_points[1].X)
+            if (LeftTop.X < RightBottom.X)
             {
-                FP.X = Basic_points[0].X;
-                SP.X = Basic_points[1].X;
+                FP.X = LeftTop.X;
+                SP.X = RightBottom.X;
             }
             else
             {
-                SP.X = Basic_points[0].X;
-                FP.X = Basic_points[1].X;
+                SP.X = LeftTop.X;
+                FP.X = RightBottom.X;
             }
             //Определяет, какая координата У принадлежит верхней, а какая нижней точке 
-            if (Basic_points[0].Y < Basic_points[1].Y)
+            if (LeftTop.Y < RightBottom.Y)
             {
-                FP.Y = Basic_points[0].Y;
-                SP.Y = Basic_points[1].Y;
+                FP.Y = LeftTop.Y;
+                SP.Y = RightBottom.Y;
             }
             else
             {
-                SP.Y = Basic_points[0].Y;
-                FP.Y = Basic_points[1].Y;
+                SP.Y = LeftTop.Y;
+                FP.Y = RightBottom.Y;
             }
-            Basic_points[0] = FP;
-            Basic_points[1] = SP;
+            LeftTop = FP;
+            RightBottom = SP;
 
-            if (Point.X > Figure.Basic_points[0].X && Point.Y > Figure.Basic_points[0].Y && Point.X < Figure.Basic_points[1].X && Point.Y < Figure.Basic_points[1].Y)
+            if (Point.X > LeftTop.X && Point.Y > LeftTop.Y && Point.X < RightBottom.X && Point.Y < RightBottom.Y)
             {
                 return true;
             }
@@ -81,14 +78,14 @@ namespace KSU.Visio.Lib
         public override void Shift(Point K)
         {
             //Находим разницу между первой и второй точкой
-            int Xn = Basic_points[1].X - Basic_points[0].X;
-            int Yn = Basic_points[1].Y - Basic_points[0].Y;
+            int Xn = RightBottom.X - LeftTop.X;
+            int Yn = RightBottom.Y - LeftTop.Y;
             //За новую первую точку берем положение мыши
-            Basic_points[0] = new Point(K.X, K.Y);
+            LeftTop = new Point(K.X, K.Y);
             //За новую вторую - положение мыши + высчитанная разница
-            Xn = Basic_points[0].X + Xn;
-            Yn = Basic_points[0].Y + Yn;
-            Basic_points[1] = new Point(Xn, Yn);
+            Xn = LeftTop.X + Xn;
+            Yn = LeftTop.Y + Yn;
+            RightBottom = new Point(Xn, Yn);
         }
 
     }

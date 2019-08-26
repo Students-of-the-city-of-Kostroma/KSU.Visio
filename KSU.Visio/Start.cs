@@ -19,7 +19,6 @@ namespace Form_draw
             InitializeComponent();
             Tool = CreateRectangle;
             Txt.Parent = panel1;
-            //Txt.Multiline=true;
             Txt.Hide();
             DoubleBuffered = true;
             typeof(Panel).InvokeMember("DoubleBuffered", BindingFlags.SetProperty
@@ -124,10 +123,7 @@ namespace Form_draw
         {
             foreach (Figure Figure in List_figures)//по листу всех худ объектов
             {
-                for (int i = 0; i < Figure.Basic_points.Length - 1; i++)
-                {
-                    Figure.Draw(e.Graphics);
-                }
+				Figure.Draw(e.Graphics);
             }
         }
 
@@ -169,7 +165,7 @@ namespace Form_draw
                     Tool();
                     List_figures.Last().Line_color = Color.Black;
                     Point SecondPoint = e.Location;
-                    List_figures.Last().Basic_points[0] = SecondPoint;
+                    List_figures.Last()._leftTop = SecondPoint;
                     Mouse_press = true;
                 }
             }
@@ -183,9 +179,9 @@ namespace Form_draw
             if (!Move)
             {
                 Graphics gr = panel1.CreateGraphics();
-                Point FistPoint = List_figures.Last().Basic_points.Last();//берем первую точку из нового худ.объекта g(передадаать в первую и второую точки)
+                Point FistPoint = List_figures.Last()._leftTop;//берем первую точку из нового худ.объекта g(передадаать в первую и второую точки)
                 Point SecondPoint = e.Location;//и текущее положение
-                List_figures.Last().Basic_points[1] = SecondPoint;//закидываем его в лист точек худ.объекта
+                List_figures.Last()._rightBottom = SecondPoint;//закидываем его в лист точек худ.объекта
                 DrawFigure();//Через делегат рисуем нужным инструментом
                 gr.Dispose();
             }
@@ -205,16 +201,16 @@ namespace Form_draw
             if (Mouse_press & !Move)
             {
                 Select = List_figures.Last();
-                Point FistPoint = List_figures.Last().Basic_points.Last();
+                Point FistPoint = List_figures.Last()._leftTop;
                 Point SecondPoint = e.Location;
-                List_figures.Last().Basic_points[1] = SecondPoint;
+                List_figures.Last()._rightBottom = SecondPoint;
                 Mouse_press = false;
                 DrawFigure();//заканчиваем рисовать что было
                 if (Select is Text)
                 {
-                    Txt.Location = Select.Basic_points[0];
-                    Txt.Width = Select.Basic_points[1].X - Select.Basic_points[0].X;
-                    Txt.Height = Select.Basic_points[1].Y - Select.Basic_points[0].Y;
+                    Txt.Location = Select._leftTop;
+                    Txt.Width = Select._rightBottom.X - Select._leftTop.X;
+                    Txt.Height = Select._rightBottom.Y - Select._leftTop.Y;
                     Txt.Show();
                 }
             }
@@ -224,9 +220,9 @@ namespace Form_draw
                 Select.Line_color = Color.Black;
                 if (Select is Text)
                 {
-                    Txt.Location = Select.Basic_points[0];
-                    Txt.Width = Select.Basic_points[1].X - Select.Basic_points[0].X;
-                    Txt.Height = Select.Basic_points[1].Y - Select.Basic_points[0].Y;
+                    Txt.Location = Select._leftTop;
+                    Txt.Width = Select._rightBottom.X - Select._leftTop.X;
+                    Txt.Height = Select._rightBottom.Y - Select._leftTop.Y;
                     Txt.Text = (Select as Text).Textstring;
                     Txt.Show();
                 }
@@ -255,7 +251,7 @@ namespace Form_draw
             {
                 if (List_figures[i] is Rectangle_object)
                 {
-                    if ((List_figures[i] as Rectangle_object).Hit_testing(List_figures[i], Point))
+                    if ((List_figures[i] as Rectangle_object).Hit_testing(Point))
                     {
                         Select = List_figures[i];
                         Action();
@@ -264,7 +260,7 @@ namespace Form_draw
                 }
                 if (List_figures[i] is Line)
                 {
-                    if ((List_figures[i] as Line).Hit_testing(List_figures[i], Point))
+                    if ((List_figures[i] as Line).Hit_testing(Point))
                     {
                         Select = List_figures[i];
                         Action();
@@ -273,7 +269,7 @@ namespace Form_draw
                 }
                 if (List_figures[i] is Life_line)
                 {
-                    if ((List_figures[i] as Life_line).Hit_testing(List_figures[i], Point) || (List_figures[i] as Life_line).Hit_testing_line(List_figures[i], Point))
+                    if ((List_figures[i] as Life_line).Hit_testing(Point) || (List_figures[i] as Life_line).Hit_testing_line(Point))
                     {
                         Select = List_figures[i];
                         Action();
@@ -282,7 +278,7 @@ namespace Form_draw
                 }
                 if (List_figures[i] is Instance_specification)
                 {
-                    if ((List_figures[i] as Instance_specification).Hit_testing(List_figures[i], Point))
+                    if ((List_figures[i] as Instance_specification).Hit_testing( Point))
                     {
                         Select = List_figures[i];
                         Action();
@@ -291,7 +287,7 @@ namespace Form_draw
                 }
                 if (List_figures[i] is Frame)
                 {
-                    if ((List_figures[i] as Frame).Hit_testing(List_figures[i], Point))
+                    if ((List_figures[i] as Frame).Hit_testing(Point))
                     {
                         Select = List_figures[i];
                         Action();
@@ -300,7 +296,7 @@ namespace Form_draw
                 }
                 if (List_figures[i] is Found_message)
                 {
-                    if ((List_figures[i] as Found_message).Hit_testing(List_figures[i], Point))
+                    if ((List_figures[i] as Found_message).Hit_testing(Point))
                     {
                         Select = List_figures[i];
                         Action();
@@ -309,7 +305,7 @@ namespace Form_draw
                 }
                 if (List_figures[i] is Dispatch_mess)
                 {
-                    if ((List_figures[i] as Dispatch_mess).Hit_testing(List_figures[i], Point))
+                    if ((List_figures[i] as Dispatch_mess).Hit_testing(Point))
                     {
                         Select = List_figures[i];
                         Action();
@@ -318,7 +314,7 @@ namespace Form_draw
                 }
                 if (List_figures[i] is Return_mess)
                 {
-                    if ((List_figures[i] as Return_mess).Hit_testing(List_figures[i], Point))
+                    if ((List_figures[i] as Return_mess).Hit_testing(Point))
                     {
                         Select = List_figures[i];
                         Action();
@@ -327,7 +323,7 @@ namespace Form_draw
                 }
                 if (List_figures[i] is Asyn_mess)
                 {
-                    if ((List_figures[i] as Asyn_mess).Hit_testing(List_figures[i], Point))
+                    if ((List_figures[i] as Asyn_mess).Hit_testing(Point))
                     {
                         Select = List_figures[i];
                         Action();
@@ -336,7 +332,7 @@ namespace Form_draw
                 }
                 if (List_figures[i] is Actor)
                 {
-                    if ((List_figures[i] as Actor).Hit_testing(List_figures[i], Point))
+                    if ((List_figures[i] as Actor).Hit_testing(Point))
                     {
                         Select = List_figures[i];
                         Action();
@@ -345,7 +341,7 @@ namespace Form_draw
                 }
                 if (List_figures[i] is Continuation)
                 {
-                    if ((List_figures[i] as Continuation).Hit_testing(List_figures[i], Point))
+                    if ((List_figures[i] as Continuation).Hit_testing(Point))
                     {
                         Select = List_figures[i];
                         Action();
@@ -354,7 +350,7 @@ namespace Form_draw
                 }
                 if (List_figures[i] is White_rectangle)
                 {
-                    if ((List_figures[i] as White_rectangle).Hit_testing(List_figures[i], Point))
+                    if ((List_figures[i] as White_rectangle).Hit_testing(Point))
                     {
                         Select = List_figures[i];
                         Action();
@@ -363,7 +359,7 @@ namespace Form_draw
                 }
                 if (List_figures[i] is Lost_message)
                 {
-                    if ((List_figures[i] as Lost_message).Hit_testing(List_figures[i], Point))
+                    if ((List_figures[i] as Lost_message).Hit_testing(Point))
                     {
                         Select = List_figures[i];
                         Action();
@@ -372,7 +368,7 @@ namespace Form_draw
                 }
                 if (List_figures[i] is Text)
                 {
-                    if ((List_figures[i] as Text).Hit_testing(List_figures[i], Point))
+                    if ((List_figures[i] as Text).Hit_testing(Point))
                     {
                         Select = List_figures[i];
                         Action();

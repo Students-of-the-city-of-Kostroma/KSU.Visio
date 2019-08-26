@@ -18,27 +18,27 @@ namespace KSU.Visio.Lib
             Point SP = new Point();//правая нижняя точка
 
             //Определяет, какая координата Х принадлежит левой, а какая парвой точке
-            if (Basic_points[0].X < Basic_points[1].X)
+            if (LeftTop.X < RightBottom.X)
             {
-                FP.X = Basic_points[0].X;
-                SP.X = Basic_points[1].X;
+                FP.X = LeftTop.X;
+                SP.X = RightBottom.X;
             }
             else
             {
-                SP.X = Basic_points[0].X;
-                FP.X = Basic_points[1].X;
+                SP.X = LeftTop.X;
+                FP.X = RightBottom.X;
             }
 
             //Определяет, какая координата У принадлежит верхней, а какая нижней точке
-            if (Basic_points[0].Y < Basic_points[1].Y)
+            if (LeftTop.Y < RightBottom.Y)
             {
-                FP.Y = Basic_points[0].Y;
-                SP.Y = Basic_points[1].Y;
+                FP.Y = LeftTop.Y;
+                SP.Y = RightBottom.Y;
             }
             else
             {
-                SP.Y = Basic_points[0].Y;
-                FP.Y = Basic_points[1].Y;
+                SP.Y = LeftTop.Y;
+                FP.Y = RightBottom.Y;
             }
             gr.DrawRectangle(Pe, FP.X, FP.Y, SP.X - FP.X, SP.Y - FP.Y);
             int k1x = (int)(FP.X + 0.2 * (SP.X - FP.X));//координата Х первой точки (которая лежит на верхней границе) и той, что под ней

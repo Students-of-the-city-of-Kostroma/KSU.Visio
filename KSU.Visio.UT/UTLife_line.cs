@@ -14,7 +14,7 @@ namespace KSU.Visio.UT
             Life_line RO = new Life_line();
             UTDraw(RO);
             Point p = new Point(3, 2);
-            bool actual = RO.Hit_testing(RO, p);
+            bool actual = RO.Hit_testing( p);
             bool expected = true;
             Assert.AreEqual(expected, actual);
 
@@ -26,14 +26,14 @@ namespace KSU.Visio.UT
             Life_line RO = new Life_line();
             UTDraw(RO);
             Point p = new Point(7, 9);
-            bool actual = RO.Hit_testing(RO, p);
+            bool actual = RO.Hit_testing( p);
             bool expected = false;
             Assert.AreEqual(expected, actual);
         }
         public void UTDraw(Life_line RO)
         {
-            RO.Basic_points[0] = new Point(2, 4);
-            RO.Basic_points[1] = new Point(4, 1);
+            RO._leftTop = new Point(2, 4);
+            RO._rightBottom = new Point(4, 1);
             //Graphics gr = new Graphics();
 
         }
@@ -44,7 +44,7 @@ namespace KSU.Visio.UT
             UTDraw(RO);
             Point p = new Point(10, 10);
             RO.Shift(p);
-            Assert.AreEqual(p, RO.Basic_points[0]);
+            Assert.AreEqual(p, RO._leftTop);
 
         }
 
@@ -56,7 +56,7 @@ namespace KSU.Visio.UT
             Point p = new Point(10, 10);
             RO.Shift(p);
             Point p1 = new Point(11, 8);
-            bool actual = RO.Hit_testing(RO, p1);
+            bool actual = RO.Hit_testing( p1);
             bool expected = true;
             Assert.AreEqual(expected, actual);
 
@@ -70,7 +70,7 @@ namespace KSU.Visio.UT
             Point p = new Point(10, 10);
             RO.Shift(p);
             Point p1 = new Point(7, 9);
-            bool actual = RO.Hit_testing(RO, p1);
+            bool actual = RO.Hit_testing( p1);
             bool expected = false;
             Assert.AreEqual(expected, actual);
 
@@ -82,7 +82,7 @@ namespace KSU.Visio.UT
             Life_line RO = new Life_line();
             UTDraw(RO);
             Point p = new Point(3, 54);
-            bool actual = RO.Hit_testing_line(RO, p);
+            bool actual = RO.Hit_testing_line( p);
             bool expected = true;
             Assert.AreEqual(expected, actual);
 
@@ -96,7 +96,7 @@ namespace KSU.Visio.UT
             Point p = new Point(10, 10);
             RO.Shift(p);
             Point p1 = new Point(7, 9);
-            bool actual = RO.Hit_testing_line(RO, p1);
+            bool actual = RO.Hit_testing_line( p1);
             bool expected = false;
             Assert.AreEqual(expected, actual);
 
@@ -109,10 +109,10 @@ namespace KSU.Visio.UT
             Life_line RO = new Life_line();
             UTDraw(RO);
             Point p = new Point(3, 54);
-            RO.Hit_testing_line(RO,p);
+            RO.Hit_testing_line(p);
             Point p1 = new Point(7, 15);
             RO.Shift_line(p1);
-            bool actual = RO.Hit_testing_line(RO, p1);
+            bool actual = RO.Hit_testing_line( p1);
             bool expected = true;
             Assert.AreEqual(expected, actual);
 
@@ -126,7 +126,7 @@ namespace KSU.Visio.UT
             Point p = new Point(10, 10);
             Point p1 = new Point(7, 4);
             RO.Shift_line(p1);
-            bool actual = RO.Hit_testing_line(RO, p1);
+            bool actual = RO.Hit_testing_line( p1);
             bool expected = false;
             Assert.AreEqual(expected, actual);
 

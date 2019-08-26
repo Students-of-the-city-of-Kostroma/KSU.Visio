@@ -21,8 +21,8 @@ namespace KSU.Visio.Lib
             Pe2.EndCap = LineCap.RoundAnchor;
 
 
-            gr.DrawLine(Pe, Basic_points[0], Basic_points[1]);
-            gr.DrawLine(Pe2, Basic_points[0], Basic_points[1]);
+            gr.DrawLine(Pe, LeftTop, RightBottom);
+            gr.DrawLine(Pe2, LeftTop, RightBottom);
         }
 
 
