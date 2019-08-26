@@ -136,7 +136,6 @@
             this.label3.Size = new System.Drawing.Size(64, 13);
             this.label3.TabIndex = 9;
             this.label3.Text = "Экземпляр";
-            this.label3.Click += new System.EventHandler(this.label3_Click);
             // 
             // label4
             // 
@@ -155,7 +154,6 @@
             this.label5.Size = new System.Drawing.Size(103, 13);
             this.label5.TabIndex = 13;
             this.label5.Text = "Полученное сообщ";
-            this.label5.Click += new System.EventHandler(this.label5_Click);
             // 
             // label6
             // 
@@ -165,7 +163,6 @@
             this.label6.Size = new System.Drawing.Size(98, 13);
             this.label6.TabIndex = 15;
             this.label6.Text = "Вызов процедуры";
-            this.label6.Click += new System.EventHandler(this.label6_Click);
             // 
             // label7
             // 
@@ -175,7 +172,6 @@
             this.label7.Size = new System.Drawing.Size(65, 13);
             this.label7.TabIndex = 17;
             this.label7.Text = "Сообщение";
-            this.label7.Click += new System.EventHandler(this.label7_Click);
             // 
             // label8
             // 
@@ -203,7 +199,6 @@
             this.label10.Size = new System.Drawing.Size(133, 13);
             this.label10.TabIndex = 23;
             this.label10.Text = "Асинхронное сообщение";
-            this.label10.Click += new System.EventHandler(this.label10_Click);
             // 
             // label11
             // 
@@ -213,7 +208,6 @@
             this.label11.Size = new System.Drawing.Size(55, 13);
             this.label11.TabIndex = 25;
             this.label11.Text = "Участник";
-            this.label11.Click += new System.EventHandler(this.label11_Click);
             // 
             // label12
             // 
