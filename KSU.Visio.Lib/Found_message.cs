@@ -16,7 +16,7 @@ namespace KSU.Visio.Lib
             Pe.EndCap = LineCap.Custom;
             Pe.CustomEndCap = new AdjustableArrowCap(3f, 3f);
             Pe.StartCap = LineCap.RoundAnchor;
-            gr.DrawLine(Pe, Basic_points[0], Basic_points[1]);
+            gr.DrawLine(Pe, LeftTop, RightBottom);
         }
     }
 }

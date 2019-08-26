@@ -14,9 +14,9 @@ namespace KSU.Visio.Lib
             Pen Pe = new Pen(Line_color);
             Pe.DashStyle = DashStyle.Dash;
             Pe.Width = Line_width;
-            Pe.EndCap = System.Drawing.Drawing2D.LineCap.Custom;
+            Pe.EndCap =LineCap.Custom;
             Pe.CustomEndCap = new AdjustableArrowCap(3f, 3f, false);
-            gr.DrawLine(Pe, Basic_points[0], Basic_points[1]);
+            gr.DrawLine(Pe, LeftTop, RightBottom);
         }
     }
 }
