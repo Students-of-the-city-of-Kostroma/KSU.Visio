@@ -55,7 +55,6 @@
     <Compile Include="Life_line.cs" />
     <Compile Include="Line.cs" />
     <Compile Include="Lost_message.cs" />
-    <Compile Include="MyPicture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Rectangle_object.cs" />
     <Compile Include="Return_mess.cs" />
