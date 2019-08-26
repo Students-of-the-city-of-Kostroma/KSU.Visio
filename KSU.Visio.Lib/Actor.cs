@@ -18,27 +18,27 @@ namespace KSU.Visio.Lib
             Point SP = new Point();//нижний правый угол
 
             //Какая координата Х будет левой, а какая - правой
-            if (Basic_points[0].X < Basic_points[1].X)
+            if (LeftTop.X < RightBottom.X)
             {
-                FP.X = Basic_points[0].X;
-                SP.X = Basic_points[1].X;
+                FP.X = LeftTop.X;
+                SP.X = RightBottom.X;
             }
             else
             {
-                SP.X = Basic_points[0].X;
-                FP.X = Basic_points[1].X;
+                SP.X = LeftTop.X;
+                FP.X = RightBottom.X;
             }
 
             //Какая координата У будет верхней, а какая - нижней
-            if (Basic_points[0].Y < Basic_points[1].Y)
+            if (LeftTop.Y < RightBottom.Y)
             {
-                FP.Y = Basic_points[0].Y;
-                SP.Y = Basic_points[1].Y;
+                FP.Y = LeftTop.Y;
+                SP.Y = RightBottom.Y;
             }
             else
             {
-                SP.Y = Basic_points[0].Y;
-                FP.Y = Basic_points[1].Y;
+                SP.Y = LeftTop.Y;
+                FP.Y = RightBottom.Y;
             }
 
             int s = (int)((SP.X + FP.X) / 2);//Середина рисунка (по вертикали)

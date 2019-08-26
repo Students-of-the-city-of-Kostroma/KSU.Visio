@@ -15,7 +15,7 @@ namespace KSU.Visio.UT
             Line RO = new Line();
             UTDraw(RO);
             Point p = new Point(5, 3);
-            bool actual = RO.Hit_testing(RO, p);
+            bool actual = RO.Hit_testing( p);
             bool expected = true;
             Assert.AreEqual(expected, actual);
 
@@ -27,14 +27,14 @@ namespace KSU.Visio.UT
             Line RO = new Line();
             UTDraw(RO);
             Point p = new Point(20, 20);
-            bool actual = RO.Hit_testing(RO, p);
+            bool actual = RO.Hit_testing( p);
             bool expected = false;
             Assert.AreEqual(expected, actual);
         }
         public void UTDraw(Line RO)
         {
-            RO.Basic_points[0] = new Point(7, 8);
-            RO.Basic_points[1] = new Point(5, 2);
+            RO._leftTop = new Point(7, 8);
+            RO._rightBottom = new Point(5, 2);
             //Graphics gr = new Graphics();
 
         }
@@ -45,12 +45,12 @@ namespace KSU.Visio.UT
             UTDraw(RO);
             Point p = new Point(10, 10);
             Point p1 = new Point(5, 8);
-            RO.Hit_testing(RO, p);
+            RO.Hit_testing( p);
             RO.Shift(p1);
-            if (p1.Equals(RO.Basic_points[0]))
-            Assert.AreEqual(p1, RO.Basic_points[0]);
+            if (p1.Equals(RO._leftTop))
+            Assert.AreEqual(p1, RO._leftTop);
             else
-                Assert.AreEqual(p1, RO.Basic_points[1]);
+                Assert.AreEqual(p1, RO._rightBottom);
 
 
         }
@@ -63,7 +63,7 @@ namespace KSU.Visio.UT
             Point p = new Point(10, 10);
             RO.Shift(p);
             Point p1 = new Point(11, 11);
-            bool actual = RO.Hit_testing(RO, p1);
+            bool actual = RO.Hit_testing( p1);
             bool expected = true;
             Assert.AreEqual(expected, actual);
 
@@ -75,10 +75,10 @@ namespace KSU.Visio.UT
             Line RO = new Line();
             UTDraw(RO);
             Point p = new Point(10, 10);
-            RO.Hit_testing(RO,p);
+            RO.Hit_testing(p);
             RO.Shift(p);
             Point p1 = new Point(30, 357);
-            bool actual = RO.Hit_testing(RO, p1);
+            bool actual = RO.Hit_testing( p1);
             bool expected = false;
             Assert.AreEqual(expected, actual);
 

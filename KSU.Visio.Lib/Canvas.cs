@@ -45,7 +45,11 @@ namespace KSU.Visio.Lib
 		public Figure GetFigureClickedOn(Point xy)
 		{
 			foreach (Figure figure in this.figures)
-				figure.Hit_testing()
+			{
+				if (figure.Hit_testing(xy))
+					return figure;
+			}
+			return null;
 		}
 
 		protected Graphics GetImage { get => canvas; }
