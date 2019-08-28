@@ -8,6 +8,10 @@ namespace KSU.Visio.Lib
 {
    public class Actor : Rectangle_object
     {
+        public Actor(int FPx, int FPy, int SPx, int SPy)
+            : base(FPx, FPy, SPx, SPy) { }
+        public Actor()
+            : base(10, 10, 20, 20) { }
         Point[] Act = new Point[8];//Отрисовка самого актера внутри рентагле
 
         override public void Draw(Graphics gr)

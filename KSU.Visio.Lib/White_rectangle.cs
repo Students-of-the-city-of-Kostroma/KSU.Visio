@@ -9,7 +9,10 @@ namespace KSU.Visio.Lib
     public class White_rectangle : Rectangle_object
     {
         SolidBrush Brush = new SolidBrush(Color.White);
-
+        public White_rectangle(int FPx, int FPy, int SPx, int SPy)
+            : base(FPx, FPy, SPx, SPy) { }
+        public White_rectangle()
+            : base(10, 10, 20, 20) { }
         override public void Draw(Graphics gr)
         {
             Pen Pe = new Pen(Line_color);

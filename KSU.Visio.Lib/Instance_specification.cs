@@ -10,6 +10,8 @@ namespace KSU.Visio.Lib
     {
         Point[] Internal_line = new Point[2];
 
+        public Instance_specification(int FPx = 10, int FPy = 10, int SPx = 20, int SPy = 20)
+            : base(FPx, FPy, SPx, SPy) { }
         override public void Draw(Graphics gr)
         {
             Pen Pe = new Pen(Line_color);

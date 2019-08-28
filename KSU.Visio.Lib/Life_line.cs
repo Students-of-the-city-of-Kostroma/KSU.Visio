@@ -14,6 +14,9 @@ namespace KSU.Visio.Lib
         Point[] Line_ends = new Point[2];
         bool Edit_line = false;//Определает, нужно ли изменять длинну линии
 
+        public Life_line(int FPx = 10, int FPy = 10, int SPx = 20, int SPy = 20)
+            : base(FPx, FPy, SPx, SPy) { }
+
         override public void Draw(Graphics gr)
         {
             Pen Pe = new Pen(Line_color);

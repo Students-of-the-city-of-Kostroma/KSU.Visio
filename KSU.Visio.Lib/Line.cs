@@ -8,6 +8,10 @@ namespace KSU.Visio.Lib
 {
     public class Line : Figure
     {
+        public Line(int FPx, int FPy, int SPx, int SPy) 
+            : base(FPx, FPy, SPx, SPy) { }
+        public Line()
+            : base(10, 10, 20, 20) { }
         //Выбранный конец. 0 - первый конец, 1- второй конец
         int Selected_end = -1;
 

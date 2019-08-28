@@ -8,7 +8,7 @@ namespace KSU.Visio.Lib
 {
     public abstract class Figure
     {
-		public event EventHandler Changed;
+        public event EventHandler Changed;
 		protected Point LeftTop = new Point();//левый верхний угол
 		protected Point RightBottom = new Point();//правый нижний угол
 
@@ -22,36 +22,39 @@ namespace KSU.Visio.Lib
 			get { return RightBottom; }
 			set { RightBottom = value; }
 		}
-		//public Figure(Point FP, Point SP)
-		//{
-		//	//Определяет, какая координата Х принадлежит левой, а какая парвой точке
-		//	if (FP.X < SP.X)
-		//	{
-		//		FP.X = FP.X;
-		//		SP.X = SP.X;
-		//	}
-		//	else
-		//	{
-		//		SP.X = FP.X;
-		//		FP.X = SP.X;
-		//	}
-		//	//Определяет, какая координата У принадлежит верхней, а какая нижней точке
-		//	if (FP.Y < SP.Y)
-		//	{
-		//		FP.Y = FP.Y;
-		//		SP.Y = SP.Y;
-		//	}
-		//	else
-		//	{
-		//		SP.Y = FP.Y;
-		//		FP.Y = SP.Y;
-		//	}
-		//}
 
-		/// <summary>
-		/// ширина линии
-		/// </summary>
-		public int Line_width = 2;
+        public Figure(int FPx = 10, int FPy = 10, int SPx = 20, int SPy = 20)
+        {
+            Point FP=new Point (FPx, FPy);
+            Point SP = new Point(SPx, SPy);
+            //Определяет, какая координата Х принадлежит левой, а какая парвой точке
+            if (FP.X < SP.X)
+            {
+                FP.X = FP.X;
+                SP.X = SP.X;
+            }
+            else
+            {
+                SP.X = FP.X;
+                FP.X = SP.X;
+            }
+            //Определяет, какая координата У принадлежит верхней, а какая нижней точке
+            if (FP.Y < SP.Y)
+            {
+                FP.Y = FP.Y;
+                SP.Y = SP.Y;
+            }
+            else
+            {
+                SP.Y = FP.Y;
+                FP.Y = SP.Y;
+            }
+        }
+
+        /// <summary>
+        /// ширина линии
+        /// </summary>
+        public int Line_width = 2;
 
 		private Color line_color;
 		/// <summary>

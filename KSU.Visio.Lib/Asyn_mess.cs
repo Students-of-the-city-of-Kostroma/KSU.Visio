@@ -9,6 +9,10 @@ namespace KSU.Visio.Lib
 {
     public class Asyn_mess : Line
     {
+        public Asyn_mess(int FPx, int FPy, int SPx, int SPy)
+            : base(FPx, FPy, SPx, SPy) { }
+        public Asyn_mess()
+            : base(10, 10, 20, 20) { }
         public override void Draw(Graphics gr)
         {
             Pen Pe = new Pen(Line_color);
