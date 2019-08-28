@@ -9,6 +9,8 @@ namespace KSU.Visio.Lib
 {
     public class Found_message : Line
     {
+        public Found_message(int FPx = 10, int FPy = 10, int SPx = 20, int SPy = 20)
+            : base(FPx, FPy, SPx, SPy) { }
         public override void Draw(Graphics gr)
         {
             Pen Pe = new Pen(Line_color);

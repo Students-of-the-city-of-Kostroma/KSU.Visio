@@ -8,7 +8,10 @@ namespace KSU.Visio.Lib
 {
     public class Text : Rectangle_object
     {
-
+        public Text(int FPx, int FPy, int SPx, int SPy)
+            : base(FPx, FPy, SPx, SPy) { }
+        public Text()
+            : base(10, 10, 20, 20) { }
         string txt = "";
         //static TextBox Text1 = new TextBox();//текстбокс для считывания шрифта
         Font FontText = new Font("Courier New", 12);//считываем шрифт с текстбокса

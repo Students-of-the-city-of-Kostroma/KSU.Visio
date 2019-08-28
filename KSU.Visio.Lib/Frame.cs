@@ -10,6 +10,10 @@ namespace KSU.Visio.Lib
     {
         Point[] Corner = new Point[4];//хранит точки, отвечающие за угол фрейма
 
+        public Frame(int FPx, int FPy, int SPx, int SPy)
+            : base(FPx, FPy, SPx, SPy) { }
+        public Frame()
+            : base(10, 10, 20, 20) { }
         override public void Draw(Graphics gr)
         {
             Pen Pe = new Pen(Line_color);

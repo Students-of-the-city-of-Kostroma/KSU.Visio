@@ -9,7 +9,10 @@ namespace KSU.Visio.Lib
 {
     public class Lost_message : Line
     {
-
+        public Lost_message(int FPx, int FPy, int SPx, int SPy)
+            : base(FPx, FPy, SPx, SPy) { }
+        public Lost_message()
+            : base(10, 10, 20, 20) { }
         public override void Draw(Graphics gr)
         {
             Pen Pe = new Pen(Line_color);
