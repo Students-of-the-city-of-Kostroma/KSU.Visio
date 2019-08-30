@@ -6,77 +6,99 @@ using System.Drawing;
 
 namespace KSU.Visio.Lib
 {
-    public abstract class Figure
+    public abstract class Figure : ICloneable
     {
-        public event EventHandler Changed;
-		protected Point LeftTop = new Point();//левый верхний угол
-		protected Point RightBottom = new Point();//правый нижний угол
-
-		public Point _leftTop
-		{
-			get { return LeftTop; }
-			set { LeftTop = value; }
-		}
-		public Point _rightBottom
-		{
-			get { return RightBottom; }
-			set { RightBottom = value; }
-		}
-
-        public Figure(int FPx = 10, int FPy = 10, int SPx = 20, int SPy = 20)
+        public abstract object Clone();
+        public static void PointsToLocationAndSize(Point p1, Point p2, out Point location, out Size size)
         {
-            Point FP=new Point (FPx, FPy);
-            Point SP = new Point(SPx, SPy);
-            //Определяет, какая координата Х принадлежит левой, а какая парвой точке
-            if (FP.X < SP.X)
+            location = new Point(
+                ((p1.X < p2.X) ? p1.X : p2.X),
+                ((p1.Y < p2.Y) ? p1.Y : p2.Y));
+            size = new Size(
+                Math.Abs(p1.X - p2.X),
+                Math.Abs(p1.Y - p2.Y));
+        }
+        public event EventHandler Changed;
+        protected Point location;
+        protected Size size;
+
+        public Point Location
+        {
+            get { return location; }
+            set
             {
-                FP.X = FP.X;
-                SP.X = SP.X;
-            }
-            else
-            {
-                SP.X = FP.X;
-                FP.X = SP.X;
-            }
-            //Определяет, какая координата У принадлежит верхней, а какая нижней точке
-            if (FP.Y < SP.Y)
-            {
-                FP.Y = FP.Y;
-                SP.Y = SP.Y;
-            }
-            else
-            {
-                SP.Y = FP.Y;
-                FP.Y = SP.Y;
+                if (location != value)
+                {
+                    location = value;
+                    if (Changed != null) Changed(this, new EventArgs());
+                }
             }
         }
 
-        /// <summary>
-        /// ширина линии
-        /// </summary>
-        public int Line_width = 2;
+        public Size Size
+        {
+            get { return size; }
+            set
+            {
+                if (size != value)
+                {
+                    size = value;
+                    if (Changed != null) Changed(this, new EventArgs());
+                }
+            }
+        }
 
-		private Color line_color;
-		/// <summary>
-		/// цвет
-		/// </summary>
-		public Color Line_color {
-			get { return line_color; }
-			set
-			{
-				line_color = value;
-				if (Changed != null) Changed(this,new EventArgs());
-			}
+        public Figure(Point location, Size size)
+        {
+            this.Location = location;
+            this.size = size;
 		}
+        /// <summary>
+        /// Вернет изображение размеров с фигуру с изображением фигуры
+        /// </summary>
+        /// <param name="size"></param>
+        /// <returns></returns>
+        public Bitmap GetImage()
+        {
+            Bitmap bm = new Bitmap(size.Width, size.Height);
+            Graphics gr = Graphics.FromImage(bm);
+            Draw(gr);
+            gr.Dispose();
+            return bm;
+        }
+
+        /// <summary>
+        /// перо по умолчанию
+        /// </summary>
+        protected Pen penDefault = new Pen(Color.Black, 2);
 
 
-
+		/// <summary>
+		/// Нарисовать фигуру
+		/// </summary>
+		/// <param name="gr">чем рисовать</param>
 		public abstract void Draw(Graphics gr);
 
-        public abstract bool Hit_testing(Point Point);
+		/// <summary>
+		/// Проверяет, попадает ли точка внутрь прямоугольной области фигуры
+		/// </summary>
+		/// <param name="point">точка</param>
+		/// <returns></returns>
+        public bool Inside(Point point)
+        {
+            return point.X > Location.X
+                && point.Y > Location.Y
+                && point.X < Location.X + size.Width
+                && point.Y < Location.Y + size.Height;
+        }
 
-        public abstract void Shift(Point Point);
-
-
+        /// <summary>
+        /// Сместить фигуру
+        /// </summary>
+        /// <param name="delta">на сколько сместить фигуру</param>
+        public void Move(Point delta)
+        {
+            Location = Location + (Size)delta;
+        }
     }
 }

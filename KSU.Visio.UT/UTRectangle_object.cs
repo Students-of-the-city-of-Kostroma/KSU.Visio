@@ -32,8 +32,8 @@ namespace KSU.Visio.UT
         }
         public void UTDraw(Rectangle_object RO)
         {
-            RO._leftTop = new Point(2, 4);
-            RO._rightBottom = new Point(4, 1);
+            ////RO.LeftTop = new Point(2, 4);
+            ////RO.RightBottom = new Point(4, 1);
             //Graphics gr = new Graphics();
 
         }
@@ -44,7 +44,7 @@ namespace KSU.Visio.UT
             UTDraw(RO);
             Point p = new Point(10, 10);
             RO.Shift(p);           
-            Assert.AreEqual(p, RO._leftTop);
+            Assert.AreEqual(p, RO.LeftTop);
 
         }
 

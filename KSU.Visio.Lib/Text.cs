@@ -8,12 +8,10 @@ namespace KSU.Visio.Lib
 {
     public class Text : Rectangle_object
     {
-        public Text(int FPx, int FPy, int SPx, int SPy)
-            : base(FPx, FPy, SPx, SPy) { }
-        public Text()
-            : base(10, 10, 20, 20) { }
+        public Text(Point location, Size size)
+            : base(location, size) { }
         string txt = "";
-        //static TextBox Text1 = new TextBox();//текстбокс для считывания шрифта
+
         Font FontText = new Font("Courier New", 12);//считываем шрифт с текстбокса
 		SolidBrush Brush = new SolidBrush(Color.Black);//черная тушь для текста
 
@@ -25,34 +23,10 @@ namespace KSU.Visio.Lib
         override public void Draw(Graphics gr)
         {
             Pen Pe = new Pen(Color.Transparent);
-
             Pe.Width = 1;
-            Point FP = new Point();//левый верхний угол
-            Point SP = new Point();//правый нижний угол
-                                   //Определяет, какая координата Х принадлежит левой, а какая парвой точке
-            if (LeftTop.X < RightBottom.X)
-            {
-                FP.X = LeftTop.X;
-                SP.X = RightBottom.X;
-            }
-            else
-            {
-                SP.X = LeftTop.X;
-                FP.X = RightBottom.X;
-            }
-            //Определяет, какая координата У принадлежит верхней, а какая нижней точке
-            if (LeftTop.Y < RightBottom.Y)
-            {
-                FP.Y = LeftTop.Y;
-                SP.Y = RightBottom.Y;
-            }
-            else
-            {
-                SP.Y = LeftTop.Y;
-                FP.Y = RightBottom.Y;
-            }
-            gr.DrawRectangle(Pe, FP.X, FP.Y, SP.X - FP.X, SP.Y - FP.Y);
-            gr.DrawString(txt, FontText, Brush, FP.X, FP.Y);
+            
+            gr.DrawRectangle(penDefault, Location.X+Size.Width, Location.Y, Location.X - Location.X+Size.Width, Location.Y - Location.Y);
+            gr.DrawString(txt, FontText, Brush, Location.X+Size.Width, Location.Y);
         }
     }
 }

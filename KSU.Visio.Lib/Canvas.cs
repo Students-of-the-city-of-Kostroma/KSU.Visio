@@ -9,17 +9,23 @@ namespace KSU.Visio.Lib
 {
 	public class Canvas
 	{
-		private List<Figure> figures = new List<Figure>();
+		protected List<Figure> figures = new List<Figure>();
 		public event EventHandler Changed;
-		private Graphics canvas = null;
-		public Canvas(Point size)
-		{
+		protected Graphics canvas = null;
+		protected Size size;
 
+		protected Bitmap image = null;
+		public Bitmap Image { get { return image; } }
+
+		public Canvas(Size size)
+		{
+			this.size = size;
+			this.image = new Bitmap(size.Width, size.Height);
+			this.canvas = Graphics.FromImage(this.image);
 		}
-
-		public Canvas(Graphics canvas)
+		~Canvas()
 		{
-			this.canvas = canvas;
+			canvas.Dispose();
 		}
 
 		private void UpdateCanvas()
@@ -46,12 +52,11 @@ namespace KSU.Visio.Lib
 		{
 			foreach (Figure figure in this.figures)
 			{
-				if (figure.Hit_testing(xy))
+				if (figure.Inside(xy))
 					return figure;
 			}
 			return null;
 		}
 
-		protected Graphics GetImage { get => canvas; }
 	}
 }

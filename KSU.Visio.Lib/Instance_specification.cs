@@ -10,43 +10,18 @@ namespace KSU.Visio.Lib
     {
         Point[] Internal_line = new Point[2];
 
-        public Instance_specification(int FPx = 10, int FPy = 10, int SPx = 20, int SPy = 20)
-            : base(FPx, FPy, SPx, SPy) { }
+        public Instance_specification(Point location, Size size)
+            : base(location, size) { }
         override public void Draw(Graphics gr)
         {
-            Pen Pe = new Pen(Line_color);
-            Pe.Width = Line_width;
-            Point FP = new Point();//левая верхняя точка
-            Point SP = new Point();//правая нижняя точка
-                                   //Определяет, какая координата Х принадлежит левой, а какая парвой точке
-            if (LeftTop.X < RightBottom.X)
-            {
-                FP.X = LeftTop.X;
-                SP.X = RightBottom.X;
-            }
-            else
-            {
-                SP.X = LeftTop.X;
-                FP.X = RightBottom.X;
-            }
-            //Определяет, какая координата У принадлежит верхней, а какая нижней точке
-            if (LeftTop.Y < RightBottom.Y)
-            {
-                FP.Y = LeftTop.Y;
-                SP.Y = RightBottom.Y;
-            }
-            else
-            {
-                SP.Y = LeftTop.Y;
-                FP.Y = RightBottom.Y;
-            }
-            gr.DrawRectangle(Pe, FP.X, FP.Y, SP.X - FP.X, SP.Y - FP.Y);
-            int k1 = FP.X + 20; //левая граница линии
-            int k2 = (int)(FP.Y + 0.3 * (SP.Y - FP.Y));//расстояние межу верхней границы прямоугольника и линией
-            int k3 = SP.X - 20;//правая граница линии
+            
+            gr.DrawRectangle(penDefault, Location.X+Size.Width, Location.Y, Location.X - Location.X+Size.Width, Location.Y - Location.Y);
+            int k1 = Location.X+Size.Width + 20; //левая граница линии
+            int k2 = (int)(Location.Y + 0.3 * (Location.Y - Location.Y));//расстояние межу верхней границы прямоугольника и линией
+            int k3 = Location.X - 20;//правая граница линии
             Internal_line[0] = new Point(k1, k2);
             Internal_line[1] = new Point(k3, k2);
-            gr.DrawLine(Pe, Internal_line[0], Internal_line[1]);
+            gr.DrawLine(penDefault, Internal_line[0], Internal_line[1]);
         }
     }
 }
