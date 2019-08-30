@@ -33,8 +33,8 @@ namespace KSU.Visio.UT
         }
         public void UTDraw(Line RO)
         {
-            RO._leftTop = new Point(7, 8);
-            RO._rightBottom = new Point(5, 2);
+            ////RO.LeftTop = new Point(7, 8);
+            ////RO.RightBottom = new Point(5, 2);
             //Graphics gr = new Graphics();
 
         }
@@ -47,10 +47,10 @@ namespace KSU.Visio.UT
             Point p1 = new Point(5, 8);
             RO.Hit_testing( p);
             RO.Shift(p1);
-            if (p1.Equals(RO._leftTop))
-            Assert.AreEqual(p1, RO._leftTop);
+            if (p1.Equals(RO.LeftTop))
+            Assert.AreEqual(p1, RO.LeftTop);
             else
-                Assert.AreEqual(p1, RO._rightBottom);
+                Assert.AreEqual(p1, RO.RightBottom);
 
 
         }

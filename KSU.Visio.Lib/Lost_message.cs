@@ -9,23 +9,20 @@ namespace KSU.Visio.Lib
 {
     public class Lost_message : Line
     {
-        public Lost_message(int FPx, int FPy, int SPx, int SPy)
-            : base(FPx, FPy, SPx, SPy) { }
-        public Lost_message()
-            : base(10, 10, 20, 20) { }
+        public Lost_message(Point location, Size size)
+            : base(location, size) { }
+
         public override void Draw(Graphics gr)
         {
-            Pen Pe = new Pen(Line_color);
-            Pe.Width = Line_width;
+            Pen Pe = (Pen)penDefault.Clone();
             Pe.EndCap = LineCap.Custom;
             Pe.CustomEndCap = new AdjustableArrowCap(3f, 3f);
-            Pen Pe2 = new Pen(Line_color);
-            Pe2.Width = Line_width;
+            Pen Pe2 = (Pen)penDefault.Clone();
             Pe2.EndCap = LineCap.RoundAnchor;
 
 
-            gr.DrawLine(Pe, LeftTop, RightBottom);
-            gr.DrawLine(Pe2, LeftTop, RightBottom);
+            gr.DrawLine(penDefault, Location, Location+Size);
+            gr.DrawLine(Pe2, Location, Location+Size);
         }
 
 

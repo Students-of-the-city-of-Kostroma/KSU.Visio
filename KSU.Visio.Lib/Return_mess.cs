@@ -9,18 +9,15 @@ namespace KSU.Visio.Lib
 {
   public  class Return_mess : Line
     {
-        public Return_mess(int FPx, int FPy, int SPx, int SPy)
-            : base(FPx, FPy, SPx, SPy) { }
-        public Return_mess()
-            : base(10, 10, 20, 20) { }
+        public Return_mess(Point location, Size size)
+            : base(location, size) { }
         public override void Draw(Graphics gr)
         {
-            Pen Pe = new Pen(Line_color);
+            Pen Pe = (Pen)penDefault.Clone();
             Pe.DashStyle = DashStyle.Dash;
-            Pe.Width = Line_width;
             Pe.EndCap =LineCap.Custom;
             Pe.CustomEndCap = new AdjustableArrowCap(3f, 3f, false);
-            gr.DrawLine(Pe, LeftTop, RightBottom);
+            gr.DrawLine(penDefault, Location, Location+Size);
         }
     }
 }
