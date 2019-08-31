@@ -12,7 +12,7 @@ namespace KSU.Visio.Lib
         public Rectangle_object(Point location, Size size)
             : base(location, size) { }
 
-        public override object Clone()
+        public override Figure Clone()
         {
             return new Rectangle_object(Location, Size);
         }

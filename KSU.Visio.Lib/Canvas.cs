@@ -32,8 +32,12 @@ namespace KSU.Visio.Lib
 		{
 			canvas.Clear(Color.White);
 			foreach (Figure figure in this.figures)
-				figure.Draw(canvas);
-			if (Changed != null) Changed(this, new EventArgs());
+				if(figure.Selected)
+                    figure.Draw(canvas);
+            foreach (Figure figure in this.figures)
+                if (!figure.Selected)
+                    figure.Draw(canvas);
+            if (Changed != null) Changed(this, new EventArgs());
 		}
 
 		public void AddFigure(Figure figure)
