@@ -43,18 +43,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Actor.cs" />
-    <Compile Include="Asyn_mess.cs" />
     <Compile Include="Canvas.cs" />
     <Compile Include="Continuation.cs" />
     <Compile Include="CopyFiles.cs" />
-    <Compile Include="Dispatch_mess.cs" />
     <Compile Include="Figure.cs" />
-    <Compile Include="Found_message.cs" />
     <Compile Include="Frame.cs" />
     <Compile Include="Instance_specification.cs" />
     <Compile Include="Life_line.cs" />
     <Compile Include="Line.cs" />
-    <Compile Include="Lost_message.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
 <<<<<<< HEAD:OOP_draw/OOP_drow.csproj
 <<<<<<< HEAD
@@ -89,7 +85,6 @@
     </Compile>
 =======
     <Compile Include="Rectangle_object.cs" />
-    <Compile Include="Return_mess.cs" />
     <Compile Include="Text.cs" />
     <Compile Include="White_rectangle.cs" />
 >>>>>>> refactoring solution:KSU.Visio.Lib/KSU.Visio.Lib.csproj

@@ -32,9 +32,11 @@ namespace KSU.Visio
         {
             Point location = new Point(0, 0);
             Size size = new Size(objectsPanel.Size.Width / 2, objectsPanel.Size.Height / 7);
-            //Начинаем добавлять элементы
+            //Начинаем добавлять элементы на панель элементов
             AddFigureInObjectPanel(new Actor(location, size));
-            //AddFigureInObjectPanel(new Line(location, size));
+            AddFigureInObjectPanel(new Frame(location, size));
+            AddFigureInObjectPanel(new Line(location, location + size));
+            AddFigureInObjectPanel(new Line(location, location + size, Line.CustomCap.None, Line.CustomCap.LostMessage));
         }
 
         protected void AddFigureInObjectPanel(Figure figure)
@@ -89,11 +91,17 @@ namespace KSU.Visio
             if (canvasPB.Tag != null && mouseDownLocation != null)
             {
                 Figure figure = (Figure)canvasPB.Tag;
-                Point location;
-                Size size;
-                Figure.PointsToLocationAndSize((Point)mouseDownLocation, e.Location, out location, out size);
-                figure.Location = location;
-                figure.Size = size;
+                if (figure.GetType() == typeof(Line))
+                {
+                    Line line = (Line)figure;
+                    line.Start = (Point)mouseDownLocation;
+                    line.End = e.Location;
+                }
+                else
+                {
+                    figure.Location = Figure.PointsToLocation((Point)mouseDownLocation, e.Location);
+                    figure.Size = Figure.PointsToSize((Point)mouseDownLocation, e.Location);
+                }
             }
         }
 

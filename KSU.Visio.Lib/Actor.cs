@@ -17,13 +17,12 @@ namespace KSU.Visio.Lib
             
         }
 
-        public override object Clone()
+        public override Figure Clone()
         {
             Figure figure = new Actor(Location, Size);
             figure.Selected = Selected;
             return figure;
         }
-
 
         public override void Draw(Graphics gr)
         {

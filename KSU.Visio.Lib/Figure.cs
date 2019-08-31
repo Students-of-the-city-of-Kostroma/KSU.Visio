@@ -6,17 +6,21 @@ using System.Drawing;
 
 namespace KSU.Visio.Lib
 {
-    public abstract class Figure : ICloneable
+    public abstract class Figure
     {
-        public abstract object Clone();
-        public static void PointsToLocationAndSize(Point p1, Point p2, out Point location, out Size size)
+        public abstract Figure Clone();
+
+        public static Size PointsToSize(Point p1, Point p2)
         {
-            location = new Point(
-                ((p1.X < p2.X) ? p1.X : p2.X),
-                ((p1.Y < p2.Y) ? p1.Y : p2.Y));
-            size = new Size(
+            return new Size(
                 Math.Abs(p1.X - p2.X),
                 Math.Abs(p1.Y - p2.Y));
+        }
+        public static Point PointsToLocation(Point p1, Point p2)
+        {
+            return new Point(
+                ((p1.X < p2.X) ? p1.X : p2.X),
+                ((p1.Y < p2.Y) ? p1.Y : p2.Y));
         }
         public event EventHandler Changed;
         protected Point location;
@@ -30,11 +34,15 @@ namespace KSU.Visio.Lib
                 if (selected != value)
                 {
                     selected = value;
-                    if (Changed != null) Changed(this, new EventArgs());
+                    ChangedMetod();
                 }
             }
         }
         
+        protected void ChangedMetod()
+        {
+            Changed?.Invoke(this, new EventArgs());
+        }
 
         public Point Location
         {
@@ -44,7 +52,7 @@ namespace KSU.Visio.Lib
                 if (location != value)
                 {
                     location = value;
-                    if (Changed != null) Changed(this, new EventArgs());
+                    ChangedMetod();
                 }
             }
         }
@@ -57,7 +65,7 @@ namespace KSU.Visio.Lib
                 if (size != value)
                 {
                     size = value;
-                    if (Changed != null) Changed(this, new EventArgs());
+                    ChangedMetod();
                 }
             }
         }
@@ -82,19 +90,24 @@ namespace KSU.Visio.Lib
         }
 
         /// <summary>
-        /// перо по умолчанию
+        /// перо для рисования выделенного объекта
         /// </summary>
-        protected Pen penDefault = new Pen(Color.Black, 2);
+        protected Pen penSelected = new Pen(Color.BlueViolet, 1);
+        /// <summary>
+        /// перо для рисования объекта
+        /// </summary>
+        protected Pen penDefault = new Pen(Color.Black, 1);
 
-
-		/// <summary>
-		/// Нарисовать фигуру
-		/// </summary>
-		/// <param name="gr">чем рисовать</param>
-		public virtual void Draw(Graphics gr)
+        /// <summary>
+        /// Предварительная прорисовка объекта
+        /// </summary>
+        /// <param name="gr">чем рисовать</param>
+        public virtual void Draw(Graphics gr)
         {
             if (Selected)
-                gr.DrawRectangle(penDefault, new Rectangle(Location, Size));
+            {
+                gr.FillRectangle(Brushes.BlueViolet, new Rectangle(Location , Size));
+            }
         }
 
 		/// <summary>
@@ -116,7 +129,7 @@ namespace KSU.Visio.Lib
         /// <param name="delta">на сколько сместить фигуру</param>
         public void Move(Point delta)
         {
-            Location = Location + (Size)delta;
+            Location += (Size)delta;
         }
     }
 }
