@@ -14,7 +14,7 @@ namespace KSU.Visio.Lib
         override public void Draw(Graphics gr)
         {
             gr.FillRectangle(Brush, Location.X + Size.Width, Location.Y, Location.X - Location.X + Size.Width, Location.Y - Location.Y);
-            gr.DrawRectangle(penDefault, Location.X + Size.Width, Location.Y, Location.X - Location.X + Size.Width, Location.Y - Location.Y);
+            gr.DrawRectangle(pen, Location.X + Size.Width, Location.Y, Location.X - Location.X + Size.Width, Location.Y - Location.Y);
         }
     }
 }

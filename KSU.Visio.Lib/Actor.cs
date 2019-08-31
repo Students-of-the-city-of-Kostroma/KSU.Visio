@@ -38,11 +38,11 @@ namespace KSU.Visio.Lib
             //руки
             int handY = Location.Y + (int)(Size.Height * 0.4);
 
-            gr.DrawEllipse(penDefault, headX, headY, headD, headD);//голова
-            gr.DrawLine(penDefault, centerX, Location.Y + headD, centerX, bodyY);//туловище
-            gr.DrawLine(penDefault, Location.X, handY, Location.X + Size.Width, handY);//руки
-            gr.DrawLine(penDefault, Location.X, Location.Y + Size.Height, centerX, bodyY);//левая нога
-            gr.DrawLine(penDefault, centerX, bodyY, Location.X + Size.Width, Location.Y + Size.Height);//правая нога
+            gr.DrawEllipse(pen, headX, headY, headD, headD);//голова
+            gr.DrawLine(pen, centerX, Location.Y + headD, centerX, bodyY);//туловище
+            gr.DrawLine(pen, Location.X, handY, Location.X + Size.Width, handY);//руки
+            gr.DrawLine(pen, Location.X, Location.Y + Size.Height, centerX, bodyY);//левая нога
+            gr.DrawLine(pen, centerX, bodyY, Location.X + Size.Width, Location.Y + Size.Height);//правая нога
         }
     }
 }
