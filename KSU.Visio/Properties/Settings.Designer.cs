@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Form_draw.Properties
+namespace KSU.Visio.Properties
 {
 
 

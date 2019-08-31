@@ -1,4 +1,4 @@
-﻿namespace Form_draw
+﻿namespace KSU.Visio
 {
     partial class Start
     {
