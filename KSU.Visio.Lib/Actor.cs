@@ -19,12 +19,15 @@ namespace KSU.Visio.Lib
 
         public override object Clone()
         {
-            return new Actor(Location, Size);
+            Figure figure = new Actor(Location, Size);
+            figure.Selected = Selected;
+            return figure;
         }
 
 
         public override void Draw(Graphics gr)
         {
+            base.Draw(gr);
             //разметка
             int centerX = Location.X + Size.Width / 2;//Середина рисунка по вертикали
             //голова

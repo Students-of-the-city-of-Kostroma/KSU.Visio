@@ -10,7 +10,7 @@ using System.Windows.Forms;
 using System.Reflection;
 using KSU.Visio.Lib;
 
-namespace Form_draw
+namespace KSU.Visio
 {
     public partial class Start : Form
     {
@@ -39,27 +39,42 @@ namespace Form_draw
 
         protected void AddFigureInObjectPanel(Figure figure)
         {
+            figure.Changed += Figure_Changed;
             PictureBox pb = new PictureBox();
             pb.Size = figure.Size;
             pb.Image = figure.GetImage();
             pb.Margin = new Padding(0);
-            pb.BorderStyle = BorderStyle.FixedSingle;
             pb.Tag = figure;
             pb.Click += Pb_Click;
             objectsPanel.Controls.Add(pb);
         }
 
+        private void Figure_Changed(object sender, EventArgs e)
+        {
+            if (selectedPB != null)
+            {
+                Figure figure = (Figure)sender;
+                selectedPB.Image = figure.GetImage();
+            }
+        }
+        /// <summary>
+        /// выделенный объект который будет рисоваться на холсте
+        /// </summary>
+        PictureBox selectedPB = null;
         private void Pb_Click(object sender, EventArgs e)
         {
             canvasPB.Cursor = Cursors.Cross;
             PictureBox pb = (PictureBox)sender;
+            selectedPB = pb;
             Figure figure = (Figure)pb.Tag;
+            figure.Selected = true;
+            ///записываем рисуемый объект
             canvasPB.Tag = figure.Clone();
         }
         Point? mouseDownLocation = null;
         private void canvasPB_MouseDown(object sender, MouseEventArgs e)
         {
-            if(mouseDownLocation == null && canvasPB.Cursor == Cursors.Cross)
+            if(selectedPB  != null && canvasPB.Tag != null)
             {
                 mouseDownLocation = e.Location;
                 Figure figure = (Figure)canvasPB.Tag;
@@ -71,7 +86,7 @@ namespace Form_draw
 
         private void canvasPB_MouseMove(object sender, MouseEventArgs e)
         {
-            if (mouseDownLocation != null)
+            if (canvasPB.Tag != null && mouseDownLocation != null)
             {
                 Figure figure = (Figure)canvasPB.Tag;
                 Point location;
@@ -84,10 +99,17 @@ namespace Form_draw
 
         private void canvasPB_MouseUp(object sender, MouseEventArgs e)
         {
-            if (mouseDownLocation != null)
+            if (mouseDownLocation != null && selectedPB != null && canvasPB.Tag != null)
             {
+                
                 canvasPB.Cursor = Cursors.Default;
                 mouseDownLocation = null;
+                Figure figure = (Figure)selectedPB.Tag;
+                figure.Selected = false;
+                selectedPB = null;
+                figure = (Figure)canvasPB.Tag;
+                figure.Selected = false;
+                canvasPB.Tag = null;
             }
         }
     }

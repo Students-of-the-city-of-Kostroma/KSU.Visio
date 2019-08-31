@@ -21,6 +21,20 @@ namespace KSU.Visio.Lib
         public event EventHandler Changed;
         protected Point location;
         protected Size size;
+        protected bool selected = false;
+        public bool Selected
+        {
+            get { return selected; }
+            set
+            {
+                if (selected != value)
+                {
+                    selected = value;
+                    if (Changed != null) Changed(this, new EventArgs());
+                }
+            }
+        }
+        
 
         public Point Location
         {
@@ -77,7 +91,11 @@ namespace KSU.Visio.Lib
 		/// Нарисовать фигуру
 		/// </summary>
 		/// <param name="gr">чем рисовать</param>
-		public abstract void Draw(Graphics gr);
+		public virtual void Draw(Graphics gr)
+        {
+            if (Selected)
+                gr.DrawRectangle(penDefault, new Rectangle(Location, Size));
+        }
 
 		/// <summary>
 		/// Проверяет, попадает ли точка внутрь прямоугольной области фигуры
