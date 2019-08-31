@@ -25,7 +25,7 @@ namespace KSU.Visio.Lib
             get { return start; }
             set
             {
-                if(start!= value)
+                if (start != value)
                 {
                     start = value;
                     Location = PointsToLocation(start, end);
@@ -61,7 +61,6 @@ namespace KSU.Visio.Lib
                 if (startLineCap != value)
                 {
                     startLineCap = value;
-                    penDefault.CustomStartCap = GetAdjustableArrowCap(startLineCap);
                     ChangedMetod();
                 }
             }
@@ -74,32 +73,45 @@ namespace KSU.Visio.Lib
                 if (endLineCap != value)
                 {
                     endLineCap = value;
-                    penDefault.CustomEndCap = GetAdjustableArrowCap(endLineCap);
                     ChangedMetod();
                 }
             }
         }
+        #region Line
 
-        public static AdjustableArrowCap GetAdjustableArrowCap(CustomCap customCap)
+        GraphicsPath fLine = new GraphicsPath();
+        GraphicsPath sLine = new GraphicsPath();
+
+        #endregion
+        #region LostMessage
+        GraphicsPath fLostMessage = new GraphicsPath();
+        GraphicsPath sLostMessage = new GraphicsPath();
+        /// <summary>
+        /// Задаем окончание лини для LostMessage
+        /// </summary>
+        private void InitLostMessageCap()
         {
-            switch (customCap)
-            {
-                case CustomCap.Line: return new AdjustableArrowCap(0f, 0f);
-                case CustomCap.LostMessage: return new AdjustableArrowCap(3f, 3f);
-                default: throw new Exception("Не реализовано для перечисления "+ customCap);
-            }
-            throw new Exception("Этого не может быть, потому что не может быть");
+            fLostMessage.AddEllipse(-2, -2, 4, 4);
+            fLostMessage.AddLine(0, -2, -2, -5);
+            fLostMessage.AddLine(-2, -5, 2, -5);
+            fLostMessage.AddLine(2, -5, 0, -2);
         }
-        public Line(Point start,  Point end,
+        #endregion
+
+
+        public Line(Point start, Point end,
             CustomCap startLineCap = CustomCap.Line,
-            CustomCap endLineCap = CustomCap.Line) : 
+            CustomCap endLineCap = CustomCap.Line) :
             base(PointsToLocation(start, end), PointsToSize(start, end))
 
         {
             Start = start;
             End = end;
+
             StartLineCap = startLineCap;
             EndLineCap = endLineCap;
+
+            InitLostMessageCap();
         }
 
         public override Figure Clone()
@@ -109,13 +121,79 @@ namespace KSU.Visio.Lib
             return figure;
         }
 
+
+
         public override void Draw(Graphics gr)
         {
             base.Draw(gr);
 
-            gr.DrawLine(penDefault, start, end);
+            GraphicsPath fillPathStart = null, strokePathStart = null, fillPathEnd = null, strokePathEnd = null;
+            SwithPathStartAndEnd(ref fillPathStart, ref strokePathStart, ref fillPathEnd, ref strokePathEnd);
+
+            CustomLineCap customLineCapStart = new CustomLineCap(fillPathStart, strokePathStart);
+            CustomLineCap customLineCapEnd = new CustomLineCap(fillPathEnd, strokePathEnd);
+
+            pen.CustomStartCap = customLineCapStart;
+            pen.CustomEndCap = customLineCapEnd;
+
+            gr.DrawLine(pen, start, end);
+
+            customLineCapStart.Dispose();
+            customLineCapEnd.Dispose();
         }
 
+        ~Line()
+        {
+            fLine.Dispose();
+            sLine.Dispose();
+            fLostMessage.Dispose();
+            sLostMessage.Dispose();
+        }
+
+        private void SwithPathStartAndEnd(
+            ref GraphicsPath fillPathStart, ref GraphicsPath strokePathStart, 
+            ref GraphicsPath fillPathEnd, ref GraphicsPath strokePathEnd)
+        {
+            switch (StartLineCap)
+            {
+                case CustomCap.Line:
+                    fillPathStart = fLine;
+                    strokePathStart = sLine;
+                    break;
+                case CustomCap.LostMessage:
+                    fillPathStart = fLostMessage;
+                    strokePathStart = sLostMessage;
+                    break;
+                case CustomCap.AsynMessage:
+                    break;
+                case CustomCap.DispatchMessage:
+                    break;
+                case CustomCap.FoundMessage:
+                    break;
+                case CustomCap.ReturnMessage:
+                    break;
+            }
+
+            switch (EndLineCap)
+            {
+                case CustomCap.Line:
+                    fillPathEnd = fLine;
+                    strokePathEnd = sLine;
+                    break;
+                case CustomCap.LostMessage:
+                    fillPathEnd = fLostMessage;
+                    strokePathEnd = sLostMessage;
+                    break;
+                case CustomCap.AsynMessage:
+                    break;
+                case CustomCap.DispatchMessage:
+                    break;
+                case CustomCap.FoundMessage:
+                    break;
+                case CustomCap.ReturnMessage:
+                    break;
+            }
+        }
 
     }
 }

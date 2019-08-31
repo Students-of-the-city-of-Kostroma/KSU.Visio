@@ -96,7 +96,7 @@ namespace KSU.Visio.Lib
         /// <summary>
         /// перо для рисования объекта
         /// </summary>
-        protected Pen penDefault = new Pen(Color.Black, 1);
+        protected Pen pen = new Pen(Color.Black, 1);
 
         /// <summary>
         /// Предварительная прорисовка объекта

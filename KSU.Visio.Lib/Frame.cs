@@ -25,7 +25,7 @@ namespace KSU.Visio.Lib
         {
             base.Draw(gr);
 
-            gr.DrawRectangle(penDefault, new Rectangle(Location, Size));
+            gr.DrawRectangle(pen, new Rectangle(Location, Size));
         }
 
     }

@@ -25,7 +25,7 @@ namespace KSU.Visio.Lib
             Pen Pe = new Pen(Color.Transparent);
             Pe.Width = 1;
             
-            gr.DrawRectangle(penDefault, Location.X+Size.Width, Location.Y, Location.X - Location.X+Size.Width, Location.Y - Location.Y);
+            gr.DrawRectangle(pen, Location.X+Size.Width, Location.Y, Location.X - Location.X+Size.Width, Location.Y - Location.Y);
             gr.DrawString(txt, FontText, Brush, Location.X+Size.Width, Location.Y);
         }
     }

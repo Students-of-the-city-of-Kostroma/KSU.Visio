@@ -13,7 +13,7 @@ namespace KSU.Visio.Lib
         override public void Draw(Graphics gr)
         {
 
-            gr.DrawEllipse(penDefault, Location.X+Size.Width, Location.Y, Location.X - Location.X+Size.Width, Location.Y - Location.Y);
+            gr.DrawEllipse(pen, Location.X+Size.Width, Location.Y, Location.X - Location.X+Size.Width, Location.Y - Location.Y);
         }
 
     }

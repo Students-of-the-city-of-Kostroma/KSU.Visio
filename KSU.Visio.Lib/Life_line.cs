@@ -19,8 +19,8 @@ namespace KSU.Visio.Lib
 
         override public void Draw(Graphics gr)
         {
-            Pen Pe = (Pen)penDefault.Clone();
-            gr.DrawRectangle(penDefault, Location.X+Size.Width, Location.Y, Location.X - Location.X+Size.Width, Location.Y - Location.Y);
+            Pen Pe = (Pen)pen.Clone();
+            gr.DrawRectangle(pen, Location.X+Size.Width, Location.Y, Location.X - Location.X+Size.Width, Location.Y - Location.Y);
             Pen.DashStyle = DashStyle.Dash;
             Pen.Color = Pe.Color;
             SortLine(); 
