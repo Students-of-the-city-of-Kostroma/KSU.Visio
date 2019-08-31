@@ -12,7 +12,7 @@ namespace KSU.Visio.Lib
         /// <summary>
         /// Окончание линии
         /// </summary>
-        public enum CustomCap { None,LostMessage}
+        public enum CustomCap { Line, LostMessage, AsynMessage, DispatchMessage, FoundMessage, ReturnMessage }
 
         protected Point start, end;
 
@@ -84,15 +84,15 @@ namespace KSU.Visio.Lib
         {
             switch (customCap)
             {
-                case CustomCap.None: return new AdjustableArrowCap(0f, 0f);
+                case CustomCap.Line: return new AdjustableArrowCap(0f, 0f);
                 case CustomCap.LostMessage: return new AdjustableArrowCap(3f, 3f);
                 default: throw new Exception("Не реализовано для перечисления "+ customCap);
             }
             throw new Exception("Этого не может быть, потому что не может быть");
         }
         public Line(Point start,  Point end,
-            CustomCap startLineCap = CustomCap.None,
-            CustomCap endLineCap = CustomCap.None) : 
+            CustomCap startLineCap = CustomCap.Line,
+            CustomCap endLineCap = CustomCap.Line) : 
             base(PointsToLocation(start, end), PointsToSize(start, end))
 
         {

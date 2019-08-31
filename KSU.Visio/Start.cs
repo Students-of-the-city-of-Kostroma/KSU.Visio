@@ -36,7 +36,7 @@ namespace KSU.Visio
             AddFigureInObjectPanel(new Actor(location, size));
             AddFigureInObjectPanel(new Frame(location, size));
             AddFigureInObjectPanel(new Line(location, location + size));
-            AddFigureInObjectPanel(new Line(location, location + size, Line.CustomCap.None, Line.CustomCap.LostMessage));
+            AddFigureInObjectPanel(new Line(location, location + size, Line.CustomCap.Line, Line.CustomCap.LostMessage));
         }
 
         protected void AddFigureInObjectPanel(Figure figure)
