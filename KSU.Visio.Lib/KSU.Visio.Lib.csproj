@@ -45,6 +45,7 @@
     <Compile Include="Actor.cs" />
     <Compile Include="Canvas.cs" />
     <Compile Include="Cap\LineCapBase.cs" />
+    <Compile Include="Cap\AsynchronousMessageCap.cs" />
     <Compile Include="Continuation.cs" />
     <Compile Include="CopyFiles.cs" />
     <Compile Include="Cap\LostMessageCap.cs" />
