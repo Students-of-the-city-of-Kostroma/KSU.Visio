@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Reflection;
 using KSU.Visio.Lib;
+using KSU.Visio.Lib.Cap;
 
 namespace KSU.Visio
 {
@@ -36,7 +37,7 @@ namespace KSU.Visio
             AddFigureInObjectPanel(new Actor(location, size));
             AddFigureInObjectPanel(new Frame(location, size));
             AddFigureInObjectPanel(new Line(location, location + size));
-            AddFigureInObjectPanel(new Line(location, location + size, Line.CustomCap.Line, Line.CustomCap.LostMessage));
+            AddFigureInObjectPanel(new Line(location, location + size, new LineCapBase(), new LostMessageCap()));
         }
 
         protected void AddFigureInObjectPanel(Figure figure)

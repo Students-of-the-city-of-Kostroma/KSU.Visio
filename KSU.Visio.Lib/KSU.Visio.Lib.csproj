@@ -44,8 +44,10 @@
   <ItemGroup>
     <Compile Include="Actor.cs" />
     <Compile Include="Canvas.cs" />
+    <Compile Include="Cap\LineCapBase.cs" />
     <Compile Include="Continuation.cs" />
     <Compile Include="CopyFiles.cs" />
+    <Compile Include="Cap\LostMessageCap.cs" />
     <Compile Include="Figure.cs" />
     <Compile Include="Frame.cs" />
     <Compile Include="Instance_specification.cs" />
@@ -56,5 +58,6 @@
     <Compile Include="Text.cs" />
     <Compile Include="White_rectangle.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
