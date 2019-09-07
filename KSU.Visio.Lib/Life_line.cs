@@ -25,27 +25,26 @@ namespace KSU.Visio.Lib
         {
             base.Draw(gr);
             Pen Pe = (Pen)pen.Clone();
-            gr.DrawRectangle(pen, new Rectangle(Location, Size));
+            gr.DrawRectangle(pen, Location.X, Location.Y, Location.X + Size.Width - Location.X, Location.Y + Size.Width - Location.Y);
             Pen.DashStyle = DashStyle.Dash;
             Pen.Color = Pe.Color;
-            //SortLine();
-            gr.DrawLine(Pen, Line_ends[0], Line_ends[1]);
+            SortLine();
+            gr.DrawLine(pen, Line_ends[0], Line_ends[1]);
         }
 
-        int Line_length = 50;
+        int Line_length = 100;
         static Pen Pen = new Pen(Brushes.Black, 3);
         Point[] Line_ends = new Point[2];
         bool Edit_line = false;//Определает, нужно ли изменять длинну линии
 
-       
-    
-        //private void SortLine()
-        //{
-            
-        //    int mid = (Location.X + Location.X+Location.X+Size.Width) / 2;//середина нижней линии прямоугольника (из этой точки выходит линия жизни) 
-        //    Line_ends[0] = new Point(mid, Location.Y);
-        //    Line_ends[1] = new Point(mid, Location.Y + Line_length);
-        //}
+
+
+        private void SortLine()
+        {
+            int mid = (Location.X + Location.X + Size.Width) / 2;//середина нижней линии прямоугольника (из этой точки выходит линия жизни) 
+            Line_ends[0] = new Point(mid, Location.Y+Size.Width);
+            Line_ends[1] = new Point(mid, Location.Y+Size.Width + Line_length);
+        }
 
     }
 }

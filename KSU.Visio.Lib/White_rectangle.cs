@@ -22,12 +22,13 @@ namespace KSU.Visio.Lib
 
         public override void Draw(Graphics gr)
         {
+            SolidBrush Brush = new SolidBrush(Color.White);
             base.Draw(gr);
-            gr.FillRectangle(Brush, Location.X + Size.Width, Location.Y, Location.X - Location.X + Size.Width, Location.Y - Location.Y);
-            gr.DrawRectangle(pen, new Rectangle(Location, Size));
+            gr.FillRectangle(Brush, Location.X, Location.Y, Location.X + Size.Width - Location.X, Location.Y + Size.Width - Location.Y);
+            gr.DrawRectangle(pen, Location.X, Location.Y, Location.X+Size.Width - Location.X, Location.Y+Size.Width - Location.Y);
         }
 
-        SolidBrush Brush = new SolidBrush(Color.White); //ЛИШНЕЕ, НО НЕ ЗНАЮ КАК ИСПРАВИТЬ НА ПЕРО
+        
        
     }
 }
