@@ -23,7 +23,8 @@ namespace KSU.Visio.Lib
         public override void Draw(Graphics gr)
         {
             base.Draw(gr);
-            gr.DrawEllipse(pen, Location.X + Size.Width, Location.Y, Location.X - Location.X + Size.Width, Location.Y - Location.Y);
+            gr.DrawEllipse(pen, Location.X, Location.Y, Location.X + Size.Width - Location.X, Location.Y + Size.Width - Location.Y);
+           
         }
 
     }

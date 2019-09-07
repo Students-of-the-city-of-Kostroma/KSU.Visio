@@ -25,10 +25,10 @@ namespace KSU.Visio.Lib
         {
             base.Draw(gr);
 
-            gr.DrawRectangle(pen, new Rectangle(Location, Size));
-            int k1 = Location.X + Size.Width + 20; //левая граница линии
-            int k2 = (int)(Location.Y + 0.3 * (Location.Y - Location.Y));//расстояние межу верхней границы прямоугольника и линией
-            int k3 = Location.X - 20;//правая граница линии
+            gr.DrawRectangle(pen, Location.X, Location.Y, Location.X+Size.Width - Location.X, Location.Y + Size.Width - Location.Y);
+            int k1 = Location.X  + 20; //левая граница линии
+            int k2 = (int)(Location.Y + 0.3 * (Location.Y+Size.Width - Location.Y));//расстояние межу верхней границы прямоугольника и линией
+            int k3 = Location.X + Size.Width - 20;//правая граница линии
             Internal_line[0] = new Point(k1, k2);
             Internal_line[1] = new Point(k3, k2);
             gr.DrawLine(pen, Internal_line[0], Internal_line[1]);
