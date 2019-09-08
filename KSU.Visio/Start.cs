@@ -43,7 +43,7 @@ namespace KSU.Visio
             AddFigureInObjectPanel(new Line(location, location + size));
             AddFigureInObjectPanel(new Line(location, location + size, new LineCapBase(), new LostMessageCap()));
             AddFigureInObjectPanel(new Line(location, location + size, new LineCapBase(), new AsynchronousMessageCap()));
-            AddFigureInObjectPanel(new Line(location, location + size, new LineCapBase(), new LostMessageCap()));
+            AddFigureInObjectPanel(new Line(location, location + size, new LostMessageCap(), new LineCapBase()));
         }
 
         protected void AddFigureInObjectPanel(Figure figure)
