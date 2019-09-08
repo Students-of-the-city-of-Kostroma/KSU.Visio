@@ -22,10 +22,11 @@ namespace KSU.Visio.Lib
 
         public override void Draw(Graphics gr)
         {
-            SolidBrush Brush = new SolidBrush(Color.White);
             base.Draw(gr);
-            gr.FillRectangle(Brush, Location.X, Location.Y, Location.X + Size.Width - Location.X, Location.Y + Size.Width - Location.Y);
-            gr.DrawRectangle(pen, Location.X, Location.Y, Location.X+Size.Width - Location.X, Location.Y+Size.Width - Location.Y);
+
+            Rectangle rect = new Rectangle(Location, Size);
+            gr.FillRectangle(Brushes.White, rect);
+            gr.DrawRectangle(pen, rect);
         }
 
         

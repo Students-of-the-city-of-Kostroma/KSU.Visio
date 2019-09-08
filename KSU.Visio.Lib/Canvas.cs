@@ -30,7 +30,7 @@ namespace KSU.Visio.Lib
 
 		private void UpdateCanvas()
 		{
-			canvas.Clear(Color.White);
+			canvas.Clear(Color.Transparent);
 			foreach (Figure figure in this.figures)
 				if(figure.Selected)
                     figure.Draw(canvas);
