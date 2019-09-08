@@ -6,14 +6,25 @@ using System.Drawing;
 
 namespace KSU.Visio.Lib
 {
-    public class Continuation : Rectangle_object
+    public class Continuation : Figure
     {
-        public Continuation(Point location, Size size)
-            : base(location, size) { }
-        override public void Draw(Graphics gr)
+        public Continuation(Point location, Size size) : base(location, size)
         {
 
-            gr.DrawEllipse(pen, Location.X+Size.Width, Location.Y, Location.X - Location.X+Size.Width, Location.Y - Location.Y);
+        }
+
+        public override Figure Clone()
+        {
+            Figure figure = new Continuation(Location, Size);
+            figure.Selected = Selected;
+            return figure;
+        }
+
+        public override void Draw(Graphics gr)
+        {
+            base.Draw(gr);
+            gr.DrawEllipse(pen, Location.X, Location.Y, Location.X + Size.Width - Location.X, Location.Y + Size.Width - Location.Y);
+           
         }
 
     }

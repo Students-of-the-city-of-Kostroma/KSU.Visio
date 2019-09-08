@@ -35,10 +35,15 @@ namespace KSU.Visio
             Size size = new Size(objectsPanel.Size.Width / 2, objectsPanel.Size.Height / 7);
             //Начинаем добавлять элементы на панель элементов
             AddFigureInObjectPanel(new Actor(location, size));
+            AddFigureInObjectPanel(new Continuation(location, size));
+            AddFigureInObjectPanel(new Life_line(location, size));
+            AddFigureInObjectPanel(new White_rectangle(location, size));
+            AddFigureInObjectPanel(new Instance_specification(location, size));
             AddFigureInObjectPanel(new Frame(location, size));
             AddFigureInObjectPanel(new Line(location, location + size));
             AddFigureInObjectPanel(new Line(location, location + size, new LineCapBase(), new LostMessageCap()));
             AddFigureInObjectPanel(new Line(location, location + size, new LineCapBase(), new AsynchronousMessageCap()));
+            AddFigureInObjectPanel(new Line(location, location + size, new LineCapBase(), new LostMessageCap()));
         }
 
         protected void AddFigureInObjectPanel(Figure figure)
