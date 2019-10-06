@@ -1,7 +1,0 @@
-<?xml version="1.0"?>
-<painter xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Fname>Leonid</Fname>
-  <Lname>Gorev</Lname>
-  <Gender>true</Gender>
-  <Age>19</Age>
-</painter>
