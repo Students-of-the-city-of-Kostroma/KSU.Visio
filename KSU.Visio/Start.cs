@@ -1,32 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
+﻿using KSU.Visio.Lib;
+using KSU.Visio.Lib.StateDiagram;
+using System;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
 using System.Windows.Forms;
-using System.Reflection;
-using KSU.Visio.Lib;
-using KSU.Visio.Lib.Cap;
 
 namespace KSU.Visio
 {
     public partial class Start : Form
     {
-        Canvas canvas;
+        Emulator emulator;
 
         public Start()
         {
             InitializeComponent();
-            canvas = new Canvas(canvasPB.Size);
-            canvas.Changed += Canvas_Changed;
+            emulator = Emulator.LoadFromXMLFile();
+            emulator.Changed += Canvas_Changed;
+            UpdateImage();
+        }
+
+        void UpdateImage()
+        {
+            canvasPB.Image = emulator.Image;
         }
 
         private void Canvas_Changed(object sender, EventArgs e)
         {
-            canvasPB.Image = canvas.Image;
+            UpdateImage();
         }
 
         private void Start_Load(object sender, EventArgs e)
@@ -34,28 +34,61 @@ namespace KSU.Visio
             Point location = new Point(0, 0);
             Size size = new Size(objectsPanel.Size.Width / 2, objectsPanel.Size.Height / 7);
             //Начинаем добавлять элементы на панель элементов
-            AddFigureInObjectPanel(new Actor(location, size));
-            AddFigureInObjectPanel(new Continuation(location, size));
-            AddFigureInObjectPanel(new Life_line(location, size));
-            AddFigureInObjectPanel(new White_rectangle(location, size));
-            AddFigureInObjectPanel(new Instance_specification(location, size));
-            AddFigureInObjectPanel(new Frame(location, size));
-            AddFigureInObjectPanel(new Line(location, location + size));
-            AddFigureInObjectPanel(new Line(location, location + size, new LineCapBase(), new LostMessageCap()));
-            AddFigureInObjectPanel(new Line(location, location + size, new LineCapBase(), new AsynchronousMessageCap()));
-            AddFigureInObjectPanel(new Line(location, location + size, new LostMessageCap(), new LineCapBase()));
+            State state = new State(location, size) { Name = "Name" };
+            Synchronizer synchronizer =new Synchronizer(location, size);
+            Transfer transfer = new Transfer(state, synchronizer)
+            { 
+                Expression = "\r\n//Здесь должен быть какой-то код на C#\r\n"
+            };
+
+            //emulator.AddFigure(state);
+            //emulator.AddFigure(synchronizer);
+            //emulator.Transfers.Add(transfer);
+   
+
+
+
+            //AddFigureInObjectPanel(new Actor(location, size));
+            //AddFigureInObjectPanel(new Continuation(location, size));
+            //AddFigureInObjectPanel(new Life_line(location, size));
+            //AddFigureInObjectPanel(new White_rectangle(location, size));
+            //AddFigureInObjectPanel(new Instance_specification(location, size));
+            //AddFigureInObjectPanel(new Frame(location, size));
+            //AddFigureInObjectPanel(new Line(location, location + size));
+            //AddFigureInObjectPanel(new Line(location, location + size, new LineCapBase(), new LostMessageCap()));
+            //AddFigureInObjectPanel(new Line(location, location + size, new LineCapBase(), new AsynchronousMessageCap()));
+            //AddFigureInObjectPanel(new Line(location, location + size, new LostMessageCap(), new LineCapBase()));
+
+
         }
 
-        protected void AddFigureInObjectPanel(Figure figure)
+        protected void AddFigureInObjectPanel(Object ob)
         {
-            figure.Changed += Figure_Changed;
-            PictureBox pb = new PictureBox();
-            pb.Size = figure.Size;
-            pb.Image = figure.GetImage();
-            pb.Margin = new Padding(0);
-            pb.Tag = figure;
-            pb.Click += Pb_Click;
-            objectsPanel.Controls.Add(pb);
+            if (ob is Figure figure)
+            {
+                figure.Changed += Figure_Changed;
+                PictureBox pb = new PictureBox
+                {
+                    Size = figure.Size,
+                    Image = figure.GetImage(),
+                    Margin = new Padding(0),
+                    Tag = figure
+                };
+                pb.Click += Pb_Click;
+                objectsPanel.Controls.Add(pb);
+            }
+            if(ob is Transfer transfer)
+            {
+                PictureBox pb = new PictureBox
+                {
+                    Size = new Size(transfer.End.Location),
+                    Image = transfer.GetImage(),
+                    Margin = new Padding(0),
+                    Tag = transfer
+                };
+                pb.Click += Pb_Click;
+                objectsPanel.Controls.Add(pb);
+            }
         }
 
         private void Figure_Changed(object sender, EventArgs e)
@@ -66,10 +99,14 @@ namespace KSU.Visio
                 selectedPB.Image = figure.GetImage();
             }
         }
-        /// <summary>
-        /// выделенный объект который будет рисоваться на холсте
-        /// </summary>
-        PictureBox selectedPB = null;
+
+#pragma warning disable IDE0069 // Следует высвобождать высвобождаемые поля
+                               /// <summary>
+                               /// выделенный объект который будет рисоваться на холсте
+                               /// </summary>
+        private PictureBox selectedPB = null;
+#pragma warning restore IDE0069 // Следует высвобождать высвобождаемые поля
+       
         private void Pb_Click(object sender, EventArgs e)
         {
             canvasPB.Cursor = Cursors.Cross;
@@ -81,7 +118,7 @@ namespace KSU.Visio
             canvasPB.Tag = figure.Clone();
         }
         Point? mouseDownLocation = null;
-        private void canvasPB_MouseDown(object sender, MouseEventArgs e)
+        private void CanvasPB_MouseDown(object sender, MouseEventArgs e)
         {
             if(selectedPB  != null && canvasPB.Tag != null)
             {
@@ -89,18 +126,17 @@ namespace KSU.Visio
                 Figure figure = (Figure)canvasPB.Tag;
                 figure.Location = e.Location;
                 figure.Size = new Size(0, 0);
-                canvas.AddFigure(figure);
+                emulator.AddFigure(figure);
             }
         }
 
-        private void canvasPB_MouseMove(object sender, MouseEventArgs e)
+        private void CanvasPB_MouseMove(object sender, MouseEventArgs e)
         {
             if (canvasPB.Tag != null && mouseDownLocation != null)
             {
                 Figure figure = (Figure)canvasPB.Tag;
-                if (figure.GetType() == typeof(Line))
+                if (figure is Line line)
                 {
-                    Line line = (Line)figure;
                     line.Start = (Point)mouseDownLocation;
                     line.End = e.Location;
                 }
@@ -112,11 +148,10 @@ namespace KSU.Visio
             }
         }
 
-        private void canvasPB_MouseUp(object sender, MouseEventArgs e)
+        private void CanvasPB_MouseUp(object sender, MouseEventArgs e)
         {
             if (mouseDownLocation != null && selectedPB != null && canvasPB.Tag != null)
             {
-                
                 canvasPB.Cursor = Cursors.Default;
                 mouseDownLocation = null;
                 Figure figure = (Figure)selectedPB.Tag;
@@ -126,6 +161,11 @@ namespace KSU.Visio
                 figure.Selected = false;
                 canvasPB.Tag = null;
             }
+        }
+
+        private void Start_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            emulator.SaveToXMLFile();
         }
     }
 }

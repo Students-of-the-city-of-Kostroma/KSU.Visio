@@ -5,6 +5,8 @@ using System.Text;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using KSU.Visio.Lib.Cap;
+using System.Xml.Serialization;
+using System.Xml;
 
 namespace KSU.Visio.Lib
 {
@@ -94,7 +96,25 @@ namespace KSU.Visio.Lib
             }
         }
 
-
+        public Line (XmlNode line) : base (line)
+        {
+            XmlNode startXML = line.SelectSingleNode("Start");
+            this.Start =
+                (startXML == null) ?
+                    new Point() :
+                    new Point(
+                        int.Parse(startXML.Attributes["x"].Value),
+                        int.Parse(startXML.Attributes["y"].Value));
+            XmlNode endXML = line.SelectSingleNode("End");
+            this.End =
+                (endXML == null) ?
+                    new Point() :
+                    new Point(
+                        int.Parse(endXML.Attributes["x"].Value),
+                        int.Parse(endXML.Attributes["y"].Value));
+            StartLineCap = new LineCapBase();
+            EndLineCap = new LineCapBase();
+        }
 
         public Line(Point start, Point end,
             LineCapBase startLineCap = null,
@@ -111,7 +131,7 @@ namespace KSU.Visio.Lib
 
         public override Figure Clone()
         {
-            Figure figure = new Line(Location, Location, startLineCap, endLineCap);
+            Figure figure = new Line(start, end, startLineCap, endLineCap);
             figure.Selected = Selected;
             return figure;
         }
@@ -130,6 +150,17 @@ namespace KSU.Visio.Lib
 
             s.Dispose();
             e.Dispose();
+        }
+        public override XmlNode ToXml(XmlDocument xml)
+        {
+            XmlNode lineXml = base.ToXml(xml);
+
+            XmlNode startXML = Xml.XmlConvert.ToXmlNode(xml, start, "Start");
+            XmlNode endXML = Xml.XmlConvert.ToXmlNode(xml, end, "End");
+
+            lineXml.AppendChild(startXML);
+            lineXml.AppendChild(endXML);
+            return lineXml;
         }
     }
 }

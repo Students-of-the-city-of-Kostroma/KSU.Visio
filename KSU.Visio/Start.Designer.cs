@@ -66,9 +66,9 @@
             this.canvasPB.Size = new System.Drawing.Size(626, 512);
             this.canvasPB.TabIndex = 1;
             this.canvasPB.TabStop = false;
-            this.canvasPB.MouseDown += new System.Windows.Forms.MouseEventHandler(this.canvasPB_MouseDown);
-            this.canvasPB.MouseMove += new System.Windows.Forms.MouseEventHandler(this.canvasPB_MouseMove);
-            this.canvasPB.MouseUp += new System.Windows.Forms.MouseEventHandler(this.canvasPB_MouseUp);
+            this.canvasPB.MouseDown += new System.Windows.Forms.MouseEventHandler(this.CanvasPB_MouseDown);
+            this.canvasPB.MouseMove += new System.Windows.Forms.MouseEventHandler(this.CanvasPB_MouseMove);
+            this.canvasPB.MouseUp += new System.Windows.Forms.MouseEventHandler(this.CanvasPB_MouseUp);
             // 
             // Start
             // 
@@ -81,6 +81,7 @@
             this.MinimumSize = new System.Drawing.Size(766, 574);
             this.Name = "Start";
             this.Text = "KSU.Visio";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Start_FormClosed);
             this.Load += new System.EventHandler(this.Start_Load);
             this.groupBox1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.canvasPB)).EndInit();

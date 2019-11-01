@@ -3,11 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Drawing;
+using System.Xml;
+using KSU.Visio.Lib.StateDiagram;
 
 namespace KSU.Visio.Lib
 {
+    [Serializable]
     public abstract class Figure
     {
+        public Guid ID => id;
+        protected Guid id;
         public abstract Figure Clone();
 
         public static Size PointsToSize(Point p1, Point p2)
@@ -44,6 +49,21 @@ namespace KSU.Visio.Lib
             Changed?.Invoke(this, new EventArgs());
         }
 
+        public virtual XmlNode ToXml(XmlDocument xml)
+        {
+            XmlNode figureXML = xml.CreateNode(XmlNodeType.Element, GetType().Name, "");
+            XmlNode locationtXML = Xml.XmlConvert.ToXmlNode(xml, this.location);
+            XmlNode sizeXML = Xml.XmlConvert.ToXmlNode(xml, this.size);
+            XmlAttribute idXML = xml.CreateAttribute("id");
+            idXML.Value = id.ToString();
+
+            figureXML.Attributes.Append(idXML);
+            figureXML.AppendChild(locationtXML);
+            figureXML.AppendChild(sizeXML);
+
+            return figureXML;
+        }
+
         public Point Location
         {
             get { return location; }
@@ -70,11 +90,23 @@ namespace KSU.Visio.Lib
             }
         }
 
+        public Figure(XmlNode figureXML)
+        {
+            this.Location = Xml.XmlConvert.XmlNodeToPoint(
+                figureXML.SelectSingleNode("Location"));
+            
+            this.Size = Xml.XmlConvert.XmlNodeToSize(
+                figureXML.SelectSingleNode("Size"));
+
+            this.id = new Guid(figureXML.Attributes["id"].Value);
+        }
+
         public Figure(Point location, Size size)
         {
             this.Location = location;
             this.size = size;
-		}
+            id = Guid.NewGuid();
+        }
         /// <summary>
         /// Вернет изображение размеров с фигуру с изображением фигуры
         /// </summary>
@@ -88,7 +120,10 @@ namespace KSU.Visio.Lib
             gr.Dispose();
             return bm;
         }
-
+        public Rectangle ToRectangle()
+        {
+            return new Rectangle(location, size);
+        }
         /// <summary>
         /// перо для рисования выделенного объекта
         /// </summary>
@@ -97,6 +132,8 @@ namespace KSU.Visio.Lib
         /// перо для рисования объекта
         /// </summary>
         protected Pen pen = new Pen(Color.Black, 1);
+        protected Font font = new Font("Arial", 14f);
+        protected Brush brush = new SolidBrush(Color.Black);
 
         /// <summary>
         /// Предварительная прорисовка объекта
