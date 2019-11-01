@@ -28,7 +28,7 @@ namespace KSU.Visio
                 Synchronizer synchronizer = new Synchronizer(location, size);
                 Transfer transfer = new Transfer(state, synchronizer)
                 {
-                    Expression = "\r\n//Здесь должен быть какой-то код на C#\r\n"
+                    Expression = "//Здесь должен быть какой-то код на C#"
                 };
                 emulator.AddFigure(state);
                 emulator.AddFigure(synchronizer);
