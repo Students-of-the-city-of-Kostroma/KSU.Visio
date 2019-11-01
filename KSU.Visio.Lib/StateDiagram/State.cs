@@ -42,7 +42,7 @@ namespace KSU.Visio.Lib.StateDiagram
 
             XmlAttribute stateXMLname = xml.CreateAttribute("name");
             stateXMLname.Value = Name;
-            stateXML.Attributes.Append(stateXMLname);
+            stateXML.Attributes.InsertBefore(stateXMLname,(XmlAttribute)stateXML.Attributes.Item(0));
 
             return stateXML;
         }

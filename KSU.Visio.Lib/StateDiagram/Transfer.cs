@@ -90,7 +90,7 @@ namespace KSU.Visio.Lib.StateDiagram
         {
             XmlNode transferXML = xml.CreateNode(XmlNodeType.Element, "Transfer", "");
 
-            XmlNode expressionXml = xml.CreateNode(XmlNodeType.Text, "Expression", "");
+            XmlNode expressionXml = xml.CreateNode(XmlNodeType.Element, "Expression", "");
             expressionXml.Value = Expression;
 
             transferXML.AppendChild(expressionXml);

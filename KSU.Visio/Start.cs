@@ -14,7 +14,26 @@ namespace KSU.Visio
         public Start()
         {
             InitializeComponent();
-            emulator = Emulator.LoadFromXMLFile();
+            try
+            {
+                emulator = Emulator.LoadFromXMLFile();
+            }
+            catch
+            {
+                emulator = new Emulator(canvasPB.Size);
+                Point location = new Point(0, 0);
+                Size size = new Size(objectsPanel.Size.Width / 2, objectsPanel.Size.Height / 7);
+                //Начинаем добавлять элементы на панель элементов
+                State state = new State(location, size) { Name = "Name" };
+                Synchronizer synchronizer = new Synchronizer(location, size);
+                Transfer transfer = new Transfer(state, synchronizer)
+                {
+                    Expression = "\r\n//Здесь должен быть какой-то код на C#\r\n"
+                };
+                emulator.AddFigure(state);
+                emulator.AddFigure(synchronizer);
+                emulator.Transfers.Add(transfer);
+            }
             emulator.Changed += Canvas_Changed;
             UpdateImage();
         }
@@ -31,20 +50,12 @@ namespace KSU.Visio
 
         private void Start_Load(object sender, EventArgs e)
         {
-            Point location = new Point(0, 0);
-            Size size = new Size(objectsPanel.Size.Width / 2, objectsPanel.Size.Height / 7);
-            //Начинаем добавлять элементы на панель элементов
-            State state = new State(location, size) { Name = "Name" };
-            Synchronizer synchronizer =new Synchronizer(location, size);
-            Transfer transfer = new Transfer(state, synchronizer)
-            { 
-                Expression = "\r\n//Здесь должен быть какой-то код на C#\r\n"
-            };
+ 
 
-            //emulator.AddFigure(state);
-            //emulator.AddFigure(synchronizer);
-            //emulator.Transfers.Add(transfer);
-   
+            Close();
+
+
+
 
 
 

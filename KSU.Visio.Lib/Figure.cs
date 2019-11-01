@@ -52,14 +52,19 @@ namespace KSU.Visio.Lib
         public virtual XmlNode ToXml(XmlDocument xml)
         {
             XmlNode figureXML = xml.CreateNode(XmlNodeType.Element, GetType().Name, "");
-            XmlNode locationtXML = Xml.XmlConvert.ToXmlNode(xml, this.location);
-            XmlNode sizeXML = Xml.XmlConvert.ToXmlNode(xml, this.size);
+            
+            XmlAttribute locAttr = xml.CreateAttribute("location");
+            locAttr.Value = location.ToString();
+            
+            XmlAttribute sizeAttr = xml.CreateAttribute("size");
+            sizeAttr.Value = size.ToString();
+            
             XmlAttribute idXML = xml.CreateAttribute("id");
             idXML.Value = id.ToString();
 
             figureXML.Attributes.Append(idXML);
-            figureXML.AppendChild(locationtXML);
-            figureXML.AppendChild(sizeXML);
+            figureXML.Attributes.Append(locAttr);
+            figureXML.Attributes.Append(sizeAttr);
 
             return figureXML;
         }
