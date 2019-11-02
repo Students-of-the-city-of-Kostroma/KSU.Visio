@@ -11,16 +11,19 @@ namespace KSU.Visio.Lib
     [Serializable]
     public abstract class Figure
     {
-        public Guid ID => id;
-        protected Guid id;
+        public string Name { get; set; }
+        //public Guid ID => id;
+        //protected Guid id;
         public abstract Figure Clone();
 
         public static Size PointsToSize(Point p1, Point p2)
         {
+            Dictionary<string, object> dic = new Dictionary<string, object>();
             return new Size(
                 Math.Abs(p1.X - p2.X),
                 Math.Abs(p1.Y - p2.Y));
         }
+
         public static Point PointsToLocation(Point p1, Point p2)
         {
             return new Point(
@@ -49,22 +52,28 @@ namespace KSU.Visio.Lib
             Changed?.Invoke(this, new EventArgs());
         }
 
-        public virtual XmlNode ToXml(XmlDocument xml)
+        public virtual XmlNode ToXml(XmlDocument xml, XmlNode root)
         {
             XmlNode figureXML = xml.CreateNode(XmlNodeType.Element, GetType().Name, "");
-            
+
+            XmlAttribute nameAttr = xml.CreateAttribute("name");
+            nameAttr.Value = Name;
+
             XmlAttribute locAttr = xml.CreateAttribute("location");
             locAttr.Value = location.ToString();
             
             XmlAttribute sizeAttr = xml.CreateAttribute("size");
             sizeAttr.Value = size.ToString();
             
-            XmlAttribute idXML = xml.CreateAttribute("id");
-            idXML.Value = id.ToString();
+            //XmlAttribute idXML = xml.CreateAttribute("id");
+            //idXML.Value = id.ToString();
 
-            figureXML.Attributes.Append(idXML);
+            figureXML.Attributes.Append(nameAttr);
+            //figureXML.Attributes.Append(idXML);
             figureXML.Attributes.Append(locAttr);
             figureXML.Attributes.Append(sizeAttr);
+
+            root.AppendChild(figureXML);
 
             return figureXML;
         }
@@ -97,20 +106,22 @@ namespace KSU.Visio.Lib
 
         public Figure(XmlNode figureXML)
         {
+            Name = figureXML.Attributes["name"].Value;
+
             this.Location = Xml.XmlConvert.XmlNodeToPoint(
                 figureXML.SelectSingleNode("Location"));
             
             this.Size = Xml.XmlConvert.XmlNodeToSize(
                 figureXML.SelectSingleNode("Size"));
 
-            this.id = new Guid(figureXML.Attributes["id"].Value);
+            //this.id = new Guid(figureXML.Attributes["id"].Value);
         }
 
         public Figure(Point location, Size size)
         {
             this.Location = location;
             this.size = size;
-            id = Guid.NewGuid();
+            //id = Guid.NewGuid();
         }
         /// <summary>
         /// Вернет изображение размеров с фигуру с изображением фигуры

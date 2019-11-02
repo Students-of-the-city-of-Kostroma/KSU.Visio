@@ -13,7 +13,7 @@ namespace KSU.Visio.Lib
     [Serializable]
     public class Canvas
 	{
-        internal List<Figure> figures = new List<Figure>();
+        public List<Figure> figures = new List<Figure>();
 		public event EventHandler Changed;
 		protected Graphics canvas = null;
         protected Size size;
@@ -27,9 +27,9 @@ namespace KSU.Visio.Lib
             XmlAttribute sizeAttr = xml.CreateAttribute("size");
             sizeAttr.Value = size.ToString(); 
 
-            XmlNode figuresXML = xml.CreateNode(XmlNodeType.Element, "Figures", "");
+            XmlNode figuresXML = xml.CreateNode(XmlNodeType.Element, "Models", "");
             foreach (Figure figure in figures)
-                figuresXML.AppendChild(figure.ToXml(xml));
+                figure.ToXml(xml, figuresXML);
 
             XmlNode root = xml.DocumentElement;
             root.Attributes.Append(sizeAttr);

@@ -14,26 +14,92 @@ namespace KSU.Visio
         public Start()
         {
             InitializeComponent();
-            try
-            {
-                emulator = Emulator.LoadFromXMLFile();
-            }
-            catch
-            {
-                emulator = new Emulator(canvasPB.Size);
-                Point location = new Point(0, 0);
-                Size size = new Size(objectsPanel.Size.Width / 2, objectsPanel.Size.Height / 7);
-                //Начинаем добавлять элементы на панель элементов
-                State state = new State(location, size) { Name = "Name" };
-                Synchronizer synchronizer = new Synchronizer(location, size);
-                Transfer transfer = new Transfer(state, synchronizer)
+            //try
+            //{
+            //    emulator = Emulator.LoadFromXMLFile();
+            //}
+            //catch
+            //{
+            emulator = new Emulator(canvasPB.Size);
+            Point location = new Point(0, 0);
+            Size size = new Size(objectsPanel.Size.Width / 2, objectsPanel.Size.Height / 7);
+            //Начинаем добавлять элементы на панель элементов
+
+            Condition ACP = new Condition(location, size) {
+                Name = "Сессия Auction Call Period", 
+                Active = true
+            };
+            emulator.figures.Add(ACP);
+
+
+            ACP.Conditions.Add(
+                new Condition(location, size)
                 {
-                    Expression = "//Здесь должен быть какой-то код на C#"
-                };
-                emulator.AddFigure(state);
-                emulator.AddFigure(synchronizer);
-                emulator.Transfers.Add(transfer);
-            }
+                    Name = "Началась сессия Auction Call Period"
+                });
+            ACP.Conditions.Add(
+                new Condition(location, size)
+                {
+                    Name = "Выбрана сторона"
+                });
+            ACP.Transfers.Add(
+                new Transfer(
+                    (SDBase)ACP.Conditions[0],
+                    (SDBase)ACP.Conditions[1])
+                {
+                    Name = "Переход к выбору стороны",
+                    Expression = ""
+                });
+            ACP.Conditions.Add(
+                new Condition(location, size)
+                {
+                    Name = "Закончилась сессия Auction Call Period"
+                });
+            ACP.Transfers.Add(
+                new Transfer(
+                    (SDBase)ACP.Conditions[1],
+                    (SDBase)ACP.Conditions[2])
+                {
+                    Name = "Generate inputs"
+                });
+
+            Condition passSide = ACP.Transfers[0].End as Condition;
+            passSide.Conditions.Add(
+                new Condition(location, size)
+                {
+                    Name = "Сторона не выбрана"
+                });
+            passSide.Conditions.Add(
+                new Condition(location, size)
+                {
+                    Name = "Выбрана сторона Bay"
+                });
+            passSide.Conditions.Add(
+                new Condition(location, size)
+                {
+                    Name = "Выбрана сторона Sell"
+                });
+            passSide.Transfers.Add(
+                new Transfer(
+                    passSide.Conditions[0], 
+                    passSide.Conditions[1])
+            {
+                Name = "Выбрать сторону Bay"
+            });
+            passSide.Transfers.Add(
+                new Transfer(
+                    passSide.Conditions[0], 
+                    passSide.Conditions[2])
+            {
+                Name = "Выбрать сторону Sell"
+            });
+
+
+
+
+
+
+            //}
             emulator.Changed += Canvas_Changed;
             UpdateImage();
         }

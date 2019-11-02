@@ -17,8 +17,9 @@ namespace KSU.Visio.Lib.StateDiagram
     /// <summary>
     /// Перемещение
     /// </summary>
-    public class Transfer
+    public class Transfer 
     {
+        public string Name { get; set; }
         protected static string snamespace = "KSU.Visio.Lib.StateDiagram.Transfer";
         protected static string sclass = "Expression";
         protected static string smehod = "Run";
@@ -29,7 +30,7 @@ namespace KSU.Visio.Lib.StateDiagram
             GenerateInMemory = true,
             GenerateExecutable = false
         };
-        protected string sourceBegin = "namespace " + snamespace + "{public class " + sclass + "{public void " + smehod + "(){";
+        protected string sourceBegin = "namespace " + snamespace + "{public class " + sclass + "{public void " + smehod + "(Dictionary dict){";
         protected string sourceEnd = @"}}}";
         /// <summary>
         /// Описание конца линии
@@ -45,12 +46,12 @@ namespace KSU.Visio.Lib.StateDiagram
 
         public Transfer(XmlNode transferXML, Emulator emulator) 
         {
-            string startID = transferXML.Attributes["start"].Value;
-            string endID = transferXML.Attributes["end"].Value;
+            string startName = transferXML.Attributes["start"].Value;
+            string endName = transferXML.Attributes["end"].Value;
             foreach (SDBase figure in emulator.figures)
             {
-                if (figure.ID.ToString() == startID) Start = figure;
-                if (figure.ID.ToString() == endID) End = figure;
+                if (figure.Name == startName) Start = figure;
+                if (figure.Name == endName) End = figure;
             }
             Expression = transferXML.InnerText;
             EndLineCap = new AsynchronousMessageCap();
@@ -74,7 +75,7 @@ namespace KSU.Visio.Lib.StateDiagram
         public SDBase End { get; set; }
         public string Expression { get; set; }
 
-        public void Run()
+        public void Run(Dictionary<string,object> dict)
         {
             CompilerResults results = provider.CompileAssemblyFromSource(compilerParams, sourceBegin + Expression + sourceEnd);
 
@@ -83,12 +84,17 @@ namespace KSU.Visio.Lib.StateDiagram
 
             object o = results.CompiledAssembly.CreateInstance(snamespace + "." + sclass);
             MethodInfo mi = o.GetType().GetMethod(smehod);
-            mi.Invoke(o, null);
+            mi.Invoke(o, new object[] { dict });
         }
 
-        public virtual XmlNode ToXml(XmlDocument xml)
+        public virtual void ToXml(XmlDocument xml, XmlNode transfersXML)
         {
+
             XmlNode transferXML = xml.CreateNode(XmlNodeType.Element, "Transfer", "");
+
+            XmlAttribute nameAttr = xml.CreateAttribute("name");
+            nameAttr.Value = Name;
+            transferXML.Attributes.Append(nameAttr);
 
             XmlNode expressionXml = xml.CreateNode(XmlNodeType.Element, "Expression", "");
             expressionXml.InnerText = Expression;
@@ -98,18 +104,18 @@ namespace KSU.Visio.Lib.StateDiagram
             if (Start != null)
             {
                 XmlAttribute startXML = xml.CreateAttribute("start");
-                startXML.Value = Start.ID.ToString();
+                startXML.Value = Start.Name;
                 transferXML.Attributes.Append(startXML);
             }
 
             if (End != null)
             {
                 XmlAttribute endtXML = xml.CreateAttribute("end");
-                endtXML.Value = End.ID.ToString();
+                endtXML.Value = End.Name;
                 transferXML.Attributes.Append(endtXML);
             }
 
-            return transferXML;
+            transfersXML.AppendChild(transferXML);
         }
 
         public Image GetImage()

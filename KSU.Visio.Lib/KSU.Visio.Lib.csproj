@@ -60,7 +60,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StateDiagram\SDBase.cs" />
     <Compile Include="StateDiagram\Emulator.cs" />
-    <Compile Include="StateDiagram\State.cs" />
+    <Compile Include="StateDiagram\Condition.cs" />
     <Compile Include="StateDiagram\Synchronizer.cs" />
     <Compile Include="StateDiagram\Transfer.cs" />
     <Compile Include="Xml\XmlConvert.cs" />

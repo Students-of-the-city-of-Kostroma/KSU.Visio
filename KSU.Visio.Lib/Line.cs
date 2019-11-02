@@ -151,16 +151,20 @@ namespace KSU.Visio.Lib
             s.Dispose();
             e.Dispose();
         }
-        public override XmlNode ToXml(XmlDocument xml)
+        public override XmlNode ToXml(XmlDocument xml, XmlNode ownerNode)
         {
-            XmlNode lineXml = base.ToXml(xml);
+            XmlNode figureXML = base.ToXml(xml, ownerNode);
 
-            XmlNode startXML = Xml.XmlConvert.ToXmlNode(xml, start, "Start");
-            XmlNode endXML = Xml.XmlConvert.ToXmlNode(xml, end, "End");
+            XmlAttribute sizeAttr = xml.CreateAttribute("size");
+            sizeAttr.Value = size.ToString();
 
-            lineXml.AppendChild(startXML);
-            lineXml.AppendChild(endXML);
-            return lineXml;
+            XmlAttribute locAttr = xml.CreateAttribute("location");
+            locAttr.Value = location.ToString();
+
+            figureXML.Attributes.Append(locAttr);
+            figureXML.Attributes.Append(sizeAttr);
+
+            return figureXML;
         }
     }
 }
