@@ -24,15 +24,15 @@ namespace KSU.Visio.Lib
 
         public virtual void ToXml(XmlDocument xml)
         {
-            XmlAttribute sizeAttr = xml.CreateAttribute("size");
-            sizeAttr.Value = size.ToString(); 
+            //XmlAttribute sizeAttr = xml.CreateAttribute("size");
+            //sizeAttr.Value = size.ToString(); 
 
             XmlNode figuresXML = xml.CreateNode(XmlNodeType.Element, "Models", "");
             foreach (Figure figure in figures)
                 figure.ToXml(xml, figuresXML);
 
             XmlNode root = xml.DocumentElement;
-            root.Attributes.Append(sizeAttr);
+            //root.Attributes.Append(sizeAttr);
             root.AppendChild(figuresXML);            
         }
 

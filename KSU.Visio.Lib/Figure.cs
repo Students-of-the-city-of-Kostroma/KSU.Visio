@@ -59,19 +59,19 @@ namespace KSU.Visio.Lib
             XmlAttribute nameAttr = xml.CreateAttribute("name");
             nameAttr.Value = Name;
 
-            XmlAttribute locAttr = xml.CreateAttribute("location");
-            locAttr.Value = location.ToString();
+            //XmlAttribute locAttr = xml.CreateAttribute("location");
+            //locAttr.Value = location.ToString();
             
-            XmlAttribute sizeAttr = xml.CreateAttribute("size");
-            sizeAttr.Value = size.ToString();
+            //XmlAttribute sizeAttr = xml.CreateAttribute("size");
+            //sizeAttr.Value = size.ToString();
             
             //XmlAttribute idXML = xml.CreateAttribute("id");
             //idXML.Value = id.ToString();
 
             figureXML.Attributes.Append(nameAttr);
             //figureXML.Attributes.Append(idXML);
-            figureXML.Attributes.Append(locAttr);
-            figureXML.Attributes.Append(sizeAttr);
+            //figureXML.Attributes.Append(locAttr);
+            //figureXML.Attributes.Append(sizeAttr);
 
             root.AppendChild(figureXML);
 

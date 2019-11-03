@@ -13,33 +13,78 @@ namespace KSU.Visio.Lib.StateDiagram
     /// </summary>
     public class Condition : SDBase
     {
+        /// <summary>
+        /// Хранит сведения о переходе на нижний слой после перехода в это состяние
+        /// </summary>
+        public bool Dived { get; set; }
+        /// <summary>
+        /// список входящих переходов
+        /// </summary>
+        public List<Transfer> Inputs { get; set; }
+        /// <summary>
+        /// список исходящих переходов
+        /// </summary>
+        public List<Transfer> Outputs { get; set; }
+        /// <summary>
+        /// В этом состянии находится модель
+        /// </summary>
         public bool Active { get; set; }
+        /// <summary>
+        /// Является начальной позицией на этом слое модели
+        /// </summary>
+        public bool Starting { get; set; }
+        /// <summary>
+        /// является конечной позицей на этом слое модели
+        /// </summary>
+        public bool Ending { get; set; }
+        /// <summary>
+        /// состояния входящие в подслой этого слоя
+        /// </summary>
         public List<Condition> Conditions { get; set; }
+        /// <summary>
+        /// переходя входящие в подслой этого состояния
+        /// </summary>
         public List<Transfer> Transfers { get; set; }
         public Condition(XmlNode stateXML) : base (stateXML)
         {
-            Conditions = new List<Condition>();
-            Transfers = new List<Transfer>();
+            Init();
         }
-
-        public Condition(Point location, Size size) : base(location, size)
+        void Init()
         {
             Conditions = new List<Condition>();
             Transfers = new List<Transfer>();
+            Inputs = new List<Transfer>();
+            Outputs = new List<Transfer>();
+        }
+        public Condition(Point location, Size size) : base(location, size)
+        {
+            Init();
         }
 
 
         //public Condition Owner { get; set; }
-        public bool Status { get; set; }
+
         
 
         public override XmlNode ToXml(XmlDocument xml, XmlNode stateXML)
         {
             XmlNode figureXml = base.ToXml(xml, stateXML);
 
-            XmlAttribute activeAttr = xml.CreateAttribute("active");
-            activeAttr.Value = Active.ToString();
-            figureXml.Attributes.Append(activeAttr);
+            XmlAttribute attr = xml.CreateAttribute("active");
+            attr.Value = Active.ToString();
+            figureXml.Attributes.Append(attr);
+
+            attr = xml.CreateAttribute("dived");
+            attr.Value = this.Dived.ToString();
+            figureXml.Attributes.Append(attr);
+
+            attr = xml.CreateAttribute("starting");
+            attr.Value = this.Starting.ToString();
+            figureXml.Attributes.Append(attr);
+
+            attr = xml.CreateAttribute("ending");
+            attr.Value = this.Ending.ToString();
+            figureXml.Attributes.Append(attr);
 
             foreach (Condition state in Conditions)
                 state.ToXml(xml, figureXml);

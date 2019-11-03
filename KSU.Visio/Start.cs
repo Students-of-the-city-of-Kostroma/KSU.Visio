@@ -1,6 +1,7 @@
 ﻿using KSU.Visio.Lib;
 using KSU.Visio.Lib.StateDiagram;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
@@ -25,79 +26,44 @@ namespace KSU.Visio
             Size size = new Size(objectsPanel.Size.Width / 2, objectsPanel.Size.Height / 7);
             //Начинаем добавлять элементы на панель элементов
 
-            Condition ACP = new Condition(location, size) {
-                Name = "Сессия Auction Call Period", 
-                Active = true
-            };
+            Condition ACP = new Condition(location, size){Name = "Сессия Auction Call Period", Active = true, Starting = true, Ending = true};
             emulator.figures.Add(ACP);
 
+            Condition ACP_c0 = new Condition(location, size){Name = "Началась сессия Auction Call Period",Starting = true};
+            ACP.Conditions.Add(ACP_c0);
 
-            ACP.Conditions.Add(
-                new Condition(location, size)
-                {
-                    Name = "Началась сессия Auction Call Period"
-                });
-            ACP.Conditions.Add(
-                new Condition(location, size)
-                {
-                    Name = "Выбрана сторона"
-                });
-            ACP.Transfers.Add(
-                new Transfer(
-                    (SDBase)ACP.Conditions[0],
-                    (SDBase)ACP.Conditions[1])
-                {
-                    Name = "Переход к выбору стороны",
-                    Expression = ""
-                });
-            ACP.Conditions.Add(
-                new Condition(location, size)
-                {
-                    Name = "Закончилась сессия Auction Call Period"
-                });
-            ACP.Transfers.Add(
-                new Transfer(
-                    (SDBase)ACP.Conditions[1],
-                    (SDBase)ACP.Conditions[2])
-                {
-                    Name = "Generate inputs"
-                });
+            Condition ACP_c1 = new Condition(location, size){Name = "Выбрана сторона"};
+            ACP.Conditions.Add(ACP_c1);
 
-            Condition passSide = ACP.Transfers[0].End as Condition;
-            passSide.Conditions.Add(
-                new Condition(location, size)
-                {
-                    Name = "Сторона не выбрана"
-                });
-            passSide.Conditions.Add(
-                new Condition(location, size)
-                {
-                    Name = "Выбрана сторона Bay"
-                });
-            passSide.Conditions.Add(
-                new Condition(location, size)
-                {
-                    Name = "Выбрана сторона Sell"
-                });
-            passSide.Transfers.Add(
-                new Transfer(
-                    passSide.Conditions[0], 
-                    passSide.Conditions[1])
-            {
-                Name = "Выбрать сторону Bay"
-            });
-            passSide.Transfers.Add(
-                new Transfer(
-                    passSide.Conditions[0], 
-                    passSide.Conditions[2])
-            {
-                Name = "Выбрать сторону Sell"
-            });
+            Transfer ACP_t0 = new Transfer(){ Name = "Переход к выбору стороны",Expression = "dict.Add(\"testKey\", \"testValue\");" };
+            ACP.Transfers.Add(ACP_t0);            
+            Transfer.SetLink(ACP_c0, ACP_t0, ACP_c1);
 
+            Condition ACP_c2 = new Condition(location, size){Name = "Закончилась сессия Auction Call Period", Ending = true};
+            ACP.Conditions.Add(ACP_c2);
 
+            Transfer ACP_t1 = new Transfer() { Name = "Generate inputs"};
+            ACP.Transfers.Add(ACP_t1);
+            Transfer.SetLink(ACP_c1, ACP_t1, ACP_c2);
 
+            Condition ACP_c1_c0 = new Condition(location, size){Name = "Сторона не выбрана",Starting = true};
+            ACP_c1.Conditions.Add(ACP_c1_c0);
 
+            Condition ACP_c1_c1 = new Condition(location, size){Name = "Выбрана сторона Bay", Ending = true};
+            ACP_c1.Conditions.Add(ACP_c1_c1);
 
+            Condition ACP_c1_c2 = new Condition(location, size){Name = "Выбрана сторона Sell", Ending = true};
+            ACP_c1.Conditions.Add(ACP_c1_c2);
+
+            Transfer ACP_c1_t0 = new Transfer(){Name = "Выбрать сторону Bay"};
+            ACP_c1.Transfers.Add(ACP_c1_t0);
+            Transfer.SetLink(ACP_c1_c0, ACP_c1_t0, ACP_c1_c1);
+
+            Transfer ACP_c1_t1 = new Transfer(){Name = "Выбрать сторону Sell"};
+            ACP_c1.Transfers.Add(ACP_c1_t1);
+            Transfer.SetLink(ACP_c1_c0, ACP_c1_t1, ACP_c1_c2);
+
+            emulator.Run();
 
             //}
             emulator.Changed += Canvas_Changed;
@@ -150,18 +116,6 @@ namespace KSU.Visio
                     Image = figure.GetImage(),
                     Margin = new Padding(0),
                     Tag = figure
-                };
-                pb.Click += Pb_Click;
-                objectsPanel.Controls.Add(pb);
-            }
-            if(ob is Transfer transfer)
-            {
-                PictureBox pb = new PictureBox
-                {
-                    Size = new Size(transfer.End.Location),
-                    Image = transfer.GetImage(),
-                    Margin = new Padding(0),
-                    Tag = transfer
                 };
                 pb.Click += Pb_Click;
                 objectsPanel.Controls.Add(pb);

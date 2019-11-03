@@ -19,6 +19,10 @@ namespace KSU.Visio.Lib.StateDiagram
     /// </summary>
     public class Transfer 
     {
+        /// <summary>
+        /// вероятность перехода
+        /// </summary>
+        public double Probability { get; set; }
         public string Name { get; set; }
         protected static string snamespace = "KSU.Visio.Lib.StateDiagram.Transfer";
         protected static string sclass = "Expression";
@@ -30,31 +34,45 @@ namespace KSU.Visio.Lib.StateDiagram
             GenerateInMemory = true,
             GenerateExecutable = false
         };
-        protected string sourceBegin = "namespace " + snamespace + "{public class " + sclass + "{public void " + smehod + "(Dictionary dict){";
+        protected string sourceBegin = @"
+            using System.Collections.Generic;
+            namespace " + snamespace + "{" +
+            "public class " + sclass + "{" +
+            "public void " + smehod + "(object obj){ " +
+            "Dictionary<string, object> dict = obj as Dictionary<string, object>;";
         protected string sourceEnd = @"}}}";
         /// <summary>
         /// Описание конца линии
         /// </summary>
         protected LineCapBase EndLineCap { get; set; }
 
-        public Transfer(SDBase start, SDBase end)
+        public Transfer()
         {
-            Start = start;
-            End = end;
+            Probability = 1;
             EndLineCap = new AsynchronousMessageCap();
+            Start = new List<Condition>();
+            End = new List<Condition>();
+        }
+
+        public static void SetLink(Condition c1, Transfer t1, Condition c2)
+        {
+            t1.Start.Add(c1);
+            t1.End.Add(c2);
+            c1.Outputs.Add(t1);
+            c1.Inputs.Add(t1);
         }
 
         public Transfer(XmlNode transferXML, Emulator emulator) 
         {
-            string startName = transferXML.Attributes["start"].Value;
-            string endName = transferXML.Attributes["end"].Value;
-            foreach (SDBase figure in emulator.figures)
-            {
-                if (figure.Name == startName) Start = figure;
-                if (figure.Name == endName) End = figure;
-            }
-            Expression = transferXML.InnerText;
-            EndLineCap = new AsynchronousMessageCap();
+            //string startName = transferXML.Attributes["start"].Value;
+            //string endName = transferXML.Attributes["end"].Value;
+            //    foreach (SDBase figure in emulator.figures)
+            //    {
+            //        if (figure.Name == startName) Start = figure;
+            //        if (figure.Name == endName) End = figure;
+            //    }
+            //    Expression = transferXML.InnerText;
+            //    EndLineCap = new AsynchronousMessageCap();
         }
         public void Draw(Graphics gr)
         {
@@ -63,7 +81,7 @@ namespace KSU.Visio.Lib.StateDiagram
             Pen pen = new Pen(Color.Black);
             pen.CustomEndCap = e;
 
-            gr.DrawLine(pen, Start.Location, End.Location);
+            //gr.DrawLine(pen, Start.Location, End.Location);
 
             e.Dispose();
         }
@@ -71,8 +89,8 @@ namespace KSU.Visio.Lib.StateDiagram
         {
             
         }
-        public SDBase Start { get; set; }
-        public SDBase End { get; set; }
+        public List<Condition> Start { get; set; }
+        public List<Condition> End { get; set; }
         public string Expression { get; set; }
 
         public void Run(Dictionary<string,object> dict)
@@ -96,32 +114,39 @@ namespace KSU.Visio.Lib.StateDiagram
             nameAttr.Value = Name;
             transferXML.Attributes.Append(nameAttr);
 
+            foreach (Condition condition in Start)
+            {
+                XmlNode startXML = xml.CreateNode(XmlNodeType.Element, "Start", "");
+                XmlAttribute startNameAttr = xml.CreateAttribute("name");
+                startNameAttr.Value = condition.Name;
+                startXML.Attributes.Append(startNameAttr);
+                transferXML.AppendChild(startXML);
+            }
+
+            foreach (Condition condition in End)
+            {
+                XmlNode startXML = xml.CreateNode(XmlNodeType.Element, "End", "");
+                XmlAttribute startNameAttr = xml.CreateAttribute("name");
+                startNameAttr.Value = condition.Name;
+                startXML.Attributes.Append(startNameAttr);
+                transferXML.AppendChild(startXML);
+            }
+
+
+
+
             XmlNode expressionXml = xml.CreateNode(XmlNodeType.Element, "Expression", "");
             expressionXml.InnerText = Expression;
 
             transferXML.AppendChild(expressionXml);
-
-            if (Start != null)
-            {
-                XmlAttribute startXML = xml.CreateAttribute("start");
-                startXML.Value = Start.Name;
-                transferXML.Attributes.Append(startXML);
-            }
-
-            if (End != null)
-            {
-                XmlAttribute endtXML = xml.CreateAttribute("end");
-                endtXML.Value = End.Name;
-                transferXML.Attributes.Append(endtXML);
-            }
-
             transfersXML.AppendChild(transferXML);
         }
 
         public Image GetImage()
         {
-            Line line = new Line(Start.Location, End.Location, new LineCapBase(), new AsynchronousMessageCap());
-            return line.GetImage();
+            throw new NotImplementedException();
+            //Line line = new Line(Start.Location, End.Location, new LineCapBase(), new AsynchronousMessageCap());
+            //return line.GetImage();
         }
     }
 }
