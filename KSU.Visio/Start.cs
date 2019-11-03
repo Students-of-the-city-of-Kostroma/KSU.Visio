@@ -15,57 +15,59 @@ namespace KSU.Visio
         public Start()
         {
             InitializeComponent();
-            //try
+
+            {
+                emulator = Emulator.LoadFromXMLFile();
+            }
             //{
-            //    emulator = Emulator.LoadFromXMLFile();
+            //    emulator = new Emulator(canvasPB.Size);
+            //    Point location = new Point(0, 0);
+            //    Size size = new Size(objectsPanel.Size.Width / 2, objectsPanel.Size.Height / 7);
+            //    //Начинаем добавлять элементы на панель элементов
+
+            //    Condition ACP = new Condition(location, size) { Name = "Сессия Auction Call Period", Active = true, Starting = true, Ending = true };
+            //    emulator.figures.Add(ACP);
+
+            //    Condition ACP_c0 = new Condition(location, size) { Name = "Началась сессия Auction Call Period", Starting = true, Owner = ACP };
+            //    ACP.Conditions.Add(ACP_c0);
+
+            //    Condition ACP_c1 = new Condition(location, size) { Name = "Выбрана сторона", Owner = ACP };
+            //    ACP.Conditions.Add(ACP_c1);
+
+            //    Transfer ACP_t0 = new Transfer() { Name = "Переход к выбору стороны", Expression = 
+            //        "var testCase = dict[\"TestCase\"];" +
+            //        "var newOrder = new List<Dictionary<string, object>>();" +
+            //        "testCase.Add(newOrder);" };
+            //    ACP.Transfers.Add(ACP_t0);
+            //    Transfer.SetLink(ACP_c0, ACP_t0, ACP_c1);
+
+            //    Condition ACP_c2 = new Condition(location, size) { Name = "Закончилась сессия Auction Call Period", Ending = true, Owner = ACP };
+            //    ACP.Conditions.Add(ACP_c2);
+
+            //    Transfer ACP_t1 = new Transfer() { Name = "Generate inputs", Expression = "dict.Add(\"ACP_t1\", \"Generate inputs\");" };
+            //    ACP.Transfers.Add(ACP_t1);
+            //    Transfer.SetLink(ACP_c1, ACP_t1, ACP_c2);
+
+            //    Condition ACP_c1_c0 = new Condition(location, size) { Name = "Сторона не выбрана", Starting = true, Owner = ACP_c1 };
+            //    ACP_c1.Conditions.Add(ACP_c1_c0);
+
+            //    Condition ACP_c1_c1 = new Condition(location, size) { Name = "Выбрана сторона Bay", Ending = true, Owner = ACP_c1 };
+            //    ACP_c1.Conditions.Add(ACP_c1_c1);
+
+            //    Condition ACP_c1_c2 = new Condition(location, size) { Name = "Выбрана сторона Sell", Ending = true, Owner = ACP_c1 };
+            //    ACP_c1.Conditions.Add(ACP_c1_c2);
+
+            //    Transfer ACP_c1_t0 = new Transfer() { Name = "Выбрать сторону Bay", Expression = "dict.Add(\"ACP_c1_t0\", \"Выбрать сторону Bay\");" };
+            //    ACP_c1.Transfers.Add(ACP_c1_t0);
+            //    Transfer.SetLink(ACP_c1_c0, ACP_c1_t0, ACP_c1_c1);
+
+            //    Transfer ACP_c1_t1 = new Transfer() { Name = "Выбрать сторону Sell", Expression = "dict.Add(\"ACP_c1_t1\", \"Выбрать сторону Sell\");" };
+            //    ACP_c1.Transfers.Add(ACP_c1_t1);
+            //    Transfer.SetLink(ACP_c1_c0, ACP_c1_t1, ACP_c1_c2);
+
+            //    emulator.SaveToXMLFile();
             //}
-            //catch
-            //{
-            emulator = new Emulator(canvasPB.Size);
-            Point location = new Point(0, 0);
-            Size size = new Size(objectsPanel.Size.Width / 2, objectsPanel.Size.Height / 7);
-            //Начинаем добавлять элементы на панель элементов
-
-            Condition ACP = new Condition(location, size){Name = "Сессия Auction Call Period", Active = true, Starting = true, Ending = true};
-            emulator.figures.Add(ACP);
-
-            Condition ACP_c0 = new Condition(location, size){Name = "Началась сессия Auction Call Period",Starting = true};
-            ACP.Conditions.Add(ACP_c0);
-
-            Condition ACP_c1 = new Condition(location, size){Name = "Выбрана сторона"};
-            ACP.Conditions.Add(ACP_c1);
-
-            Transfer ACP_t0 = new Transfer(){ Name = "Переход к выбору стороны",Expression = "dict.Add(\"testKey\", \"testValue\");" };
-            ACP.Transfers.Add(ACP_t0);            
-            Transfer.SetLink(ACP_c0, ACP_t0, ACP_c1);
-
-            Condition ACP_c2 = new Condition(location, size){Name = "Закончилась сессия Auction Call Period", Ending = true};
-            ACP.Conditions.Add(ACP_c2);
-
-            Transfer ACP_t1 = new Transfer() { Name = "Generate inputs"};
-            ACP.Transfers.Add(ACP_t1);
-            Transfer.SetLink(ACP_c1, ACP_t1, ACP_c2);
-
-            Condition ACP_c1_c0 = new Condition(location, size){Name = "Сторона не выбрана",Starting = true};
-            ACP_c1.Conditions.Add(ACP_c1_c0);
-
-            Condition ACP_c1_c1 = new Condition(location, size){Name = "Выбрана сторона Bay", Ending = true};
-            ACP_c1.Conditions.Add(ACP_c1_c1);
-
-            Condition ACP_c1_c2 = new Condition(location, size){Name = "Выбрана сторона Sell", Ending = true};
-            ACP_c1.Conditions.Add(ACP_c1_c2);
-
-            Transfer ACP_c1_t0 = new Transfer(){Name = "Выбрать сторону Bay"};
-            ACP_c1.Transfers.Add(ACP_c1_t0);
-            Transfer.SetLink(ACP_c1_c0, ACP_c1_t0, ACP_c1_c1);
-
-            Transfer ACP_c1_t1 = new Transfer(){Name = "Выбрать сторону Sell"};
-            ACP_c1.Transfers.Add(ACP_c1_t1);
-            Transfer.SetLink(ACP_c1_c0, ACP_c1_t1, ACP_c1_c2);
-
             emulator.Run();
-
-            //}
             emulator.Changed += Canvas_Changed;
             UpdateImage();
         }
@@ -196,7 +198,7 @@ namespace KSU.Visio
 
         private void Start_FormClosed(object sender, FormClosedEventArgs e)
         {
-            emulator.SaveToXMLFile();
+            
         }
     }
 }

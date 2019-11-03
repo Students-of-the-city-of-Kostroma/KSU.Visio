@@ -13,6 +13,7 @@ namespace KSU.Visio.Lib.StateDiagram
     /// </summary>
     public class Condition : SDBase
     {
+        public Condition Owner { get; set; }
         /// <summary>
         /// Хранит сведения о переходе на нижний слой после перехода в это состяние
         /// </summary>
@@ -45,9 +46,63 @@ namespace KSU.Visio.Lib.StateDiagram
         /// переходя входящие в подслой этого состояния
         /// </summary>
         public List<Transfer> Transfers { get; set; }
-        public Condition(XmlNode stateXML) : base (stateXML)
+        public Condition(XmlNode stateXML, Condition owner) : base (stateXML)
         {
             Init();
+
+            Owner = owner;
+
+            XmlAttribute attr = stateXML.Attributes["active"];
+            Active = (attr != null) ? bool.Parse(attr.Value) : false;
+
+            attr = stateXML.Attributes["dived"];
+            Dived = (attr != null) ? bool.Parse(attr.Value) : false;
+
+            attr = stateXML.Attributes["starting"];
+            Starting = (attr != null) ? bool.Parse(attr.Value) : false;
+
+            attr = stateXML.Attributes["ending"];
+            Ending = (attr != null) ? bool.Parse(attr.Value) : false;
+
+            foreach (XmlNode conditionXML in stateXML.SelectNodes("Condition"))
+                Conditions.Add(new Condition(conditionXML, this));
+
+            foreach (XmlNode transferXML in stateXML.SelectNodes("Transfer"))
+            {
+                Transfer tr = new Transfer();
+                tr.Expression = transferXML.SelectSingleNode("Expression").InnerText;
+                tr.Probability = double.Parse(transferXML.Attributes["probability"].Value);
+                tr.Name =transferXML.Attributes["name"].Value;
+                foreach (XmlNode startXML in transferXML.SelectNodes("Start"))
+                {
+                    string nameStart = startXML.Attributes["name"].Value;
+                    foreach (Condition conditions in Conditions)
+                    {
+                        if(conditions.Name == nameStart)
+                        {
+                            tr.Start.Add(conditions);
+                            conditions.Outputs.Add(tr);
+                            break;
+                        }
+                    }
+                }
+                foreach (XmlNode startXML in transferXML.SelectNodes("End"))
+                {
+                    string nameStart = startXML.Attributes["name"].Value;
+                    foreach (Condition conditions in Conditions)
+                    {
+                        if (conditions.Name == nameStart)
+                        {
+                            tr.End.Add(conditions);
+                            conditions.Inputs.Add(tr);
+                            break;
+                        }
+                    }
+                }
+                Transfers.Add(tr);
+
+            }
+
         }
         void Init()
         {

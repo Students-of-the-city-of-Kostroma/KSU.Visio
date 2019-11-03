@@ -8,6 +8,7 @@ namespace KSU.Visio.Lib.StateDiagram
 {
     public class Emulator : Canvas
     {
+        public List<Condition> ActiveCondition { get; set; }
         protected Dictionary<string, object> dict = new Dictionary<string, object>();
         public Emulator(Size size) : base(size)
         {
@@ -30,16 +31,8 @@ namespace KSU.Visio.Lib.StateDiagram
             {
                 XmlNodeList figuresXMLlist = figuresXML.ChildNodes;
                 foreach (XmlNode figureXML in figuresXMLlist)
-                {
-                    Figure figure;
-                    switch (figureXML.Name)
-                    {
-                        case "State": figure = new Condition(figureXML); break;
-                        case "Synchronizer": figure = new Synchronizer(figureXML); break;
-                        default: throw new NotImplementedException();
-                    }
-                    AddFigure(figure);
-                }
+                    AddFigure(new Condition(figureXML,null));
+
             }
             //XmlNode transfersXML = emulatorXML.SelectSingleNode("Transfers");
             //if (transfersXML != null)
@@ -50,9 +43,34 @@ namespace KSU.Visio.Lib.StateDiagram
             //}
             UpdateCanvas();
         }
+        protected void GenerateInputsToCSV()
+        {
+            List<string> header = new List<string>();
+            var testCase = (List<Dictionary<string, object>>)dict["TestCase"];
+            string text = "";
+            foreach (Dictionary<string, object> order in testCase)
+            {
+                List<string> line = new List<string>();
+                foreach (string orderKey in order.Keys)
+                {
+                    int indColumn = header.IndexOf(orderKey);
+                    if (indColumn == -1)
+                    {
+                        header.Add(orderKey);
+                        indColumn = header.Count - 1;
+                    }
+                    while (indColumn >= line.Count) line.Add("");
+                    line[indColumn] = order[orderKey].ToString();
+                }
+                text += string.Join(";", line) + "\r\n";
+            }
+            text = "TEST_CASE_START" + "\r\n" + string.Join(";", header) + "\r\n" + text + "TEST_CASE_END";
+            File.WriteAllText(DateTime.Now.ToString("yyyyMMdd") + ".csv", text);
+        }
         void Init()
         {
-            
+            ActiveCondition = new List<Condition>();
+            dict.Add("TestCase", new List<Dictionary<string, object>>());
         }
         public override void ToXml(XmlDocument xml)
         {
@@ -67,10 +85,16 @@ namespace KSU.Visio.Lib.StateDiagram
         public void Run()
         {
             foreach (Condition condition in figures)
+                if (condition.Active)
+                    ActiveCondition.Add(condition);
+
+            while (ActiveCondition.Count > 0 )
             {
-                Run(condition);
+                Run(ActiveCondition[0]);
             }
+
             SaveText();
+            GenerateInputsToCSV();
         }
 
         private void SaveText()
@@ -83,66 +107,83 @@ namespace KSU.Visio.Lib.StateDiagram
             File.WriteAllText("text.txt", text);
         }
         Random rnd = new Random();
-        private void Run(Condition condition)
+        private void  Run(Condition condition)
         {
+            //если перехода на нижний уровень не осуществлялся и есть нижний уровень
             if (!condition.Dived && condition.Conditions.Count > 0)
             {
+                //поиск стартовых позиций на нижнем уровне
+                List<Condition> startingCondition = new List<Condition>();
                 foreach (Condition condition2 in condition.Conditions)
-                {
+                    //поиска начальных состояний на нижнем уровне
                     if (condition2.Starting)
                     {
+                        ActiveCondition.Add(condition2);
+                        ActiveCondition.Remove(condition);
                         condition.Active = false;
                         condition.Dived = true;
                         condition2.Active = true;
-                        Run(condition2);
-                    }
-                }
+                    }                
             }
             else
             {
-                if (condition.Ending) return;
+                //переход на уровень выше
+                if (condition.Ending)
+                {
+                    condition.Active = false;
+                    ActiveCondition.Remove(condition);
+                    if (condition.Owner != null)
+                    {
+                        condition.Owner.Active = true;
+                        ActiveCondition.Add(condition.Owner);
+                    }
+                }
                 else
                 {
                     List<Transfer> tr = new List<Transfer>();
                     foreach (Transfer transfer in condition.Outputs)
-                    {
                         if (transfer.Start.Count > 0)
                         {
                             bool action = true;
                             foreach (Condition start in transfer.Start)
-                            {
                                 if (!start.Active)
                                 {
                                     action = false;
                                     break;
                                 }
-                            }
                             if (action) tr.Add(transfer);
                         }
                         else continue;
-                    }
-                    if(tr.Count > 0)
+
+                    if (tr.Count > 0)
                     {
                         double summ = 0;
-                        foreach (Transfer transfer in tr)
-                            summ += transfer.Probability;
+                        foreach (Transfer t in tr)
+                            summ += t.Probability;
                         double pro = rnd.NextDouble() * summ;
-                        bool found = false;
-                        foreach (Transfer transfer in tr)
+                        Transfer tt = null;
+                        summ = 0;
+                        foreach (Transfer t in tr)
                         {
-                            summ -= transfer.Probability;
-                            if(summ)
+                            summ += t.Probability;
+                            if (pro < summ)
+                            {
+                                tt = t;
+                                break;
+                            }
                         }
-                            transfer.Run(dict);
-                        foreach (Condition start in transfer.Start)
+                        if (tt == null) tt = tr[tr.Count - 1];
+                        tt.Run(dict);
+                        foreach (Condition start in tt.Start)
                         {
                             start.Active = false;
                             start.Dived = false;
                         }
-                        foreach (Condition end in transfer.End)
+                        foreach (Condition end in tt.End)
                         {
                             end.Active = true;
-                            Run(end);
+                            ActiveCondition.Add(end);
+                            ActiveCondition.Remove(condition);
                         }
                     }
                 }

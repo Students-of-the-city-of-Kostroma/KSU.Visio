@@ -5,6 +5,7 @@ using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -93,16 +94,41 @@ namespace KSU.Visio.Lib.StateDiagram
         public List<Condition> End { get; set; }
         public string Expression { get; set; }
 
-        public void Run(Dictionary<string,object> dict)
+        public void Run(Dictionary<string, object> dict)
         {
+            using (FileStream fs = File.Open(DateTime.Now.ToString("yyyyMMdd") + ".log", FileMode.OpenOrCreate, FileAccess.Write))
+            {
+                using (StreamWriter sw = new StreamWriter(fs))
+                {
+                    sw.BaseStream.Position = sw.BaseStream.Length;
+                    string text = "{";
+                    foreach (Condition condition in Start) text += condition.Name + ",";
+                    text = text.Remove(text.Length - 1) + "}->" + Name + "->{";
+                    foreach (Condition condition in End) text += condition.Name + ",";
+                    text = text.Remove(text.Length - 1) + "}";
+                    sw.WriteLine("INFO|" + DateTime.Now.ToString() + "|" + text);
+                }
+            }
             CompilerResults results = provider.CompileAssemblyFromSource(compilerParams, sourceBegin + Expression + sourceEnd);
 
-            if (results.Errors.Count != 0)
-                throw new Exception("Mission failed!");
-
-            object o = results.CompiledAssembly.CreateInstance(snamespace + "." + sclass);
-            MethodInfo mi = o.GetType().GetMethod(smehod);
-            mi.Invoke(o, new object[] { dict });
+            if (results.Errors.Count >0)
+            {
+                using (FileStream fs = File.Open(DateTime.Now.ToString("yyyyMMdd") + ".log", FileMode.OpenOrCreate, FileAccess.Write))
+                {
+                    using (StreamWriter sw = new StreamWriter(fs))
+                    {
+                        sw.BaseStream.Position = sw.BaseStream.Length;
+                        sw.WriteLine("ERROR|" + DateTime.Now.ToString() + "|" + Name + "|" + results.Errors[0].ErrorText);
+                    }
+                }
+            }
+            else
+            {
+                object o = results.CompiledAssembly.CreateInstance(snamespace + "." + sclass);
+                MethodInfo mi = o.GetType().GetMethod(smehod);
+                mi.Invoke(o, new object[] { dict });
+                this.Probability *= 0.9;
+            }
         }
 
         public virtual void ToXml(XmlDocument xml, XmlNode transfersXML)
@@ -110,9 +136,13 @@ namespace KSU.Visio.Lib.StateDiagram
 
             XmlNode transferXML = xml.CreateNode(XmlNodeType.Element, "Transfer", "");
 
-            XmlAttribute nameAttr = xml.CreateAttribute("name");
-            nameAttr.Value = Name;
-            transferXML.Attributes.Append(nameAttr);
+            XmlAttribute attr = xml.CreateAttribute("name");
+            attr.Value = Name;
+            transferXML.Attributes.Append(attr);
+
+            attr = xml.CreateAttribute("probability");
+            attr.Value = Probability.ToString();
+            transferXML.Attributes.Append(attr);
 
             foreach (Condition condition in Start)
             {
@@ -131,9 +161,6 @@ namespace KSU.Visio.Lib.StateDiagram
                 startXML.Attributes.Append(startNameAttr);
                 transferXML.AppendChild(startXML);
             }
-
-
-
 
             XmlNode expressionXml = xml.CreateNode(XmlNodeType.Element, "Expression", "");
             expressionXml.InnerText = Expression;
