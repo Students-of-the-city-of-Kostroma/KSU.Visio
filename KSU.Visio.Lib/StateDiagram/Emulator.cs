@@ -122,7 +122,7 @@ namespace KSU.Visio.Lib.StateDiagram
                     AddFigure(new Condition(figureXML, null));
             }
         }
-        protected void GenerateInputsToCSV()
+        public static string GenerateInputsToCSV(Dictionary<string, object> dict)
         {
             List<string> header = new List<string>();
             var testComplect = dict["TestComplect"] as List<List<Dictionary<string, object>>>;
@@ -130,9 +130,10 @@ namespace KSU.Visio.Lib.StateDiagram
             foreach (List<Dictionary<string, object>> testCase in testComplect)
             {
                 text += "TEST_CASE_START" + "\r\n";
+                string ordersCSV = "";
                 foreach (Dictionary<string, object> order in testCase)
                 {
-                    List<string> line = new List<string>();
+                    List<string> orderValues = new List<string>();
                     foreach (string orderKey in order.Keys)
                     {
                         int indColumn = header.IndexOf(orderKey);
@@ -141,15 +142,14 @@ namespace KSU.Visio.Lib.StateDiagram
                             header.Add(orderKey);
                             indColumn = header.Count - 1;
                         }
-                        while (indColumn >= line.Count) line.Add("");
-                        line[indColumn] = order[orderKey].ToString();
+                        while (indColumn >= orderValues.Count) orderValues.Add("");
+                        orderValues[indColumn] = order[orderKey].ToString();
                     }
-                    text += string.Join(";", line) + "\r\n";
+                    ordersCSV += string.Join(";", orderValues) + "\r\n";
                 }
-                text += "TEST_CASE_END" + "\r\n";
+                text += string.Join(";", header) + "\r\n" + ordersCSV + "TEST_CASE_END" + "\r\n";
             }
-            text = string.Join(";", header) + "\r\n" + text;
-            File.WriteAllText(DateTime.Now.ToString("yyyyMMdd") + ".csv", text);
+            return text;
         }
         void Init()
         {
@@ -167,21 +167,26 @@ namespace KSU.Visio.Lib.StateDiagram
         }
         public void Run()
         {
-            testComplect.Run();
-            //foreach (Condition condition in figures)
-            //    if (condition.Active)
-            //    {
-            //        condition.Dived = false;
-            //        ActiveCondition.Add(condition);
-            //    }
+            foreach (Condition condition in figures)
+                if (condition.Active)
+                    if (ActiveCondition.IndexOf(condition) == -1)
+                        ActiveCondition.Add(condition);
 
-            while (ActiveCondition.Count > 0)
-            {
-                Run(ActiveCondition[0]);
-            }
+
+            for (int i = 0; ActiveCondition.Count > 0; i++)
+                if (Run(ActiveCondition[i]))
+                    i--;
+                else
+                {
+                    Transfer transfer = ChooseTheBestTransfer(GetAListOfAvailableTransfer());
+                    if (transfer == null) continue;
+
+                    Run(transfer);
+                    i = -1;
+                }
 
             SaveText();
-            GenerateInputsToCSV();
+            File.WriteAllText(DateTime.Now.ToString("yyyyMMdd") + ".csv", GenerateInputsToCSV(dict)); 
         }
 
         private void SaveText()
@@ -194,7 +199,7 @@ namespace KSU.Visio.Lib.StateDiagram
             File.WriteAllText("text.txt", text);
         }
         Random rnd = new Random();
-        internal void Run(Transfer transfer)
+        private void Run(Transfer transfer)
         {
             transfer.Run(dict);
             foreach (Condition start in transfer.Start)
@@ -206,80 +211,127 @@ namespace KSU.Visio.Lib.StateDiagram
             foreach (Condition end in transfer.End)
             {
                 end.Active = true;
-                ActiveCondition.Add(end);
+                if (ActiveCondition.IndexOf(end) == -1)
+                    ActiveCondition.Add(end);
             }
         }
-        protected void Run(Condition condition)
+        /// <summary>
+        /// Получить доступные переходы для этого состояния
+        /// </summary>
+        /// <param name="condition"></param>
+        /// <returns></returns>
+        private List<Transfer> GetAListOfAvailableTransfer()
         {
-            //если перехода на нижний уровень не осуществлялся и есть нижний уровень
-            if (!condition.Dived && condition.Conditions.Count > 0)
-            {
-                //поиск стартовых позиций на нижнем уровне
-                List<Condition> startingCondition = new List<Condition>();
-                foreach (Condition condition2 in condition.Conditions)
-                    //поиска начальных состояний на нижнем уровне
-                    if (condition2.Starting)
+            //списох доступных переходов
+            List<Transfer> transfers = new List<Transfer>();
+            foreach(Condition condition in ActiveCondition)
+                foreach (Transfer transfer in condition.Outputs)
+                    if (transfer.CheckAllTransfer() && transfer.Start.Count > 0)
                     {
-                        ActiveCondition.Add(condition2);
-                        ActiveCondition.Remove(condition);
-                        condition.Active = false;
-                        condition.Dived = true;
-                        condition2.Active = true;
-                    }                
-            }
-            else
-            {
-                //переход на уровень выше
-                if (condition.Ending)
-                {
-                    condition.Active = false;
-                    ActiveCondition.Remove(condition);
-                    if (condition.Owner != null)
-                    {
-                        condition.Owner.Active = true;
-                        ActiveCondition.Add(condition.Owner);
-                    }
-                }
-                else
-                {
-                    //списох доступных переходов
-                    List<Transfer> tr = new List<Transfer>();
-                    foreach (Transfer transfer in condition.Outputs)
-                        if (transfer.CheckAllTransfer() && transfer.Start.Count > 0)
-                        {
-                            bool action = true;
-                            foreach (Condition start in transfer.Start)
-                                if (!start.Active)
-                                {
-                                    action = false;
-                                    break;
-                                }
-                            if (action) tr.Add(transfer);
-                        }
-                        else continue;
-
-                    if (tr.Count > 0)
-                    {
-                        double summ = 0;
-                        foreach (Transfer t in tr)
-                            summ += t.Probability;
-                        double pro = rnd.NextDouble() * summ;
-                        Transfer tt = null;
-                        summ = 0;
-                        foreach (Transfer t in tr)
-                        {
-                            summ += t.Probability;
-                            if (pro < summ)
+                        bool action = true;
+                        foreach (Condition start in transfer.Start)
+                            if (!start.Active)
                             {
-                                tt = t;
+                                action = false;
                                 break;
                             }
-                        }
-                        if (tt == null) tt = tr[tr.Count - 1];
-                        Run(tt);
+                        if (action) 
+                            if(transfers.IndexOf(transfer) == -1)
+                                transfers.Add(transfer);
+                    }
+                    else continue;
+            return transfers;
+ 
+        }
+        /// <summary>
+        /// Ищет наилучший переход
+        /// </summary>
+        /// <param name="transfers"></param>
+        /// <returns></returns>
+        private Transfer ChooseTheBestTransfer(List<Transfer> transfers)
+        {
+            int indT = transfers.IndexOf(testComplect.GetCurrentTransfer());
+            if (indT != -1)
+            {
+                testComplect.NextTransfer();
+                return transfers[indT];
+
+            }
+
+            if (transfers.Count > 0)
+            {
+                double summ = 0;
+                foreach (Transfer t in transfers)
+                    summ += t.Probability;
+                double pro = rnd.NextDouble() * summ;
+                Transfer transfer = null;
+                summ = 0;
+                foreach (Transfer t in transfers)
+                {
+                    summ += t.Probability;
+                    if (pro < summ)
+                    {
+                        transfer = t;
+                        break;
                     }
                 }
+                if (transfer == null) transfer = transfers[transfers.Count - 1];
+                return transfer;
             }
+            else return null;
+        }
+        /// <summary>
+        /// выполняет один переход по уровням
+        /// </summary>
+        /// <param name="condition">вернет истину, если переход состоялся</param>
+        private bool Run(Condition condition)
+        {
+            if (!condition.Dived && condition.Conditions.Count > 0)
+            {
+                ToLevelDown(condition);
+                return true;
+            }
+            else if (condition.Ending)
+            {
+                ToLevelUp(condition);
+                return true;
+            }
+            return false;
+        }
+        /// <summary>
+        /// Перейти на уровень вверх
+        /// </summary>
+        /// <param name="condition"></param>
+        private void ToLevelUp(Condition condition)
+        {
+            condition.Active = false;
+            ActiveCondition.Remove(condition);
+            if (condition.Owner != null)
+            {
+                condition.Owner.Active = true;
+                if (ActiveCondition.IndexOf(condition.Owner) == -1)
+                    ActiveCondition.Add(condition.Owner);
+            }
+        }
+        /// <summary>
+        /// Перейти на уровень вниз
+        /// </summary>
+        /// <param name="condition"></param>
+        private void ToLevelDown(Condition condition)
+        {
+            //поиск стартовых позиций на нижнем уровне
+            List<Condition> startingCondition = new List<Condition>();
+            foreach (Condition condition2 in condition.Conditions)
+                //поиска начальных состояний на нижнем уровне
+                if (condition2.Starting)
+                {
+                    if (ActiveCondition.IndexOf(condition2) == -1)
+                        ActiveCondition.Add(condition2);
+                    ActiveCondition.Remove(condition);
+                    condition.Active = false;
+                    condition.Dived = true;
+                    condition2.Active = true;
+                }
         }
 
         public static Emulator LoadFromXMLFile(string path = "test.xml")

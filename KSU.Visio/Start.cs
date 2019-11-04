@@ -145,7 +145,7 @@ namespace KSU.Visio
         {
             File.Delete(DateTime.Now.ToString("yyyyMMdd") + ".code.log");
             File.Delete(DateTime.Now.ToString("yyyyMMdd") + ".log");
-            File.Delete(DateTime.Now.ToString("yyyyMMdd") + ".csv");
+            //File.Delete(DateTime.Now.ToString("yyyyMMdd") + ".csv");
         }
 
         private void canvasPB_Resize(object sender, EventArgs e)

@@ -6,12 +6,8 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml;
-using System.Xml.Serialization;
 
 namespace KSU.Visio.Lib.StateDiagram
 {
@@ -25,33 +21,52 @@ namespace KSU.Visio.Lib.StateDiagram
         /// </summary>
         public double Probability { get; set; }
         public string Name { get; set; }
-        protected static string snamespace = "KSU.Visio.Lib.StateDiagram.Transfer";
+        protected static string snamespace = "KSU.Visio.Lib.StateDiagram";
         protected static string sclass = "Expression";
         protected static string smehod = "Run";
-        protected static Dictionary<string, string> providerOptions = new Dictionary<string, string> { { "CompilerVersion", "v3.5" } };
+        protected static Dictionary<string, string> providerOptions = new Dictionary<string, string> { { "CompilerVersion", "v4.0" } };
         protected static CSharpCodeProvider provider = new CSharpCodeProvider(providerOptions);
         protected static CompilerParameters compilerParams = new CompilerParameters
         {
             GenerateInMemory = true,
-            GenerateExecutable = false
+            GenerateExecutable = false, 
         };
         protected string sourceBegin = "" +
             "using System.Collections.Generic;" +
             "using System;" +
             "using System.IO;" +
-            "" +
+            "using KSU.Visio.Lib.StateDiagram;" +
+            "\n" +
             "namespace " + snamespace + "{" +
             "public class " + sclass + "{" +
+            "public static string GenerateInputsToCSV(Dictionary<string, object> dict) { " +
+            "List<string> header = new List<string>(); " +
+            "var testComplect = dict[\"TestComplect\"] as List<List<Dictionary<string, object>>>; " +
+            "string text = \"\"; " +
+            "foreach (List<Dictionary<string, object>> testCase in testComplect) { " +
+            "text += \"TEST_CASE_START\" + \"\\r\\n\"; " +
+            "foreach (Dictionary<string, object> order in testCase) { " +
+            "List<string> line = new List<string>(); " +
+            "foreach (string orderKey in order.Keys) { " +
+            "int indColumn = header.IndexOf(orderKey); " +
+            "if (indColumn == -1) { header.Add(orderKey); indColumn = header.Count - 1; } " +
+            "while (indColumn >= line.Count) line.Add(\"\"); " +
+            "line[indColumn] = order[orderKey].ToString(); } " +
+            "text += string.Join(\";\", line) + \"\\r\\n\"; } " +
+            "text += \"TEST_CASE_END\" + \"\\r\\n\"; } " +
+            "text = string.Join(\";\", header) + \"\\r\\n\" + text; return text; }" +
+            ""+
             "public void " + smehod + "(object obj){ " +
-            "try{" +
-            "Dictionary<string, object> dict = obj as Dictionary<string, object>;";
+            "Dictionary<string, object> dict = obj as Dictionary<string, object>;" +
+            "try{";
         protected string sourceEnd = "}catch (Exception ex){" +
             "using (FileStream fs = File.Open(DateTime.Now.ToString(\"yyyyMMdd\") + \".log\", FileMode.OpenOrCreate, FileAccess.Write))" +
             "{" +
                 "using (StreamWriter sw = new StreamWriter(fs))" +
                 "{" +
                     "sw.BaseStream.Position = sw.BaseStream.Length;" +
-                    "sw.WriteLine(\"DEBUG|\" + DateTime.Now.ToString() + \"|\" + ex.Message);"+
+                    "sw.WriteLine(\"DEBUG|\" + DateTime.Now.ToString() + \"|\" + ex.ToString()" +
+            "+\"\\n\"+Emulator.GenerateInputsToCSV(dict));" +
                 "}" +
             "}}}}}";
         /// <summary>
@@ -61,6 +76,7 @@ namespace KSU.Visio.Lib.StateDiagram
 
         public Transfer()
         {
+            Init();
             Probability = 1;
             EndLineCap = new AsynchronousMessageCap();
             Start = new List<Condition>();
@@ -68,6 +84,7 @@ namespace KSU.Visio.Lib.StateDiagram
         }
         public Transfer(XmlNode root, Condition owner)
         {
+            Init();
             Expression = root.SelectSingleNode("Expression").InnerText;
             Probability = double.Parse(root.Attributes["probability"].Value);
             Name = root.Attributes["name"].Value;
@@ -123,7 +140,7 @@ namespace KSU.Visio.Lib.StateDiagram
         }
         void Init()
         {
-            
+            compilerParams.ReferencedAssemblies.Add("KSU.Visio.Lib.dll");
         }
         /// <summary>
         /// Истина, если переход пройден
@@ -178,7 +195,17 @@ namespace KSU.Visio.Lib.StateDiagram
         public List<Condition> Start { get; set; }
         public List<Condition> End { get; set; }
         public string Expression { get; set; }
-
+        private void WriteCodeLog(string source)
+        {
+            using (FileStream fs = File.Open(DateTime.Now.ToString("yyyyMMdd") + ".code.log", FileMode.OpenOrCreate, FileAccess.Write))
+            {
+                using (StreamWriter sw = new StreamWriter(fs))
+                {
+                    sw.BaseStream.Position = sw.BaseStream.Length;
+                    sw.WriteLine(DateTime.Now.ToString() + "|" + Name + "|" + source);
+                }
+            }
+        }
         public void Run(Dictionary<string, object> dict)
         {
             using (FileStream fs = File.Open(DateTime.Now.ToString("yyyyMMdd") + ".log", FileMode.OpenOrCreate, FileAccess.Write))
@@ -197,15 +224,8 @@ namespace KSU.Visio.Lib.StateDiagram
 
             string source = sourceBegin + Expression + sourceEnd;
             CompilerResults results = provider.CompileAssemblyFromSource(compilerParams, source);
+            //WriteCodeLog(source);
 
-            using (FileStream fs = File.Open(DateTime.Now.ToString("yyyyMMdd") + ".code.log", FileMode.OpenOrCreate, FileAccess.Write))
-            {
-                using (StreamWriter sw = new StreamWriter(fs))
-                {
-                    sw.BaseStream.Position = sw.BaseStream.Length;
-                    sw.WriteLine(DateTime.Now.ToString() + "|" + Name + "|" + source);
-                }
-            }
 
             if (results.Errors.Count >0)
             {
@@ -230,7 +250,7 @@ namespace KSU.Visio.Lib.StateDiagram
 
         public virtual void ToXml(XmlDocument xml, XmlNode transfersXML)
         {
-
+            
             XmlNode transferXML = xml.CreateNode(XmlNodeType.Element, "Transfer", "");
 
             XmlAttribute attr = xml.CreateAttribute("name");

@@ -17,10 +17,11 @@ namespace KSU.Visio.Lib.StateDiagram
             foreach (XmlNode transfer in root.SelectNodes("Transfers"))
                 transfers.Add(emulator.SearchTransfer(transfer.Attributes["name"].Value));
         }
-        public void Run()
-        {
-            foreach (Transfer transfer in transfers)
-                emulator.Run(transfer);
-        }
+        //public void Run()
+        //{
+        //    foreach (Transfer transfer in transfers)
+        //        emulator.Run(transfer);
+        //}
+        internal List<Transfer> GetStream() { return transfers; }
     }
 }
