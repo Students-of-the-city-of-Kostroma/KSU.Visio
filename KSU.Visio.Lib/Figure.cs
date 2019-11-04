@@ -148,8 +148,10 @@ namespace KSU.Visio.Lib
         /// перо для рисования объекта
         /// </summary>
         protected Pen pen = new Pen(Color.Black, 1);
-        protected Font font = new Font("Arial", 14f);
+        protected Font font = new Font("Arial", 12f);
         protected Brush brush = new SolidBrush(Color.Black);
+
+
 
         /// <summary>
         /// Предварительная прорисовка объекта

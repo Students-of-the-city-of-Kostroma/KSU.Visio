@@ -17,6 +17,16 @@ namespace KSU.Visio.Lib
 		public event EventHandler Changed;
 		protected Graphics canvas = null;
         protected Size size;
+        public Size Size
+        {
+            get { return size; }
+            set
+            {
+                size = value;
+                Init();
+                UpdatePositionFigures();
+            }
+        }
 
 
 		protected Bitmap image = null;
@@ -40,19 +50,19 @@ namespace KSU.Visio.Lib
         {
             XmlNode emulatorXML = xml.DocumentElement;
             XmlNode sizeXML = emulatorXML.SelectSingleNode("Size");
-            this.size = Xml.XmlConvert.XmlNodeToSize(sizeXML);
+            this.Size = Xml.XmlConvert.XmlNodeToSize(sizeXML);
             Init();
         }
 
 		public Canvas(Size size)
 		{
-			this.size = size;
+			this.Size = size;
             Init();
         }
 
         void Init()
         {
-            this.image = new Bitmap(size.Width, size.Height);
+            this.image = new Bitmap(Size.Width, Size.Height);
             this.canvas = Graphics.FromImage(this.image);
         }
 		~Canvas()
@@ -61,24 +71,30 @@ namespace KSU.Visio.Lib
 		}
 
         public virtual void UpdateCanvas()
-		{
-			canvas.Clear(Color.Transparent);
-			foreach (Figure figure in this.figures)
-				if(figure.Selected)
-                    figure.Draw(canvas);
+        {
+            canvas.Clear(Color.Transparent);
+
             foreach (Figure figure in this.figures)
-                if (!figure.Selected)
-                    figure.Draw(canvas);
+                figure.Draw(canvas);
             Changed?.Invoke(this, new EventArgs());
         }
 
 		public virtual void AddFigure(Figure figure)
 		{
-			this.figures.Add(figure);
-			figure.Changed += Figure_Changed;
+            this.figures.Add(figure);
+            figure.Changed += Figure_Changed;
 			UpdateCanvas();
 		}
-
+        public void UpdatePositionFigures()
+        {
+            Size fSize = new Size(300, 200);
+            for (int i = 0; i < figures.Count; i++)
+            {
+                figures[i].Location = new Point(i * (fSize.Width + 5), 0);
+                figures[i].Size = fSize;
+            }
+            //UpdateCanvas();
+        }
 		private void Figure_Changed(object sender, EventArgs e)
 		{
 			UpdateCanvas();

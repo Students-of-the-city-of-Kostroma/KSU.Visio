@@ -58,11 +58,16 @@
     <Compile Include="Life_line.cs" />
     <Compile Include="Line.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StateDiagram\Postcondition.cs" />
+    <Compile Include="StateDiagram\Precondition.cs" />
     <Compile Include="StateDiagram\SDBase.cs" />
     <Compile Include="StateDiagram\Emulator.cs" />
     <Compile Include="StateDiagram\Condition.cs" />
     <Compile Include="StateDiagram\Synchronizer.cs" />
+    <Compile Include="StateDiagram\TestCase.cs" />
+    <Compile Include="StateDiagram\TestComplect.cs" />
     <Compile Include="StateDiagram\Transfer.cs" />
+    <Compile Include="tmp.cs" />
     <Compile Include="Xml\XmlConvert.cs" />
     <Compile Include="White_rectangle.cs" />
   </ItemGroup>

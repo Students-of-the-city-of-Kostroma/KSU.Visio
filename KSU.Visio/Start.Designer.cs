@@ -63,19 +63,20 @@
             this.canvasPB.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.canvasPB.Location = new System.Drawing.Point(215, 12);
             this.canvasPB.Name = "canvasPB";
-            this.canvasPB.Size = new System.Drawing.Size(626, 512);
+            this.canvasPB.Size = new System.Drawing.Size(717, 512);
             this.canvasPB.TabIndex = 1;
             this.canvasPB.TabStop = false;
             this.canvasPB.MouseDown += new System.Windows.Forms.MouseEventHandler(this.CanvasPB_MouseDown);
             this.canvasPB.MouseMove += new System.Windows.Forms.MouseEventHandler(this.CanvasPB_MouseMove);
             this.canvasPB.MouseUp += new System.Windows.Forms.MouseEventHandler(this.CanvasPB_MouseUp);
+            this.canvasPB.Resize += new System.EventHandler(this.canvasPB_Resize);
             // 
             // Start
             // 
             this.AllowDrop = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(853, 536);
+            this.ClientSize = new System.Drawing.Size(944, 536);
             this.Controls.Add(this.canvasPB);
             this.Controls.Add(this.groupBox1);
             this.MinimumSize = new System.Drawing.Size(766, 574);

@@ -15,62 +15,145 @@ namespace KSU.Visio.Lib.StateDiagram
             Init();
         }
 
+        public Condition SearchCondition(string name)
+        {
+            foreach (Condition condition in this.figures)
+                if (condition.Name == name)
+                    return condition;
+                else
+                {
+                    Condition result = SearchCondition(name, condition);
+                    if (result != null)
+                        return result;
+                }
+            return null;
+        }
+        protected Condition SearchCondition(string name, Condition conditions)
+        {
+            foreach (Condition condition in conditions.Conditions)
+                if (condition.Name == name)
+                    return condition;
+                else
+                {
+                    Condition result = SearchCondition(name, condition);
+                    if (result != null)
+                        return result;
+                }
+            return null;
+        }
+        public Transfer SearchTransfer(string name)
+        {
+            foreach (Condition condition in this.figures)
+            {
+                Transfer result = SearchTransfer(name, condition);
+                if (result != null)
+                    return result;
+            }
+            return null;
+        }
+        protected Transfer SearchTransfer(string name, Condition condition)
+        {
+            foreach (Transfer transfer in condition.Transfers)
+                if (transfer.Name == name)
+                    return transfer;
+            foreach (Condition cond in condition.Conditions)
+            {
+                Transfer tr = SearchTransfer(name, cond);
+                if (tr != null) 
+                    return tr;
+            }
+            return null;
+        }
+
+
         public override void UpdateCanvas()
         {
             base.UpdateCanvas();
 
-            //foreach (Transfer transfer in this.Transfers)
-            //    transfer.Draw(canvas);
+            foreach (Condition figure in this.figures)
+                figure.Draw(canvas);
         }
+        public void ToParent(Condition condition)
+        {
+            if (condition != null && condition.Conditions.Count > 0)
+            {
+                figures.Clear();
+                foreach (Condition cond in condition.Conditions)
+                    AddFigure(cond);
+                UpdatePositionFigures();
+            }
+        }
+        public void ToOwner()
+        {
+            if (figures.Count > 0)
+            {
+                Condition owner = (figures[0] as Condition).Owner;
+                figures.Clear();
+                if (owner.Owner != null)
+                    foreach (Condition condition in owner.Owner.Conditions)
+                        figures.Add(condition);
+                else
+                    figures.Add(owner);
+                UpdatePositionFigures();
+                UpdateCanvas();
+            }
+        }
+        XmlDocument xml;
+        protected TestComplect testComplect;
         public Emulator(XmlDocument xml) : base(xml)
         {
+            this.xml = xml;
             Init();
+            IniXML();
+            XmlNode emulatorXML = xml.DocumentElement;
+            testComplect = new TestComplect(emulatorXML.SelectSingleNode("TestComplect"), this);
+            UpdateCanvas();
+        }
+        private void IniXML()
+        {
+            figures.Clear();
+            ActiveCondition.Clear();
             XmlNode emulatorXML = xml.DocumentElement;
             XmlNode figuresXML = emulatorXML.SelectSingleNode("Models");
             if (figuresXML != null)
             {
                 XmlNodeList figuresXMLlist = figuresXML.ChildNodes;
                 foreach (XmlNode figureXML in figuresXMLlist)
-                    AddFigure(new Condition(figureXML,null));
-
+                    AddFigure(new Condition(figureXML, null));
             }
-            //XmlNode transfersXML = emulatorXML.SelectSingleNode("Transfers");
-            //if (transfersXML != null)
-            //{
-            //    XmlNodeList transfersXMLlist = transfersXML.ChildNodes;
-            //    foreach (XmlNode transferXML in transfersXMLlist)
-            //        Transfers.Add(new Transfer(transferXML, this));
-            //}
-            UpdateCanvas();
         }
         protected void GenerateInputsToCSV()
         {
             List<string> header = new List<string>();
-            var testCase = (List<Dictionary<string, object>>)dict["TestCase"];
+            var testComplect = dict["TestComplect"] as List<List<Dictionary<string, object>>>;
             string text = "";
-            foreach (Dictionary<string, object> order in testCase)
+            foreach (List<Dictionary<string, object>> testCase in testComplect)
             {
-                List<string> line = new List<string>();
-                foreach (string orderKey in order.Keys)
+                text += "TEST_CASE_START" + "\r\n";
+                foreach (Dictionary<string, object> order in testCase)
                 {
-                    int indColumn = header.IndexOf(orderKey);
-                    if (indColumn == -1)
+                    List<string> line = new List<string>();
+                    foreach (string orderKey in order.Keys)
                     {
-                        header.Add(orderKey);
-                        indColumn = header.Count - 1;
+                        int indColumn = header.IndexOf(orderKey);
+                        if (indColumn == -1)
+                        {
+                            header.Add(orderKey);
+                            indColumn = header.Count - 1;
+                        }
+                        while (indColumn >= line.Count) line.Add("");
+                        line[indColumn] = order[orderKey].ToString();
                     }
-                    while (indColumn >= line.Count) line.Add("");
-                    line[indColumn] = order[orderKey].ToString();
+                    text += string.Join(";", line) + "\r\n";
                 }
-                text += string.Join(";", line) + "\r\n";
+                text += "TEST_CASE_END" + "\r\n";
             }
-            text = "TEST_CASE_START" + "\r\n" + string.Join(";", header) + "\r\n" + text + "TEST_CASE_END";
+            text = string.Join(";", header) + "\r\n" + text;
             File.WriteAllText(DateTime.Now.ToString("yyyyMMdd") + ".csv", text);
         }
         void Init()
         {
             ActiveCondition = new List<Condition>();
-            dict.Add("TestCase", new List<Dictionary<string, object>>());
         }
         public override void ToXml(XmlDocument xml)
         {
@@ -84,11 +167,15 @@ namespace KSU.Visio.Lib.StateDiagram
         }
         public void Run()
         {
-            foreach (Condition condition in figures)
-                if (condition.Active)
-                    ActiveCondition.Add(condition);
+            testComplect.Run();
+            //foreach (Condition condition in figures)
+            //    if (condition.Active)
+            //    {
+            //        condition.Dived = false;
+            //        ActiveCondition.Add(condition);
+            //    }
 
-            while (ActiveCondition.Count > 0 )
+            while (ActiveCondition.Count > 0)
             {
                 Run(ActiveCondition[0]);
             }
@@ -107,7 +194,22 @@ namespace KSU.Visio.Lib.StateDiagram
             File.WriteAllText("text.txt", text);
         }
         Random rnd = new Random();
-        private void  Run(Condition condition)
+        internal void Run(Transfer transfer)
+        {
+            transfer.Run(dict);
+            foreach (Condition start in transfer.Start)
+            {
+                start.Active = false;
+                start.Dived = false;
+                ActiveCondition.Remove(start);
+            }
+            foreach (Condition end in transfer.End)
+            {
+                end.Active = true;
+                ActiveCondition.Add(end);
+            }
+        }
+        protected void Run(Condition condition)
         {
             //если перехода на нижний уровень не осуществлялся и есть нижний уровень
             if (!condition.Dived && condition.Conditions.Count > 0)
@@ -140,9 +242,10 @@ namespace KSU.Visio.Lib.StateDiagram
                 }
                 else
                 {
+                    //списох доступных переходов
                     List<Transfer> tr = new List<Transfer>();
                     foreach (Transfer transfer in condition.Outputs)
-                        if (transfer.Start.Count > 0)
+                        if (transfer.CheckAllTransfer() && transfer.Start.Count > 0)
                         {
                             bool action = true;
                             foreach (Condition start in transfer.Start)
@@ -173,18 +276,7 @@ namespace KSU.Visio.Lib.StateDiagram
                             }
                         }
                         if (tt == null) tt = tr[tr.Count - 1];
-                        tt.Run(dict);
-                        foreach (Condition start in tt.Start)
-                        {
-                            start.Active = false;
-                            start.Dived = false;
-                        }
-                        foreach (Condition end in tt.End)
-                        {
-                            end.Active = true;
-                            ActiveCondition.Add(end);
-                            ActiveCondition.Remove(condition);
-                        }
+                        Run(tt);
                     }
                 }
             }

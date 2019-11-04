@@ -73,6 +73,8 @@ namespace KSU.Visio.Lib.StateDiagram
                 tr.Expression = transferXML.SelectSingleNode("Expression").InnerText;
                 tr.Probability = double.Parse(transferXML.Attributes["probability"].Value);
                 tr.Name =transferXML.Attributes["name"].Value;
+                if(transferXML.Attributes["allTransfers"]!=null)
+                    tr.AllTransfers = bool.Parse(transferXML.Attributes["allTransfers"].Value);
                 foreach (XmlNode startXML in transferXML.SelectNodes("Start"))
                 {
                     string nameStart = startXML.Attributes["name"].Value;

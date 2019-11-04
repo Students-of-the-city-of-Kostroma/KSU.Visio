@@ -35,13 +35,25 @@ namespace KSU.Visio.Lib.StateDiagram
             GenerateInMemory = true,
             GenerateExecutable = false
         };
-        protected string sourceBegin = @"
-            using System.Collections.Generic;
-            namespace " + snamespace + "{" +
+        protected string sourceBegin = "" +
+            "using System.Collections.Generic;" +
+            "using System;" +
+            "using System.IO;" +
+            "" +
+            "namespace " + snamespace + "{" +
             "public class " + sclass + "{" +
             "public void " + smehod + "(object obj){ " +
+            "try{" +
             "Dictionary<string, object> dict = obj as Dictionary<string, object>;";
-        protected string sourceEnd = @"}}}";
+        protected string sourceEnd = "}catch (Exception ex){" +
+            "using (FileStream fs = File.Open(DateTime.Now.ToString(\"yyyyMMdd\") + \".log\", FileMode.OpenOrCreate, FileAccess.Write))" +
+            "{" +
+                "using (StreamWriter sw = new StreamWriter(fs))" +
+                "{" +
+                    "sw.BaseStream.Position = sw.BaseStream.Length;" +
+                    "sw.WriteLine(\"DEBUG|\" + DateTime.Now.ToString() + \"|\" + ex.Message);"+
+                "}" +
+            "}}}}}";
         /// <summary>
         /// Описание конца линии
         /// </summary>
@@ -54,7 +66,42 @@ namespace KSU.Visio.Lib.StateDiagram
             Start = new List<Condition>();
             End = new List<Condition>();
         }
+        public Transfer(XmlNode root, Condition owner)
+        {
+            Expression = root.SelectSingleNode("Expression").InnerText;
+            Probability = double.Parse(root.Attributes["probability"].Value);
+            Name = root.Attributes["name"].Value;
+            if (root.Attributes["allTransfers"] != null)
+                AllTransfers = bool.Parse(root.Attributes["allTransfers"].Value);
+            foreach (XmlNode startXML in root.SelectNodes("Start"))
+            {
+                string nameStart = startXML.Attributes["name"].Value;
 
+                foreach (Condition conditions in owner.Conditions)
+                {
+                    if (conditions.Name == nameStart)
+                    {
+                        Start.Add(conditions);
+                        conditions.Outputs.Add(this);
+                        break;
+                    }
+                }
+            }
+            foreach (XmlNode startXML in root.SelectNodes("End"))
+            {
+                string nameStart = startXML.Attributes["name"].Value;
+                foreach (Condition conditions in owner.Conditions)
+                {
+                    if (conditions.Name == nameStart)
+                    {
+                        End.Add(conditions);
+                        conditions.Inputs.Add(this);
+                        break;
+                    }
+                }
+            }
+            owner.Transfers.Add(this);
+        }
         public static void SetLink(Condition c1, Transfer t1, Condition c2)
         {
             t1.Start.Add(c1);
@@ -63,18 +110,6 @@ namespace KSU.Visio.Lib.StateDiagram
             c1.Inputs.Add(t1);
         }
 
-        public Transfer(XmlNode transferXML, Emulator emulator) 
-        {
-            //string startName = transferXML.Attributes["start"].Value;
-            //string endName = transferXML.Attributes["end"].Value;
-            //    foreach (SDBase figure in emulator.figures)
-            //    {
-            //        if (figure.Name == startName) Start = figure;
-            //        if (figure.Name == endName) End = figure;
-            //    }
-            //    Expression = transferXML.InnerText;
-            //    EndLineCap = new AsynchronousMessageCap();
-        }
         public void Draw(Graphics gr)
         {
             CustomLineCap e = EndLineCap.GetCustomLineCap();
@@ -89,6 +124,56 @@ namespace KSU.Visio.Lib.StateDiagram
         void Init()
         {
             
+        }
+        /// <summary>
+        /// Истина, если переход пройден
+        /// </summary>
+        public bool Status { get; set; }
+        /// <summary>
+        /// Если истина, то переход не должен быть выполнен если не пройдены все преджыдущие маршруты
+        /// </summary>
+        public bool AllTransfers { get; set; }
+        /// <summary>
+        /// Проверяет все ли переходы были пройдены
+        /// </summary>
+        /// <returns>Если параметр AllTransfers равен ложь, то метод будет всегда возвращать истину</returns>
+        public bool CheckAllTransfer()
+        {
+            List<string> transfers = new List<string>();
+            if (!AllTransfers) return true;
+            foreach (Condition condition in this.Start)
+            {
+                if (!CheckAllTransfer(condition, transfers)) 
+                    return false;
+            }
+            return true;
+        }
+
+        protected bool CheckAllTransfer(Condition condition, List<string> transfers)
+        {
+            foreach (Transfer transfer in condition.Inputs)
+            {
+                if (transfers.IndexOf(transfer.Name) == -1)
+                {
+                    transfers.Add(transfer.Name);
+                    if (!transfer.Status)
+                        return false;
+                    else
+                    {
+                        foreach (Condition cond in transfer.Start)
+                        {
+                            if (!CheckAllTransfer(cond, transfers))
+                                return false;
+                        }
+                    }
+                }
+            }
+            foreach (Condition cond in condition.Conditions)
+            {
+                if (!CheckAllTransfer(cond, transfers))
+                    return false;
+            }
+            return true;
         }
         public List<Condition> Start { get; set; }
         public List<Condition> End { get; set; }
@@ -109,7 +194,18 @@ namespace KSU.Visio.Lib.StateDiagram
                     sw.WriteLine("INFO|" + DateTime.Now.ToString() + "|" + text);
                 }
             }
-            CompilerResults results = provider.CompileAssemblyFromSource(compilerParams, sourceBegin + Expression + sourceEnd);
+
+            string source = sourceBegin + Expression + sourceEnd;
+            CompilerResults results = provider.CompileAssemblyFromSource(compilerParams, source);
+
+            using (FileStream fs = File.Open(DateTime.Now.ToString("yyyyMMdd") + ".code.log", FileMode.OpenOrCreate, FileAccess.Write))
+            {
+                using (StreamWriter sw = new StreamWriter(fs))
+                {
+                    sw.BaseStream.Position = sw.BaseStream.Length;
+                    sw.WriteLine(DateTime.Now.ToString() + "|" + Name + "|" + source);
+                }
+            }
 
             if (results.Errors.Count >0)
             {
@@ -128,6 +224,7 @@ namespace KSU.Visio.Lib.StateDiagram
                 MethodInfo mi = o.GetType().GetMethod(smehod);
                 mi.Invoke(o, new object[] { dict });
                 this.Probability *= 0.9;
+                this.Status = true;
             }
         }
 
@@ -142,6 +239,14 @@ namespace KSU.Visio.Lib.StateDiagram
 
             attr = xml.CreateAttribute("probability");
             attr.Value = Probability.ToString();
+            transferXML.Attributes.Append(attr);
+
+            attr = xml.CreateAttribute("allTransfers");
+            attr.Value = AllTransfers.ToString();
+            transferXML.Attributes.Append(attr);
+
+            attr = xml.CreateAttribute("status");
+            attr.Value = Status.ToString();
             transferXML.Attributes.Append(attr);
 
             foreach (Condition condition in Start)
