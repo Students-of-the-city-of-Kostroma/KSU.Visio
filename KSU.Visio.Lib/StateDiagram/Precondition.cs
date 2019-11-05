@@ -17,11 +17,6 @@ namespace KSU.Visio.Lib.StateDiagram
             foreach (XmlNode transfer in root.SelectNodes("Transfer"))
                 transfers.Add(emulator.SearchTransfer(transfer.Attributes["name"].Value));
         }
-        //internal void Run()
-        //{
-        //    foreach (Transfer transfer in transfers)
-        //        emulator.Run(transfer);
-        //}
         internal List<Transfer> GetStream() { return transfers; }
     }
 }

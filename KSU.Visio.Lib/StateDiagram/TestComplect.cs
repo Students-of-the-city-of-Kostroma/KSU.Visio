@@ -19,23 +19,21 @@ namespace KSU.Visio.Lib.StateDiagram
         {
             this.emulator = emulator;
             precondition = new Precondition( testComplect.SelectSingleNode("Precondition"), emulator);
-            stream.AddRange(precondition.GetStream());
+            postcondition = new Postcondition(testComplect.SelectSingleNode("Postcondition"), emulator);
+            
             foreach (XmlNode testCaseXML in testComplect.SelectNodes("TestCase"))
             {
                 TestCase testCase = new TestCase(testCaseXML, emulator);
                 testCases.Add(testCase);
+
+                stream.AddRange(precondition.GetStream());
                 stream.AddRange(testCase.GetStream());
+                stream.AddRange(postcondition.GetStream());
             }
-            postcondition = new Postcondition(testComplect.SelectSingleNode("Postcondition"), emulator);
-            stream.AddRange(postcondition.GetStream());
+
             if (stream.Count > 0) currentTransfer = 0;
         }
-        //public void Run()
-        //{
-        //    precondition.Run();
-        //    foreach (TestCase testCase in testCases)
-        //        testCase.Run();
-        //}
+
         internal Transfer GetCurrentTransfer()
         {
             if (currentTransfer >= stream.Count) return null;

@@ -71,7 +71,7 @@ namespace KSU.Visio.Lib.StateDiagram
             {
                 Transfer tr = new Transfer();
                 tr.Expression = transferXML.SelectSingleNode("Expression").InnerText;
-                tr.Probability = double.Parse(transferXML.Attributes["probability"].Value);
+                tr.Probability = double.Parse(transferXML.Attributes["probability"].Value.Replace('.',','));
                 tr.Name =transferXML.Attributes["name"].Value;
                 if(transferXML.Attributes["allTransfers"]!=null)
                     tr.AllTransfers = bool.Parse(transferXML.Attributes["allTransfers"].Value);
