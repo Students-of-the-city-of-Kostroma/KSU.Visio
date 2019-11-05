@@ -206,7 +206,7 @@ namespace KSU.Visio.Lib.StateDiagram
                 }
             }
         }
-        public void Run(Dictionary<string, object> dict)
+        private void WriteLog()
         {
             using (FileStream fs = File.Open(DateTime.Now.ToString("yyyyMMdd") + ".log", FileMode.OpenOrCreate, FileAccess.Write))
             {
@@ -221,11 +221,15 @@ namespace KSU.Visio.Lib.StateDiagram
                     sw.WriteLine("INFO|" + DateTime.Now.ToString() + "|" + text);
                 }
             }
+        }
+        public void Run(Dictionary<string, object> dict)
+        {
+
 
             string source = sourceBegin + Expression + sourceEnd;
             CompilerResults results = provider.CompileAssemblyFromSource(compilerParams, source);
-            //WriteCodeLog(source);
-
+            WriteCodeLog(source);
+            WriteLog();
 
             if (results.Errors.Count >0)
             {

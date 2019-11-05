@@ -185,19 +185,11 @@ namespace KSU.Visio.Lib.StateDiagram
                     i = -1;
                 }
 
-            SaveText();
-            File.WriteAllText(DateTime.Now.ToString("yyyyMMdd") + ".csv", GenerateInputsToCSV(dict)); 
+            File.WriteAllText(DateTime.Now.ToString("yyyyMMdd") + ".csv", GenerateInputsToCSV(dict));
+            SaveToXMLFile(DateTime.Now.ToString("yyyyMMdd") + ".xml");
         }
 
-        private void SaveText()
-        {
-            string text = "";
-            foreach (var key in dict.Keys)
-            {
-                text += key + " : " + dict[key].ToString() + "\r\n";
-            }
-            File.WriteAllText("text.txt", text);
-        }
+
         Random rnd = new Random();
         private void Run(Transfer transfer)
         {
