@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml;
 
 namespace KSU.Visio.Lib.StateDiagram
@@ -117,11 +113,6 @@ namespace KSU.Visio.Lib.StateDiagram
         {
             Init();
         }
-
-
-        //public Condition Owner { get; set; }
-
-        
 
         public override XmlNode ToXml(XmlDocument xml, XmlNode stateXML)
         {

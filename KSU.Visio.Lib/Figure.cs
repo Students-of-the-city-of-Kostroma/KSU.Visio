@@ -108,10 +108,10 @@ namespace KSU.Visio.Lib
         {
             Name = figureXML.Attributes["name"].Value;
 
-            this.Location = Xml.XmlConvert.XmlNodeToPoint(
+            this.Location = Xml.SDXmlConvert.XmlNodeToPoint(
                 figureXML.SelectSingleNode("Location"));
             
-            this.Size = Xml.XmlConvert.XmlNodeToSize(
+            this.Size = Xml.SDXmlConvert.XmlNodeToSize(
                 figureXML.SelectSingleNode("Size"));
 
             //this.id = new Guid(figureXML.Attributes["id"].Value);
@@ -148,7 +148,7 @@ namespace KSU.Visio.Lib
         /// перо для рисования объекта
         /// </summary>
         protected Pen pen = new Pen(Color.Black, 1);
-        protected Font font = new Font("Arial", 12f);
+        protected Font font = new Font("Arial", 10f);
         protected Brush brush = new SolidBrush(Color.Black);
 
 

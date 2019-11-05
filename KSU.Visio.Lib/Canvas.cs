@@ -1,19 +1,14 @@
-﻿using KSU.Visio.Lib.StateDiagram;
-using KSU.Visio.Lib.Xml;
+﻿using KSU.Visio.Lib.Xml;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml;
 
 namespace KSU.Visio.Lib
 {
-    [Serializable]
     public class Canvas
 	{
-        public List<Figure> figures = new List<Figure>();
+        protected List<Figure> figures = new List<Figure>();
 		public event EventHandler Changed;
 		protected Graphics canvas = null;
         protected Size size;
@@ -49,8 +44,11 @@ namespace KSU.Visio.Lib
         public Canvas(XmlDocument xml)
         {
             XmlNode emulatorXML = xml.DocumentElement;
-            XmlNode sizeXML = emulatorXML.SelectSingleNode("Size");
-            this.Size = Xml.XmlConvert.XmlNodeToSize(sizeXML);
+            XmlAttribute sizeXML = emulatorXML.Attributes["size"];
+            if (sizeXML == null)
+                Size = new Size(100, 100);
+            else
+                Size = SDXmlConvert.StringWHToSize("{X=150, Y=150}");
             Init();
         }
 
@@ -87,13 +85,15 @@ namespace KSU.Visio.Lib
 		}
         public void UpdatePositionFigures()
         {
-            Size fSize = new Size(300, 200);
+            Size fSize = new Size(200, 20);
+
             for (int i = 0; i < figures.Count; i++)
             {
-                figures[i].Location = new Point(i * (fSize.Width + 5), 0);
-                figures[i].Size = fSize;
+                if (figures[i].Location.X == 0 && figures[i].Location.Y == 0)
+                    figures[i].Location = new Point(0, i * (fSize.Height + 5));
+                if (figures[i].Size.Width == 0 && figures[i].Size.Height == 0)
+                    figures[i].Size = fSize;
             }
-            //UpdateCanvas();
         }
 		private void Figure_Changed(object sender, EventArgs e)
 		{

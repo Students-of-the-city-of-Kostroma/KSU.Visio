@@ -68,7 +68,7 @@
     <Compile Include="StateDiagram\TestComplect.cs" />
     <Compile Include="StateDiagram\Transfer.cs" />
     <Compile Include="tmp.cs" />
-    <Compile Include="Xml\XmlConvert.cs" />
+    <Compile Include="Xml\SDXmlConvert.cs" />
     <Compile Include="White_rectangle.cs" />
   </ItemGroup>
   <ItemGroup />

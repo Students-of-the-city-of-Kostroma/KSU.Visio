@@ -14,7 +14,7 @@ namespace KSU.Visio.Lib.StateDiagram
         public Postcondition(XmlNode root, Emulator emulator)
         {
             this.emulator = emulator;
-            foreach (XmlNode transfer in root.SelectNodes("Transfers"))
+            foreach (XmlNode transfer in root.SelectNodes("Transfer"))
                 transfers.Add(emulator.SearchTransfer(transfer.Attributes["name"].Value));
         }
         internal List<Transfer> GetStream() { return transfers; }

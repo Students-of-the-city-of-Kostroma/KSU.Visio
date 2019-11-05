@@ -11,7 +11,7 @@ using System.Xml.Serialization;
 
 namespace KSU.Visio.Lib.Xml
 {
-    public static class XmlConvert
+    public static class SDXmlConvert
     {
 
         public static XmlNode ToXmlNode(XmlDocument xml, Size size, string name = "Size", string p1 = "width", string p2 = "height")
@@ -36,15 +36,19 @@ namespace KSU.Visio.Lib.Xml
         }
         public static Point XmlNodeToPoint(XmlNode locationXML, string x = "x", string y = "y")
         {
-            return (locationXML == null) ? new Point(100,100) : new Point(
+            return (locationXML == null) ? new Point() : new Point(
                 int.Parse(locationXML.Attributes[x].Value),
                 int.Parse(locationXML.Attributes[y].Value));
         }
         public static Size XmlNodeToSize(XmlNode sizeXML, string width = "width", string height = "height")
         {
-            return (sizeXML == null) ? new Size(100,100) : new Size(
+            return (sizeXML == null) ? new Size() : new Size(
                 int.Parse(sizeXML.Attributes[width].Value), 
                 int.Parse(sizeXML.Attributes[height].Value));
+        }
+        public static Size StringWHToSize(string sizeStr)
+        {
+            return new Size();
         }
     }
 }

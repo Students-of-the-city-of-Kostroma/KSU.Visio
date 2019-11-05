@@ -88,14 +88,17 @@ namespace KSU.Visio.Lib.StateDiagram
             if (figures.Count > 0)
             {
                 Condition owner = (figures[0] as Condition).Owner;
-                figures.Clear();
-                if (owner.Owner != null)
-                    foreach (Condition condition in owner.Owner.Conditions)
-                        figures.Add(condition);
-                else
-                    figures.Add(owner);
-                UpdatePositionFigures();
-                UpdateCanvas();
+                if (owner != null)
+                {
+                    figures.Clear();
+                    if (owner.Owner != null)
+                        foreach (Condition condition in owner.Owner.Conditions)
+                            figures.Add(condition);
+                    else
+                        figures.Add(owner);
+                    UpdatePositionFigures();
+                    UpdateCanvas();
+                }
             }
         }
         XmlDocument xml;
@@ -158,12 +161,6 @@ namespace KSU.Visio.Lib.StateDiagram
         public override void ToXml(XmlDocument xml)
         {
             base.ToXml(xml);
-            
-            //XmlNode transfersXML = xml.CreateNode(XmlNodeType.Element, "Transfers", "");
-            //foreach (Transfer transfer in Transfers)
-            //    transfer.ToXml(xml, transfersXML);
-            //XmlNode root = xml.DocumentElement;
-            //root.AppendChild(transfersXML);
         }
         public void Run()
         {
@@ -247,7 +244,6 @@ namespace KSU.Visio.Lib.StateDiagram
             {
                 testComplect.NextTransfer();
                 return transfers[indT];
-
             }
 
             if (transfers.Count > 0)
