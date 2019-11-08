@@ -15,7 +15,7 @@ namespace KSU.Visio.Lib.StateDiagram
             Init();
         }
 
-        public Condition SearchCondition(string name)
+        public Condition SearchCondition(string name)//V(G)=6
         {
             foreach (Condition condition in this.figures)
                 if (condition.Name == name)
