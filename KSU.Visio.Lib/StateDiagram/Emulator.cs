@@ -188,7 +188,7 @@ namespace KSU.Visio.Lib.StateDiagram
 
 
         Random rnd = new Random();
-        private void Run(Transfer transfer)
+        private void Run(Transfer transfer)//V(G)=4
         {
             transfer.Run(dict);
             foreach (Condition start in transfer.Start)
