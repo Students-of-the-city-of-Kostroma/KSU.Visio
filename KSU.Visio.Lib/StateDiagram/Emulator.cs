@@ -162,7 +162,7 @@ namespace KSU.Visio.Lib.StateDiagram
         {
             base.ToXml(xml);
         }
-        public void Run()
+        public void Run()//V(G)=7
         {
             foreach (Condition condition in figures)
                 if (condition.Active)
