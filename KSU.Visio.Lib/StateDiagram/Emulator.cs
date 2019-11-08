@@ -83,7 +83,7 @@ namespace KSU.Visio.Lib.StateDiagram
                 UpdatePositionFigures();
             }
         }
-        public void ToOwner()
+        public void ToOwner() //V(G) = 5
         {
             if (figures.Count > 0)
             {
