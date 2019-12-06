@@ -51,7 +51,7 @@ namespace KSU.Visio.Lib.StateDiagram
             }
             return null;
         }
-        protected Transfer SearchTransfer(string name, Condition condition)
+        protected Transfer SearchTransfer(string name, Condition condition)//V(G)=5
         {
             foreach (Transfer transfer in condition.Transfers)
                 if (transfer.Name == name)
