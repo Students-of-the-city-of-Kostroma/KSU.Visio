@@ -32,7 +32,7 @@ namespace KSU.Visio
         private void Start_Load(object sender, EventArgs e)
         {
             Point location = new Point(0, 0);
-            Size size = new Size(objectsPanel.Size.Width / 2, objectsPanel.Size.Height / 7);
+            Size size = new Size(objectsPanel.Size.Width / 2, objectsPanel.Size.Height / 11);
             //Начинаем добавлять элементы на панель элементов
             AddFigureInObjectPanel(new Actor(location, size));
             AddFigureInObjectPanel(new Continuation(location, size));
@@ -44,7 +44,16 @@ namespace KSU.Visio
             AddFigureInObjectPanel(new Line(location, location + size, new LineCapBase(), new LostMessageCap()));
             AddFigureInObjectPanel(new Line(location, location + size, new LineCapBase(), new AsynchronousMessageCap()));
             AddFigureInObjectPanel(new Line(location, location + size, new LostMessageCap(), new LineCapBase()));
-        }
+
+			// элементы 
+			AddFigureInObjectPanel(new Components(location, size));
+			AddFigureInObjectPanel(new Note(location, size));
+			AddFigureInObjectPanel(new Package(location, size));
+			AddFigureInObjectPanel(new Limitation(location, size));
+			AddFigureInObjectPanel(new Node(location,size));
+			AddFigureInObjectPanel(new Line(location, location + size, new LineCapBase(), new Dependence()));
+			AddFigureInObjectPanel(new Line(location, location + size, new Interface(), new LineCapBase()));
+		}
 
         protected void AddFigureInObjectPanel(Figure figure)
         {

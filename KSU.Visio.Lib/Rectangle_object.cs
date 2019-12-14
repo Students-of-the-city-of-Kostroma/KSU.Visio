@@ -21,5 +21,12 @@ namespace KSU.Visio.Lib
         {
             gr.DrawRectangle(pen, Location.X+Size.Width, Location.Y, Location.X - Location.X+Size.Width, Location.Y - Location.Y);
         }
-    }
+		public override bool Hit_testing(Point Point)
+		{
+			return Point.X > Location.X
+				&& Point.Y > Location.Y
+				&& Point.X < Location.X + size.Width
+				&& Point.Y < Location.Y + size.Height;
+		}
+	}
 }

@@ -131,5 +131,17 @@ namespace KSU.Visio.Lib
         {
             Location += (Size)delta;
         }
-    }
+		/// <summary>
+		/// Проверяет, попадает ли точка внутрь прямоугольной области фигуры
+		/// </summary>
+		/// <param name="point">точка</param>
+		/// <returns></returns>
+		public virtual bool Hit_testing(Point Point)
+		{
+			return Point.X > Location.X
+				&& Point.Y > Location.Y
+				&& Point.X < Location.X + size.Width
+				&& Point.Y < Location.Y + size.Height;
+		}
+	}
 }
