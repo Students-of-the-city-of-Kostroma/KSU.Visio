@@ -1,0 +1,272 @@
+<?xml version="1.0"?>
+<Emulator>
+  <Models>
+    <Condition name="Сессия Auction Call Period" active="True"  starting="True" ending="True">
+		<Condition name="Началась сессия ACP"   starting="True" />
+		<Transfer name="Задать глобальные переменные" probability="1">
+			<Start name="Началась сессия ACP" />
+			<End name="Глобальные переменные заданы" />
+			<Expression>
+				var users = new Dictionary&lt;string, string&gt;();
+				users.Add("Priority1","FTAMES1FIX1");
+				users.Add("Priority2","FTAMES2FIX1");
+				dict.Add("Users", users);
+				
+				var testComplect = new List&lt;List&lt;Dictionary&lt;string, object&gt;&gt;&gt;();
+				dict.Add("TestComplect",testComplect);
+			</Expression>
+		</Transfer>
+		<Condition name="Глобальные переменные заданы" />
+		<Transfer name="Создать TestCase" probability="1">
+			<Start name="Глобальные переменные заданы" />
+			<End name="Начало TestCase" />
+			<Expression>
+				var testComplect = dict["TestComplect"] as List&lt;List&lt;Dictionary&lt;string, object&gt;&gt;&gt;;
+				
+				var testCase = new List&lt;Dictionary&lt;string, object&gt;&gt;();
+				testComplect.Add(testCase);
+				
+				var newQH = new Dictionary&lt;string, object&gt;();
+				testCase.Add(newQH);
+				
+				newQH.Add("PBB",98);
+				newQH.Add("PBO",104);
+				newQH.Add("Action","QH");
+			</Expression>
+		</Transfer>
+		<Condition name="Начало TestCase" />
+		<Transfer name="Создать Order" probability="1">
+			<Start name="Начало TestCase" />
+			<End name="Начало Order" />
+			<Expression>
+				var testComplect = dict["TestComplect"] as List&lt;List&lt;Dictionary&lt;string, object&gt;&gt;&gt;;
+				var testCase = testComplect[testComplect.Count - 1] as List&lt;Dictionary&lt;string, object&gt;&gt;;
+				var newOrder = new Dictionary&lt;string, object&gt;();
+				testCase.Add(newOrder);
+			</Expression>
+		</Transfer>
+		<Condition name="Начало Order" />
+		<Transfer name="Выбрать сторону Bay" probability="1">
+			<Start name="Начало Order" />
+			<End name="Сторона определена" />
+			<Expression>
+				var testComplect = dict["TestComplect"] as List&lt;List&lt;Dictionary&lt;string, object&gt;&gt;&gt;;
+				var testCase = testComplect[testComplect.Count - 1] as List&lt;Dictionary&lt;string, object&gt;&gt;;
+				var order = testCase[testCase.Count-1] as Dictionary&lt;string, object&gt;;
+				order.Add("Side", "Bay");
+			</Expression>
+		</Transfer>
+		<Transfer name="Выбрать сторону Sell" probability="1">
+			<Start name="Начало Order" />
+			<End name="Сторона определена" />
+			<Expression>
+				var testComplect = dict["TestComplect"] as List&lt;List&lt;Dictionary&lt;string, object&gt;&gt;&gt;;
+				var testCase = testComplect[testComplect.Count - 1] as List&lt;Dictionary&lt;string, object&gt;&gt;;
+				var order = testCase[testCase.Count-1] as Dictionary&lt;string, object&gt;;
+				order.Add("Side", "Sell");
+			</Expression>
+		</Transfer>
+		<Condition name="Сторона определена" />
+		<Transfer name="Определить объем случайным образом" probability="1">
+			<Start name="Сторона определена" />
+			<End name="Объем определен" />
+			<Expression>
+				var testComplect = dict["TestComplect"] as List&lt;List&lt;Dictionary&lt;string, object&gt;&gt;&gt;;
+				var testCase = testComplect[testComplect.Count - 1] as List&lt;Dictionary&lt;string, object&gt;&gt;;
+				var order = testCase[testCase.Count-1] as Dictionary&lt;string, object&gt;;
+
+				Random rnd = new Random();
+				order.Add("OrderQty", rnd.Next(1000, 2000));
+			</Expression>
+		</Transfer>
+		<Transfer name="Определить объем, больше чем у первого ордера тесткейса" probability="1">
+			<Start name="Сторона определена" />
+			<Start name="В тесткейсе есть ордера" />
+			<End name="В тесткейсе есть ордера" />
+			<End name="Объем определен" />			
+			<Expression>
+				var testComplect = dict["TestComplect"] as List&lt;List&lt;Dictionary&lt;string, object&gt;&gt;&gt;;
+				var testCase = testComplect[testComplect.Count - 1] as List&lt;Dictionary&lt;string, object&gt;&gt;;
+				var order = testCase[testCase.Count-1] as Dictionary&lt;string, object&gt;;
+				var firstOrder = testCase[1] as Dictionary&lt;string, object&gt;;
+				var firstOrderQnt = (int)firstOrder["OrderQty"];
+				Random rnd = new Random();
+				order.Add("OrderQty", firstOrderQnt + rnd.Next(100, 200));
+			</Expression>
+		</Transfer>
+		<Transfer name="Определить объем, меньше чем у первого ордера тесткейса" probability="1">
+			<Start name="Сторона определена" />
+			<Start name="В тесткейсе есть ордера" />
+			<End name="В тесткейсе есть ордера" />
+			<End name="Объем определен" />
+			<Expression>
+				var testComplect = dict["TestComplect"] as List&lt;List&lt;Dictionary&lt;string, object&gt;&gt;&gt;;
+				var testCase = testComplect[testComplect.Count - 1] as List&lt;Dictionary&lt;string, object&gt;&gt;;
+				var order = testCase[testCase.Count-1] as Dictionary&lt;string, object&gt;;
+				var firstOrder = testCase[1] as Dictionary&lt;string, object&gt;;
+				var firstOrderQnt = (int)firstOrder["OrderQty"];
+				Random rnd = new Random();
+				order.Add("OrderQty", firstOrderQnt - rnd.Next(100, 200));
+			</Expression>
+		</Transfer>
+		<Condition name="Объем определен" />
+		<Transfer name="Выбрать тип Limit" probability="1">
+			<Start name="Объем определен" />
+			<End name="Тип определен" />
+			<Expression>
+				var testComplect = dict["TestComplect"] as List&lt;List&lt;Dictionary&lt;string, object&gt;&gt;&gt;;
+				var testCase = testComplect[testComplect.Count - 1] as List&lt;Dictionary&lt;string, object&gt;&gt;;
+				var order = (Dictionary&lt;string, object&gt;) testCase[testCase.Count-1];
+				order.Add("OrderType", "Limit");
+			</Expression>
+		</Transfer>	
+		<Transfer name="Выбрать тип Pegged" probability="1">
+			<Start name="Объем определен" />
+			<End name="Выбран тип Pegged" />
+			<Expression>
+				var testComplect = dict["TestComplect"] as List&lt;List&lt;Dictionary&lt;string, object&gt;&gt;&gt;;
+				var testCase = testComplect[testComplect.Count - 1] as List&lt;Dictionary&lt;string, object&gt;&gt;;
+				var order = (Dictionary&lt;string, object&gt;) testCase[testCase.Count-1];
+				order.Add("OrderType", "Pegged");
+			</Expression>
+		</Transfer>
+		<Condition name="Выбран тип Pegged" />
+		<Transfer name="Не устанавливать лимит на объем" probability="1" >
+			<Start name="Выбран тип Pegged" />
+			<End name="Тип определен" />
+			<Expression>
+			</Expression>
+		</Transfer>
+		<Transfer name="Установить лимит меньше объема ордера" probability="1" >
+			<Start name="Выбран тип Pegged" />
+			<End name="Тип определен" />
+			<Expression>
+				var testComplect = dict["TestComplect"] as List&lt;List&lt;Dictionary&lt;string, object&gt;&gt;&gt;;
+				var testCase = testComplect[testComplect.Count - 1] as List&lt;Dictionary&lt;string, object&gt;&gt;;
+				var order = (Dictionary&lt;string, object&gt;) testCase[testCase.Count-1];
+				int orderQty = (int) order["OrderQty"];
+				Random rnd = new Random();
+				order.Add("MinQty", rnd.Next(1, orderQty));
+			</Expression>
+		</Transfer>
+		<Transfer name="Установить лимит равный объему ордера" probability="1" >
+			<Start name="Выбран тип Pegged" />
+			<End name="Тип определен" />
+			<Expression>
+				var testComplect = dict["TestComplect"] as List&lt;List&lt;Dictionary&lt;string, object&gt;&gt;&gt;;
+				var testCase = testComplect[testComplect.Count - 1] as List&lt;Dictionary&lt;string, object&gt;&gt;;
+				var order =  testCase[testCase.Count-1] as Dictionary&lt;string, object&gt;;
+				var orderQty = order["OrderQty"];
+				order.Add("MinQty", orderQty);
+			</Expression>
+		</Transfer>
+		<Condition name="Тип определен" />
+		<Transfer name="Записать пользователя с приоритетом 1" probability="1">
+			<Start name="Тип определен" />
+			<End name="Пользователь определен" />
+			<Expression>
+				var testComplect = dict["TestComplect"] as List&lt;List&lt;Dictionary&lt;string, object&gt;&gt;&gt;;
+				var testCase = testComplect[testComplect.Count - 1] as List&lt;Dictionary&lt;string, object&gt;&gt;;
+				var order = testCase[testCase.Count-1] as Dictionary&lt;string, object&gt;;
+				var users = dict["Users"] as Dictionary&lt;string, string&gt;;
+				order.Add("User",users["Priority1"]);				
+			</Expression>
+		</Transfer>
+		<Transfer name="Записать пользователя с приоритетом 2" probability="1">
+			<Start name="Тип определен" />
+			<End name="Пользователь определен" />
+			<Expression>
+				var testComplect = dict["TestComplect"] as List&lt;List&lt;Dictionary&lt;string, object&gt;&gt;&gt;;
+				var testCase = testComplect[testComplect.Count - 1] as List&lt;Dictionary&lt;string, object&gt;&gt;;
+				var order = testCase[testCase.Count-1] as Dictionary&lt;string, object&gt;;
+				var users = dict["Users"] as Dictionary&lt;string, string&gt;;
+				order.Add("User",users["Priority2"]);				
+			</Expression>
+		</Transfer>
+		<Condition name="Пользователь определен" />
+		<Transfer name="Записать статичную часть ордера" probability="1">
+			<Start name="Пользователь определен" />
+			<End name="Конец Order" />
+			<End name="В тесткейсе есть ордера" />
+			<Expression>
+				var testComplect = dict["TestComplect"] as List&lt;List&lt;Dictionary&lt;string, object&gt;&gt;&gt;;
+				var testCase = testComplect[testComplect.Count - 1] as List&lt;Dictionary&lt;string, object&gt;&gt;;
+				var order = testCase[testCase.Count-1] as Dictionary&lt;string, object&gt;;
+					
+				order.Add("ID","O"+testCase.Count);
+				order.Add("Action","New");
+				order.Add("TIF","Day");
+				order.Add("DisplayQty",0);
+				order.Add("Sleep",1);
+				order.Add("check","check1");
+				order.Add("Capacity","A");
+				order.Add("AccountType","Client");
+			</Expression>
+		</Transfer>
+		<Condition name="В тесткейсе есть ордера" />
+		<Condition name="Конец Order" />
+		<Transfer name="Повторить генерацию нового ордера" probability="1">
+			<Start name="Конец Order" />
+			<End name="Начало TestCase" />
+			<Expression>
+			</Expression>
+		</Transfer>
+		<Transfer name="Закончить TestCase" probability="1">
+			<Start name="В тесткейсе есть ордера" />
+			<Start name="Конец Order" />
+			<End name="Конец TestCase" />
+			<Expression>
+			</Expression>
+		</Transfer>
+		<Condition name="Конец TestCase" />
+		<Transfer name="Создать новый TestCase" probability="1">
+			<Start name="Конец TestCase" />
+			<End name="Глобальные переменные заданы" />
+			<Expression>
+			</Expression>
+		</Transfer>
+		<Transfer name="Завершить работу" probability="1" allTransfers="True">
+			<Start name="Конец TestCase" />
+			<End name="Закончилась сессия ACP" />
+			<Expression>
+			</Expression>
+		</Transfer>
+		<Condition name="Закончилась сессия ACP" ending="True" />
+    </Condition>
+  </Models>
+  <TestComplect>
+	<Precondition>
+		<Transfer name="Задать глобальные переменные" />
+	</Precondition>
+	<TestCase name="Within the same price point, Member preference has a higher priority">
+		<Transfer name="Создать TestCase" />
+		<Transfer name="Создать Order" />
+		<Transfer name="Выбрать сторону Sell" />
+		<Transfer name="Определить объем случайным образом" />
+		<Transfer name="Выбрать тип Pegged" />
+		<Transfer name="Не устанавливать лимит на объем" />
+		<Transfer name="Записать пользователя с приоритетом 1" />
+		<Transfer name="Записать статичную часть ордера" />
+		<Transfer name="Повторить генерацию нового ордера" />
+		<Transfer name="Создать Order" />
+		<Transfer name="Выбрать сторону Bay" />
+		<Transfer name="Определить объем, больше чем у первого ордера тесткейса" />
+		<Transfer name="Выбрать тип Pegged" />
+		<Transfer name="Не устанавливать лимит на объем" />
+		<Transfer name="Записать пользователя с приоритетом 2" />
+		<Transfer name="Записать статичную часть ордера" />
+		<Transfer name="Повторить генерацию нового ордера" />
+		<Transfer name="Создать Order" />
+		<Transfer name="Выбрать сторону Bay" />
+		<Transfer name="Определить объем, меньше чем у первого ордера тесткейса" />
+		<Transfer name="Выбрать тип Pegged" />
+		<Transfer name="Не устанавливать лимит на объем" />
+		<Transfer name="Записать пользователя с приоритетом 1" />
+		<Transfer name="Записать статичную часть ордера" />
+		<Transfer name="Закончить TestCase" />
+	</TestCase>
+	<Postcondition>
+
+	</Postcondition>
+  </TestComplect>
+</Emulator>

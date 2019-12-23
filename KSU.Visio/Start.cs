@@ -1,131 +1,95 @@
-﻿using System;
+﻿using KSU.Visio.Lib;
+using KSU.Visio.Lib.StateDiagram;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
 using System.Windows.Forms;
-using System.Reflection;
-using KSU.Visio.Lib;
-using KSU.Visio.Lib.Cap;
 
 namespace KSU.Visio
 {
     public partial class Start : Form
     {
-        Canvas canvas;
+        Emulator emulator;
 
         public Start()
         {
             InitializeComponent();
-            canvas = new Canvas(canvasPB.Size);
-            canvas.Changed += Canvas_Changed;
+            emulator = Emulator.LoadFromXMLFile();
+            emulator.Changed += Canvas_Changed;
+        }
+
+        void UpdateImage()
+        {
+            canvasPB.Image = emulator.Image;
         }
 
         private void Canvas_Changed(object sender, EventArgs e)
         {
-            canvasPB.Image = canvas.Image;
+            UpdateImage();
         }
 
         private void Start_Load(object sender, EventArgs e)
         {
-            Point location = new Point(0, 0);
-            Size size = new Size(objectsPanel.Size.Width / 2, objectsPanel.Size.Height / 7);
-            //Начинаем добавлять элементы на панель элементов
-            AddFigureInObjectPanel(new Actor(location, size));
-            AddFigureInObjectPanel(new Continuation(location, size));
-            AddFigureInObjectPanel(new Life_line(location, size));
-            AddFigureInObjectPanel(new White_rectangle(location, size));
-            AddFigureInObjectPanel(new Instance_specification(location, size));
-            AddFigureInObjectPanel(new Frame(location, size));
-            AddFigureInObjectPanel(new Line(location, location + size));
-            AddFigureInObjectPanel(new Line(location, location + size, new LineCapBase(), new LostMessageCap()));
-            AddFigureInObjectPanel(new Line(location, location + size, new LineCapBase(), new AsynchronousMessageCap()));
-            AddFigureInObjectPanel(new Line(location, location + size, new LostMessageCap(), new LineCapBase()));
+            emulator.Size = canvasPB.Size;
         }
 
-        protected void AddFigureInObjectPanel(Figure figure)
+        private void Start_FormClosed(object sender, FormClosedEventArgs e)
         {
-            figure.Changed += Figure_Changed;
-            PictureBox pb = new PictureBox();
-            pb.Size = figure.Size;
-            pb.Image = figure.GetImage();
-            pb.Margin = new Padding(0);
-            pb.Tag = figure;
-            pb.Click += Pb_Click;
-            objectsPanel.Controls.Add(pb);
+            File.Delete(DateTime.Now.ToString("yyyyMMdd") + ".code.log");
+            File.Delete(DateTime.Now.ToString("yyyyMMdd") + ".log");
         }
 
-        private void Figure_Changed(object sender, EventArgs e)
+        private void canvasPB_Resize(object sender, EventArgs e)
         {
-            if (selectedPB != null)
-            {
-                Figure figure = (Figure)sender;
-                selectedPB.Image = figure.GetImage();
-            }
-        }
-        /// <summary>
-        /// выделенный объект который будет рисоваться на холсте
-        /// </summary>
-        PictureBox selectedPB = null;
-        private void Pb_Click(object sender, EventArgs e)
-        {
-            canvasPB.Cursor = Cursors.Cross;
-            PictureBox pb = (PictureBox)sender;
-            selectedPB = pb;
-            Figure figure = (Figure)pb.Tag;
-            figure.Selected = true;
-            ///записываем рисуемый объект
-            canvasPB.Tag = figure.Clone();
-        }
-        Point? mouseDownLocation = null;
-        private void canvasPB_MouseDown(object sender, MouseEventArgs e)
-        {
-            if(selectedPB  != null && canvasPB.Tag != null)
-            {
-                mouseDownLocation = e.Location;
-                Figure figure = (Figure)canvasPB.Tag;
-                figure.Location = e.Location;
-                figure.Size = new Size(0, 0);
-                canvas.AddFigure(figure);
-            }
+            emulator.Size = canvasPB.Size;
         }
 
-        private void canvasPB_MouseMove(object sender, MouseEventArgs e)
+        private void StartB_Click(object sender, EventArgs e)
         {
-            if (canvasPB.Tag != null && mouseDownLocation != null)
+            emulator.Run();
+            emulator.SaveToXMLFile(DateTime.Now.ToString("yyyyMMdd") + ".xml");
+        }
+
+        private void CanvasPB_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
             {
-                Figure figure = (Figure)canvasPB.Tag;
-                if (figure.GetType() == typeof(Line))
+                if (canvasPB.Tag != null)
                 {
-                    Line line = (Line)figure;
-                    line.Start = (Point)mouseDownLocation;
-                    line.End = e.Location;
-                }
-                else
-                {
-                    figure.Location = Figure.PointsToLocation((Point)mouseDownLocation, e.Location);
-                    figure.Size = Figure.PointsToSize((Point)mouseDownLocation, e.Location);
+                    object[] param = canvasPB.Tag as object[];
+                    Condition condition = param[0] as Condition;
+                    Point startLocationCondition = (Point)param[1];
+                    Size startLocationCanvasPB = (Size)param[2];
+                    condition.Location = startLocationCondition + new Size(e.Location) - startLocationCanvasPB;
                 }
             }
         }
 
-        private void canvasPB_MouseUp(object sender, MouseEventArgs e)
+        private void CanvasPB_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            if (mouseDownLocation != null && selectedPB != null && canvasPB.Tag != null)
+            if (e.Button == MouseButtons.Left)
             {
-                
-                canvasPB.Cursor = Cursors.Default;
-                mouseDownLocation = null;
-                Figure figure = (Figure)selectedPB.Tag;
-                figure.Selected = false;
-                selectedPB = null;
-                figure = (Figure)canvasPB.Tag;
-                figure.Selected = false;
+                Condition condition = emulator.GetFigureClickedOn(e.Location) as Condition;
+                if (condition == null) emulator.ToOwner();
+                else emulator.ToParent(condition);
+            }
+        }
+
+        private void CanvasPB_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                Figure condition = emulator.GetFigureClickedOn(e.Location);
+                if (condition != null)
+                    canvasPB.Tag = new object[] { condition, condition.Location, new Size(e.Location) };
+            }
+        }
+
+        private void CanvasPB_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
                 canvasPB.Tag = null;
-            }
         }
     }
 }
