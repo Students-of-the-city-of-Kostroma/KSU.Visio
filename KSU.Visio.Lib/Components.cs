@@ -34,13 +34,5 @@ namespace KSU.Visio.Lib
 			gr.DrawRectangle(pen, x1, (y1 + Convert.ToInt32(size.Height / 7*5)), Convert.ToInt32(size.Width / 5), Convert.ToInt32(size.Height / 7));
 		}
 
-		public override bool Hit_testing (Point Point)
-		{
-			return Point.X > Location.X
-				&& Point.Y > Location.Y
-				&& Point.X < Location.X + size.Width
-				&& Point.Y < Location.Y + size.Height;
-		}
-
 	}
 }

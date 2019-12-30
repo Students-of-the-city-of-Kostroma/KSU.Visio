@@ -137,12 +137,5 @@ namespace KSU.Visio.Lib
 		/// </summary>
 		/// <param name="point">точка</param>
 		/// <returns></returns>
-		public override bool Hit_testing(Point Point)
-		{
-			return Point.X > Location.X
-				&& Point.Y > Location.Y
-				&& Point.X < Location.X + size.Width
-				&& Point.Y < Location.Y + size.Height;
-		}
 	}
 }

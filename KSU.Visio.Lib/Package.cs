@@ -32,13 +32,5 @@ namespace KSU.Visio.Lib
 			Point[] points = { new Point(x1, y1),new Point(x1+(Convert.ToInt32(size.Width*0.3)),y1), new Point(x1 + (Convert.ToInt32(size.Width * 0.3)), y1+(Convert.ToInt32(size.Height*0.25))), new Point(x1, y1+ (Convert.ToInt32(size.Height * 0.25))), new Point(x1, y1+(Convert.ToInt32(size.Height))-1), new Point(x1 + (Convert.ToInt32(size.Width)-1), y1 + (Convert.ToInt32(size.Height))-1), new Point(x1 + (Convert.ToInt32(size.Width)-1),y1+(Convert.ToInt32(size.Height*0.25))), new Point(x1, y1 + (Convert.ToInt32(size.Height * 0.25))) };
 			gr.DrawPolygon(pen, points);
 		}
-
-		public override bool Hit_testing(Point Point)
-		{
-			return Point.X > Location.X
-				&& Point.Y > Location.Y
-				&& Point.X < Location.X + size.Width
-				&& Point.Y < Location.Y + size.Height;
-		}
 	}
 }
