@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace KSU.Visio.Lib.Cap
 {
+	/// <summary>
+	/// Класс зависимость
+	/// </summary>
 	public class Dependence: LineCapBase
 	{
 		public Dependence() : base()

@@ -10,16 +10,21 @@ namespace KSU.Visio.Lib
 	/// <summary>
 	/// Класс компонент 
 	/// </summary>
-	public class Components :Figure
+	public class Component :Figure
 	{
-		public Components(Point location, Size size) : base(location, size)
+		/// <summary>
+		/// Конструктор класса "Компонент".
+		/// </summary>
+		/// <param name="location">Расположение</param>
+		/// <param name="size">Размер</param>
+		public Component(Point location, Size size) : base(location, size)
 		{
 
 		}
 
 		public override Figure Clone()
 		{
-			Figure figure = new Components(Location, Size);
+			Figure figure = new Component(Location, Size);
 			figure.Selected = Selected;
 			return figure;
 		}

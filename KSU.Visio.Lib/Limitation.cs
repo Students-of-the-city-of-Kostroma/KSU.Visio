@@ -12,6 +12,11 @@ namespace KSU.Visio.Lib
 	/// </summary>
 	public class Limitation:Figure
 	{
+		/// <summary>
+		/// Конструктор класса "ограничение"
+		/// </summary>
+		/// <param name="location">Расположение</param>
+		/// <param name="size">Размер</param>
 		public Limitation(Point location, Size size) : base(location, size)
 		{
 

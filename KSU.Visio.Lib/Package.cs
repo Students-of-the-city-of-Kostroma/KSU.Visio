@@ -12,6 +12,11 @@ namespace KSU.Visio.Lib
 	/// </summary>
 	public class Package: Figure
 	{
+		/// <summary>
+		/// Конструктор класса "Пакет"
+		/// </summary>
+		/// <param name="location">Расположение</param>
+		/// <param name="size">Размер</param>
 		public Package(Point location, Size size) : base(location, size)
 		{
 

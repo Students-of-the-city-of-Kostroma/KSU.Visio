@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace KSU.Visio.Lib.Cap
 {
+	/// <summary>
+	/// Класс "интерфейс". Интерфейс имеет ввиду интерфейс как элемент диаграммы.
+	/// </summary>
 	public class Interface: LineCapBase
 	{
 		public Interface ():base()

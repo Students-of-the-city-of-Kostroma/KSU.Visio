@@ -51,7 +51,7 @@
     <Compile Include="Cap\FoundMessageCap.cs" />
     <Compile Include="Cap\DispatchMessageCap.cs" />
     <Compile Include="Cap\ReturnMessageCap.cs" />
-    <Compile Include="Components.cs" />
+    <Compile Include="Component.cs" />
     <Compile Include="Continuation.cs" />
     <Compile Include="CopyFiles.cs" />
     <Compile Include="Cap\LostMessageCap.cs" />

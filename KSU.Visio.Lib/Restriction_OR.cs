@@ -7,8 +7,16 @@ using System.Drawing;
 
 namespace KSU.Visio.Lib
 {
+	/// <summary>
+	/// Класс "Ограничение ИЛИ"
+	/// </summary>
 	public class Restriction_OR:Figure
 	{
+		/// <summary>
+		/// Конструктор класса "Ограничение ИЛИ"
+		/// </summary>
+		/// <param name="location">Расположение</param>
+		/// <param name="size">Размер</param>
 		public Restriction_OR(Point location, Size size) : base(location, size)
 		{
 

@@ -12,6 +12,11 @@ namespace KSU.Visio.Lib
 	/// </summary>
 	public class Note: Figure
 	{
+		/// <summary>
+		/// Конструктор класса "Примичание"
+		/// </summary>
+		/// <param name="location">Расположение</param>
+		/// <param name="size">Размер</param>
 		public Note(Point location, Size size) : base(location, size)
 		{
 

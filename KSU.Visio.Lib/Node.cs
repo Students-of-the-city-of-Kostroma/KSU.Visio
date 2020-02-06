@@ -12,6 +12,11 @@ namespace KSU.Visio.Lib
 	/// </summary>
 	public class Node:Figure
 	{
+		/// <summary>
+		/// Конструктор класса "Узел"
+		/// </summary>
+		/// <param name="location">Расположение</param>
+		/// <param name="size">Размер</param>
 		public Node(Point location, Size size) : base(location, size)
 		{
 
