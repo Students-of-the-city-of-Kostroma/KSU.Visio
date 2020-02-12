@@ -13,7 +13,7 @@ namespace KSU.Visio.Lib
 	public class Package: Figure
 	{
 		/// <summary>
-		/// Конструктор класса "Пакет"
+		/// Конструктор класса "Пакет", вызовет конструктор класса Figure 
 		/// </summary>
 		/// <param name="location">Расположение</param>
 		/// <param name="size">Размер</param>

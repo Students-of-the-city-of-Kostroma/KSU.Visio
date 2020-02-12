@@ -131,11 +131,5 @@ namespace KSU.Visio.Lib
             s.Dispose();
             e.Dispose();
         }
-
-		/// <summary>
-		/// Проверяет, попадает ли точка внутрь прямоугольной области фигуры
-		/// </summary>
-		/// <param name="point">точка</param>
-		/// <returns></returns>
 	}
 }

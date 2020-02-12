@@ -11,6 +11,9 @@ namespace KSU.Visio.Lib.Cap
 	/// </summary>
 	public class Dependence: LineCapBase
 	{
+		/// <summary>
+		/// Конструктор, вызыает конструктор класса LineCapBase. Рисует на конце линии стрелку.
+		/// </summary>
 		public Dependence() : base()
 		{
 			strokePath.AddLine(0, 0, -3, -10);
