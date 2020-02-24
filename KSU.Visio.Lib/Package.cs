@@ -28,7 +28,10 @@ namespace KSU.Visio.Lib
 			figure.Selected = Selected;
 			return figure;
 		}
-
+		/// <summary>
+		/// Метод который отрисовывает данную фигуру в заданных координатах, с заданным размером.
+		/// </summary>
+		/// <param name="gr">Чем рисовать</param>
 		public override void Draw(Graphics gr)
 		{
 			base.Draw(gr);

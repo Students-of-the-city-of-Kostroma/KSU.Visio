@@ -13,7 +13,7 @@ namespace KSU.Visio.Lib
 	public class Limitation:Figure
 	{
 		/// <summary>
-		/// Конструктор класса "ограничение"
+		/// Конструктор класса "ограничение". Вызывает конструктор класса Figure.
 		/// </summary>
 		/// <param name="location">Расположение</param>
 		/// <param name="size">Размер</param>
@@ -28,7 +28,10 @@ namespace KSU.Visio.Lib
 			figure.Selected = Selected;
 			return figure;
 		}
-
+		/// <summary>
+		/// Метод который отрисовывает данную фигуру в заданных координатах, с заданным размером.
+		/// </summary>
+		/// <param name="gr">Чем рисовать</param>
 		public override void Draw(Graphics gr)
 		{
 			base.Draw(gr);

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace KSU.Visio.Lib.Cap
 {
 	/// <summary>
-	/// Класс зависимость
+	/// Класс зависимость. Этот необходим для добавления стреки на конце линии
 	/// </summary>
 	public class Dependence: LineCapBase
 	{

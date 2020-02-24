@@ -13,7 +13,7 @@ namespace KSU.Visio.Lib
 	public class Restriction_OR:Figure
 	{
 		/// <summary>
-		/// Конструктор класса "Ограничение ИЛИ"
+		/// Конструктор класса "Ограничение ИЛИ". Вызывает конструктор класса Figure.
 		/// </summary>
 		/// <param name="location">Расположение</param>
 		/// <param name="size">Размер</param>
