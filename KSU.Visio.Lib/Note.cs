@@ -8,12 +8,12 @@ using System.Drawing;
 namespace KSU.Visio.Lib
 {
 	/// <summary>
-	/// Класс "Примичание"
+	/// Класс необходим для рисования объекта "Примичание"
 	/// </summary>
 	public class Note: Figure
 	{
 		/// <summary>
-		/// Конструктор класса "Примичание". Вызывает конструктор класса Figure.
+		/// Конструктор класса "Примичание". Вызывает конструктор класса Figure. Присваивает значения location и size.
 		/// </summary>
 		/// <param name="location">Расположение</param>
 		/// <param name="size">Размер</param>
@@ -21,7 +21,10 @@ namespace KSU.Visio.Lib
 		{
 
 		}
-
+		/// <summary>
+		///  Метод, создает копию этого объекта
+		/// </summary>
+		/// <returns>Возвращает копию фигуры</returns>
 		public override Figure Clone()
 		{
 			Figure figure = new Note(Location, Size);

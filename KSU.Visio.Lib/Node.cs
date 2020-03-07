@@ -8,12 +8,12 @@ using System.Drawing;
 namespace KSU.Visio.Lib
 {
 	/// <summary>
-	/// Класс "Узел"
+	/// Класс необходим для рисования объекта "Узел"
 	/// </summary>
 	public class Node:Figure
 	{
 		/// <summary>
-		/// Конструктор класса "Узел". Вызывает конструктор класса Figure.
+		/// Конструктор класса "Узел". Вызывает конструктор класса Figure. Присваивает значения location и size.
 		/// </summary>
 		/// <param name="location">Расположение</param>
 		/// <param name="size">Размер</param>
@@ -21,7 +21,10 @@ namespace KSU.Visio.Lib
 		{
 
 		}
-
+		/// <summary>
+		///  Метод, создает копию этого объекта
+		/// </summary>
+		/// <returns>Возвращает копию фигуры</returns>
 		public override Figure Clone()
 		{
 			Figure figure = new Node(Location, Size);

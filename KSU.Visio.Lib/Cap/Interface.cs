@@ -12,7 +12,7 @@ namespace KSU.Visio.Lib.Cap
 	public class Interface: LineCapBase
 	{
 		/// <summary>
-		/// Конструктор, вызыает конструктор класса LineCapBase. Рисует на конце линии круг.
+		/// Конструктор, вызыает конструктор класса LineCapBase. Создает новую "кастомную" линию. Рисует на конце линии круг.
 		/// </summary>
 		public Interface ():base()
 		{
