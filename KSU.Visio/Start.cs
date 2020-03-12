@@ -44,8 +44,6 @@ namespace KSU.Visio
             AddFigureInObjectPanel(new Line(location, location + size, new LineCapBase(), new LostMessageCap()));
             AddFigureInObjectPanel(new Line(location, location + size, new LineCapBase(), new AsynchronousMessageCap()));
             AddFigureInObjectPanel(new Line(location, location + size, new LostMessageCap(), new LineCapBase()));
-
-			// элементы 
 			AddFigureInObjectPanel(new Lib.Component(location, size));
 			AddFigureInObjectPanel(new Note(location, size));
 			AddFigureInObjectPanel(new Package(location, size));
