@@ -6,7 +6,10 @@ using System.Drawing;
 
 namespace KSU.Visio.Lib
 {
-  public class Rectangle_object : Figure
+	/// <summary>
+	/// Класс рисующий прямоугольную область.
+	/// </summary>
+	public class Rectangle_object : Figure
     {
 		/// <summary>
 		/// Вызывает конструктор класса Figure. Присваивает значения location и size.
@@ -31,17 +34,5 @@ namespace KSU.Visio.Lib
         {
             gr.DrawRectangle(pen, Location.X+Size.Width, Location.Y, Location.X - Location.X+Size.Width, Location.Y - Location.Y);
         }
-		/// <summary>
-		/// Проверяет, попадает ли точка внутрь прямоугольной области фигуры
-		/// </summary>
-		/// <param name="point">точка</param>
-		/// <returns></returns>
-		public override bool Hit_testing(Point Point)
-		{
-			return Point.X > Location.X
-				&& Point.Y > Location.Y
-				&& Point.X < Location.X + size.Width
-				&& Point.Y < Location.Y + size.Height;
-		}
 	}
 }

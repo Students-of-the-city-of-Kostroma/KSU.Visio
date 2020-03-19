@@ -31,18 +31,13 @@ namespace KSU.Visio.Lib
 			figure.Selected = Selected;
 			return figure;
 		}
-
+		/// <summary>
+		/// Метод который отрисовывает данную фигуру в заданных координатах, с заданным размером.
+		/// </summary>
+		/// <param name="gr">Чем рисовать</param>
 		public override void Draw(Graphics gr)
 		{
 
-		}
-
-		public override bool Hit_testing(Point Point)
-		{
-			return Point.X > Location.X
-				&& Point.Y > Location.Y
-				&& Point.X < Location.X + size.Width
-				&& Point.Y < Location.Y + size.Height;
 		}
 	}
 }
