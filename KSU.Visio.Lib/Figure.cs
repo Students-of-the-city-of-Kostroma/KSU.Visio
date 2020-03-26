@@ -6,8 +6,15 @@ using System.Drawing;
 
 namespace KSU.Visio.Lib
 {
+	/// <summary>
+	/// Класс Figure, родитель классов с элементами. Содержит классы которые наследуют классы наследники.
+	/// </summary>
     public abstract class Figure
     {
+		/// <summary>
+		/// Абстрактный класс, созданные для создания клонов в классах наследниках.
+		/// </summary>
+		/// <returns></returns>
         public abstract Figure Clone();
 		/// <summary>
 		/// Метод вычисляющий размер фигуры исходя из двух точек. Принимает на вход две точки возвращает размер фигуры.
@@ -49,7 +56,10 @@ namespace KSU.Visio.Lib
 		/// поле типа bool. Необходимо для выделения выбранного компонента
 		/// </summary>
 		protected bool selected = false;
-        public bool Selected
+		/// <summary>
+		/// Свойства поля selected. Возвращает значание, либо если полю не присвоено значение, то присваевает его и вызывает ChangedMetod
+		/// </summary>
+		public bool Selected
         {
             get { return selected; }
             set
@@ -68,8 +78,10 @@ namespace KSU.Visio.Lib
         {
             Changed?.Invoke(this, new EventArgs());
         }
-
-        public Point Location
+		/// <summary>
+		/// Свойства поля location. Возвращает значание, либо если полю не присвоено значение, то присваевает его и вызывает ChangedMetod
+		/// </summary>
+		public Point Location
         {
             get { return location; }
             set
@@ -81,8 +93,10 @@ namespace KSU.Visio.Lib
                 }
             }
         }
-
-        public Size Size
+		/// <summary>
+		/// Свойства поля size. Возвращает значание, либо если полю не присвоено значение, то присваевает его и вызывает ChangedMetod
+		/// </summary>
+		public Size Size
         {
             get { return size; }
             set
