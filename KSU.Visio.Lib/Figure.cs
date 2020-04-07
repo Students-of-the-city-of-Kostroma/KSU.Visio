@@ -6,27 +6,60 @@ using System.Drawing;
 
 namespace KSU.Visio.Lib
 {
+	/// <summary>
+	/// Класс Figure, родитель классов с элементами. Содержит классы которые наследуют классы наследники.
+	/// </summary>
     public abstract class Figure
     {
+		/// <summary>
+		/// Абстрактный класс, созданные для создания клонов в классах наследниках.
+		/// </summary>
+		/// <returns></returns>
         public abstract Figure Clone();
-
+		/// <summary>
+		/// Метод вычисляющий размер фигуры исходя из двух точек. Принимает на вход две точки возвращает размер фигуры.
+		/// </summary>
+		/// <param name="p1"></param>
+		/// <param name="p2"></param>
+		/// <returns></returns>
         public static Size PointsToSize(Point p1, Point p2)
         {
             return new Size(
                 Math.Abs(p1.X - p2.X),
                 Math.Abs(p1.Y - p2.Y));
         }
-        public static Point PointsToLocation(Point p1, Point p2)
+		/// <summary>
+		/// Метод вычисляющий расположение фигуры. Принимает на вход две точки Point. Возвращает точку Point расположение фигуры.
+		/// </summary>
+		/// <param name="p1"></param>
+		/// <param name="p2"></param>
+		/// <returns></returns>
+		public static Point PointsToLocation(Point p1, Point p2)
         {
             return new Point(
                 ((p1.X < p2.X) ? p1.X : p2.X),
                 ((p1.Y < p2.Y) ? p1.Y : p2.Y));
         }
-        public event EventHandler Changed;
-        protected Point location;
-        protected Size size;
-        protected bool selected = false;
-        public bool Selected
+		/// <summary>
+		/// событие, которое представляет делегат EventHandler. Генерируется когда задаются поля selected, size и location.
+		/// </summary>
+		public event EventHandler Changed;
+		/// <summary>
+		/// поле типа Point, хранящее расположение фигуры. Это поле является верхним левым углом
+		/// </summary>
+		protected Point location;
+		/// <summary>
+		///  поле типа Size, хранящее размер фигуры
+		/// </summary>
+		protected Size size;
+		/// <summary>
+		/// поле типа bool. Необходимо для выделения выбранного компонента
+		/// </summary>
+		protected bool selected = false;
+		/// <summary>
+		/// Свойства поля selected. Возвращает значание, либо если полю не присвоено значение, то присваевает его и вызывает ChangedMetod
+		/// </summary>
+		public bool Selected
         {
             get { return selected; }
             set
@@ -38,13 +71,17 @@ namespace KSU.Visio.Lib
                 }
             }
         }
-        
+        /// <summary>
+		/// Метод который создает новый объект.
+		/// </summary>
         protected void ChangedMetod()
         {
             Changed?.Invoke(this, new EventArgs());
         }
-
-        public Point Location
+		/// <summary>
+		/// Свойства поля location. Возвращает значание, либо если полю не присвоено значение, то присваевает его и вызывает ChangedMetod
+		/// </summary>
+		public Point Location
         {
             get { return location; }
             set
@@ -56,8 +93,10 @@ namespace KSU.Visio.Lib
                 }
             }
         }
-
-        public Size Size
+		/// <summary>
+		/// Свойства поля size. Возвращает значание, либо если полю не присвоено значение, то присваевает его и вызывает ChangedMetod
+		/// </summary>
+		public Size Size
         {
             get { return size; }
             set
@@ -69,8 +108,12 @@ namespace KSU.Visio.Lib
                 }
             }
         }
-
-        public Figure(Point location, Size size)
+		/// <summary>
+		/// Конструктор класса Figure. Присваивает значения location и size.
+		/// </summary>
+		/// <param name="location"></param>
+		/// <param name="size"></param>
+		public Figure(Point location, Size size)
         {
             this.Location = location;
             this.size = size;
@@ -131,5 +174,17 @@ namespace KSU.Visio.Lib
         {
             Location += (Size)delta;
         }
-    }
+		/// <summary>
+		/// Проверяет, попадает ли точка внутрь прямоугольной области фигуры
+		/// </summary>
+		/// <param name="point">точка</param>
+		/// <returns></returns>
+		public virtual bool Hit_testing(Point Point)
+		{
+			return Point.X > Location.X
+				&& Point.Y > Location.Y
+				&& Point.X < Location.X + size.Width
+				&& Point.Y < Location.Y + size.Height;
+		}
+	}
 }
