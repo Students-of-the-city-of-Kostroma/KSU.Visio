@@ -19,10 +19,8 @@ namespace KSU.Visio.Lib
 
         public override Figure Clone()
         {
-            Figure figure = new Actor(Location, Size)
-            {
-                Selected = Selected
-            };
+            Figure figure = new Actor(Location, Size);
+            figure.Selected = Selected;
             return figure;
         }
 

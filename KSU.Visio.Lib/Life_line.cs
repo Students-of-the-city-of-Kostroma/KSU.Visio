@@ -16,10 +16,8 @@ namespace KSU.Visio.Lib
 
         public override Figure Clone()
         {
-            Figure figure = new Life_line(Location, Size)
-            {
-                Selected = Selected
-            };
+            Figure figure = new Life_line(Location, Size);
+            figure.Selected = Selected;
             return figure;
         }
 
@@ -34,9 +32,11 @@ namespace KSU.Visio.Lib
             gr.DrawLine(pen, Line_ends[0], Line_ends[1]);
         }
 
-        readonly int Line_length = 100;
-        static readonly Pen Pen = new Pen(Brushes.Black, 3);
-        readonly Point[] Line_ends = new Point[2];
+        int Line_length = 100;
+        static Pen Pen = new Pen(Brushes.Black, 3);
+        Point[] Line_ends = new Point[2];
+        bool Edit_line = false;//Определает, нужно ли изменять длинну линии
+
 
 
         private void SortLine()

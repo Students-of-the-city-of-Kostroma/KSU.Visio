@@ -90,8 +90,10 @@
         }
 
 		#endregion
+
+		private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.FlowLayoutPanel objectsPanel;
         private System.Windows.Forms.PictureBox canvasPB;
-        private System.Windows.Forms.Button button1;
     }
 }
 
