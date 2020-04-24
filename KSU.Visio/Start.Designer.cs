@@ -96,4 +96,3 @@
         private System.Windows.Forms.PictureBox canvasPB;
     }
 }
-
