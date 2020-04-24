@@ -44,11 +44,14 @@
   <ItemGroup>
     <Compile Include="Actor.cs" />
     <Compile Include="Canvas.cs" />
+    <Compile Include="Cap\Dependence.cs" />
+    <Compile Include="Cap\Interface.cs" />
     <Compile Include="Cap\LineCapBase.cs" />
     <Compile Include="Cap\AsynchronousMessageCap.cs" />
     <Compile Include="Cap\FoundMessageCap.cs" />
     <Compile Include="Cap\DispatchMessageCap.cs" />
     <Compile Include="Cap\ReturnMessageCap.cs" />
+    <Compile Include="Component.cs" />
     <Compile Include="Continuation.cs" />
     <Compile Include="CopyFiles.cs" />
     <Compile Include="Cap\LostMessageCap.cs" />
@@ -56,8 +59,25 @@
     <Compile Include="Frame.cs" />
     <Compile Include="Instance_specification.cs" />
     <Compile Include="Life_line.cs" />
+    <Compile Include="Limitation.cs" />
     <Compile Include="Line.cs" />
+    <Compile Include="Node.cs" />
+    <Compile Include="Note.cs" />
+    <Compile Include="Package.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Rectangle_object.cs" />
+    <Compile Include="Restriction_OR.cs" />
+    <Compile Include="StateDiagram\Postcondition.cs" />
+    <Compile Include="StateDiagram\Precondition.cs" />
+    <Compile Include="StateDiagram\SDBase.cs" />
+    <Compile Include="StateDiagram\Emulator.cs" />
+    <Compile Include="StateDiagram\Condition.cs" />
+    <Compile Include="StateDiagram\Synchronizer.cs" />
+    <Compile Include="StateDiagram\TestCase.cs" />
+    <Compile Include="StateDiagram\TestComplect.cs" />
+    <Compile Include="StateDiagram\Transfer.cs" />
+    <Compile Include="tmp.cs" />
+    <Compile Include="Xml\SDXmlConvert.cs" />
     <Compile Include="White_rectangle.cs" />
   </ItemGroup>
   <ItemGroup />
